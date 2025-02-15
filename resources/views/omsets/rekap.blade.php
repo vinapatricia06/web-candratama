@@ -3,11 +3,16 @@
 @section('content')
 <div class="container">
     <h1>Grafik Omset Tahunan</h1>
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{{ route('omset.download-pdf') }}" class="btn btn-danger" id="downloadPdfBtn">Download PDF</a>
+    </div>
+    
     <div class="d-flex justify-content-end">
         <button><a href="{{ route('omsets.index') }}" class="btn btn-primary">Kembali</a></button>
     </div> 
 
     {{-- Tabel Rekap Omset --}}
+      {{-- Tabel Rekap Omset --}}
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -59,34 +64,30 @@
         </tbody>
     </table>
 
-    {{-- Grafik Omset Tahunan --}}
+
+
     <h2 class="mt-5">Grafik Omset Tahunan</h2>
     <canvas id="chartOmset"></canvas>
 </div>
 
-{{-- Sertakan Chart.js --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Ambil data dari controller
     var labels = @json($labels);
     var totalPerTahun = @json($totalPerTahun);
 
-    // Cari nilai tertinggi dan terendah
     var maxOmset = Math.max(...totalPerTahun);
     var minOmset = Math.min(...totalPerTahun);
 
-    // Buat array warna berdasarkan nilai
     var backgroundColors = totalPerTahun.map(value => {
         if (value === maxOmset) {
-            return 'rgba(0, 255, 4, 0.5)'; // Hijau untuk nilai tertinggi
+            return 'rgba(0, 255, 0, 0.5)'; 
         } else if (value === minOmset) {
-            return 'rgba(255, 0, 55, 0.5)'; // Merah untuk nilai terendah
+            return 'rgba(255, 0, 0, 0.5)'; 
         } else {
-            return 'rgba(0, 153, 255, 0.5)'; // Biru untuk nilai lainnya
+            return 'rgba(0, 153, 255, 0.5)';
         }
     });
 
-    // Buat grafik
     var ctx = document.getElementById('chartOmset').getContext('2d');
     var chart = new Chart(ctx, {
         type: 'bar',
@@ -103,11 +104,29 @@
         options: {
             responsive: true,
             scales: {
-                y: {
-                    beginAtZero: true
-                }
+                y: { beginAtZero: true }
             }
         }
     });
+
+    document.getElementById('downloadPdfBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        var canvas = document.getElementById('chartOmset');
+        var imageData = canvas.toDataURL('image/png'); 
+
+        fetch("{{ route('omset.upload-chart') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },
+            body: JSON.stringify({ chart: imageData })
+        })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = "{{ route('omset.download-pdf') }}";
+        });
+    });
 </script>
+
 @endsection

@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Omset;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\OmsetExport; // Pastikan untuk mengimport OmsetExport
+use Illuminate\Support\Facades\Storage;
+use App\Exports\OmsetExport; 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class OmsetController extends Controller
 {
@@ -86,7 +89,42 @@ class OmsetController extends Controller
         return redirect()->route('omsets.index')->with('success', 'Data omset berhasil dihapus!');
     }
 
-    public function rekapBulanan()
+    // public function rekapBulanan()
+    // {
+    //     $rekap = Omset::selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan, SUM(nominal) as total_omset')
+    //         ->groupBy('tahun', 'bulan')
+    //         ->orderByDesc('tahun')
+    //         ->orderBy('bulan')
+    //         ->get();
+
+    //     $data = [];
+    //     $totals = []; 
+    //     $labels = [];
+    //     $totalPerTahun = []; 
+
+    //     foreach ($rekap as $item) {
+    //         $tahun = $item->tahun;
+    //         $bulan = $item->bulan;
+
+    //         if (!isset($data[$tahun])) {
+    //             $data[$tahun] = array_fill(1, 12, 0); 
+    //             $totals[$tahun] = 0;
+    //         }
+
+    //         $data[$tahun][$bulan] = $item->total_omset;
+    //         $totals[$tahun] += $item->total_omset;
+    //     }
+
+
+    //     foreach ($totals as $tahun => $total) {
+    //         $labels[] = $tahun;
+    //         $totalPerTahun[] = $total;
+    //     }
+
+    //     return view('omsets.rekap', compact('data', 'totals', 'labels', 'totalPerTahun'));
+    // }
+
+        public function rekapBulanan()
     {
         $rekap = Omset::selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan, SUM(nominal) as total_omset')
             ->groupBy('tahun', 'bulan')
@@ -94,33 +132,39 @@ class OmsetController extends Controller
             ->orderBy('bulan')
             ->get();
 
-        // Data untuk tabel dan grafik
         $data = [];
-        $totals = []; // Untuk menyimpan total tahunan
-        $labels = []; // Label tahun untuk grafik
-        $totalPerTahun = []; // Data total omset untuk grafik
+        $totals = [];
+        $labels = [];
+        $totalPerTahun = [];
 
         foreach ($rekap as $item) {
             $tahun = $item->tahun;
             $bulan = $item->bulan;
 
             if (!isset($data[$tahun])) {
-                $data[$tahun] = array_fill(1, 12, 0); // Default 0 tiap bulan
-                $totals[$tahun] = 0; // Inisialisasi total tahunan
+                $data[$tahun] = array_fill(1, 12, 0);
+                $totals[$tahun] = 0;
             }
 
             $data[$tahun][$bulan] = $item->total_omset;
             $totals[$tahun] += $item->total_omset;
         }
 
-        // Siapkan data untuk grafik
         foreach ($totals as $tahun => $total) {
             $labels[] = $tahun;
             $totalPerTahun[] = $total;
         }
 
+        // **Simpan data ke session**
+        session([
+            'data' => $data,
+            'labels' => $labels,
+            'totalPerTahun' => $totalPerTahun,
+        ]);
+
         return view('omsets.rekap', compact('data', 'totals', 'labels', 'totalPerTahun'));
     }
+
 
     // Fungsi untuk download Excel
     public function exportToExcel(Request $request)
@@ -141,10 +185,96 @@ class OmsetController extends Controller
             $query->whereMonth('tanggal', $bulan); // Filter berdasarkan bulan
         }
 
-        // Ambil data omset yang sudah difilter
         $omsets = $query->get();
 
-        // Export data omsets ke Excel
         return Excel::download(new OmsetExport($omsets), 'omsets.xlsx');
     }
+            public function downloadPDF()
+        {
+            // Cek apakah session memiliki data
+            $data = session('data', []);
+            $labels = session('labels', []);
+            $totalPerTahun = session('totalPerTahun', []);
+
+            // Jika session kosong, ambil ulang data dari database
+            if (empty($data) || empty($labels) || empty($totalPerTahun)) {
+                $rekap = Omset::selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan, SUM(nominal) as total_omset')
+                    ->groupBy('tahun', 'bulan')
+                    ->orderByDesc('tahun')
+                    ->orderBy('bulan')
+                    ->get();
+
+                $data = [];
+                $totals = [];
+                $labels = [];
+                $totalPerTahun = [];
+
+                foreach ($rekap as $item) {
+                    $tahun = $item->tahun;
+                    $bulan = $item->bulan;
+
+                    if (!isset($data[$tahun])) {
+                        $data[$tahun] = array_fill(1, 12, 0);
+                        $totals[$tahun] = 0;
+                    }
+
+                    $data[$tahun][$bulan] = $item->total_omset;
+                    $totals[$tahun] += $item->total_omset;
+                }
+
+                foreach ($totals as $tahun => $total) {
+                    $labels[] = $tahun;
+                    $totalPerTahun[] = $total;
+                }
+            }
+
+            if (empty($data)) {
+                return redirect()->back()->with('error', 'Data tidak tersedia untuk diunduh.');
+            }
+
+            // Tentukan jalur gambar grafik
+            $chartPath = storage_path('app/public/chart-omset.png');
+
+            if (!file_exists($chartPath)) {
+                return redirect()->back()->with('error', 'Gambar grafik tidak ditemukan.');
+            }
+
+            $pdf = Pdf::loadView('pdf.grafik-omset', compact('data', 'labels', 'totalPerTahun', 'chartPath'));
+
+            return $pdf->download('grafik_omset.pdf');
+        }
+
+        private function generateChartImage($labels, $values)
+        {
+            $chartData = [
+                'type' => 'bar',
+                'data' => [
+                    'labels' => $labels,
+                    'datasets' => [[
+                        'label' => 'Total Omset',
+                        'data' => $values,
+                        'backgroundColor' => 'rgba(0, 153, 255, 0.5)',
+                        'borderColor' => 'rgba(0, 153, 255, 1)',
+                        'borderWidth' => 1
+                    ]]
+                ],
+                'options' => ['responsive' => true]
+            ];
+
+            return base64_encode(json_encode($chartData));
+        }
+
+        public function uploadChart(Request $request)
+        {
+            $imageData = $request->chart;
+            $imageData = str_replace('data:image/png;base64,', '', $imageData);
+            $imageData = str_replace(' ', '+', $imageData);
+            $image = base64_decode($imageData);
+            $fileName = 'chart-omset.png';
+
+            Storage::put('public/' . $fileName, $image);
+
+            return response()->json(['message' => 'Chart uploaded successfully']);
+        }
+
 }

@@ -36,4 +36,7 @@ Route::delete('/omsets/{omset}', [OmsetController::class, 'destroy'])->name('oms
 
 Route::get('/omsets/rekap', [OmsetController::class, 'rekapBulanan'])->name('omsets.rekap');
 Route::get('omsets/export', [OmsetController::class, 'exportToExcel'])->name('omsets.export');
+Route::get('/omset/download-pdf', [OmsetController::class, 'downloadPDF'])->name('omset.download-pdf');
+Route::post('/omset/upload-chart', [OmsetController::class, 'uploadChart'])->name('omset.upload-chart');
+
 
