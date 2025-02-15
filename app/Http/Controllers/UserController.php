@@ -23,7 +23,7 @@ class UserController extends Controller
     {
         $request->validate([
             'nama' => 'required',
-            'username' => 'required|unique:users',
+            'username' => 'required|unique:users1', 
             'password' => 'required|min:6',
             'role' => 'required'
         ]);
@@ -44,15 +44,15 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_user)
     {
         $request->validate([
             'nama' => 'required',
-            'username' => 'required|unique:users,username,' . $id . ',id_user',
+            'username' => 'required|unique:users1,username,' . $id_user . ',id_user', 
             'role' => 'required'
         ]);
 
-        $user = User1::findOrFail($id);
+        $user = User1::findOrFail($id_user);
         $user->update([
             'nama' => $request->nama,
             'username' => $request->username,
@@ -62,10 +62,9 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'User berhasil diperbarui');
     }
 
-    public function destroy($id)
+    public function destroy($id_user)
     {
-        User1::destroy($id);
+        User1::destroy($id_user);
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus');
     }
 }
-

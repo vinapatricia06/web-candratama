@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OmsetController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,17 +20,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-use App\Http\Controllers\UserController;
 Route::resource('users', UserController::class);
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
-
-
-
-use App\Http\Controllers\OmsetController;
 
 Route::get('/omsets', [OmsetController::class, 'index'])->name('omsets.index');
 Route::get('/omsets/create', [OmsetController::class, 'create'])->name('omsets.create');

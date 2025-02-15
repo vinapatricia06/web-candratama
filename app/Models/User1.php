@@ -9,8 +9,8 @@ class User1 extends Model
 {
     use HasFactory;
 
-    protected $table = 'users'; // Nama tabel di database
-    protected $primaryKey = 'id_user'; // Primary key tabel
+    protected $table = 'users1'; 
+    protected $primaryKey = 'id_user'; 
     protected $fillable = [
         'nama', 'username', 'password', 'role',
     ];
