@@ -4,6 +4,10 @@
     <div class="container">
         <h2>Data Omset</h2>
 
+        <div class="d-flex justify-content-end">
+            <button><a href="{{ route('omsets.rekap') }}" class="btn btn-primary">Rekap Omset</a></button>
+        </div>        
+
         <!-- Form untuk pencarian dengan bulan -->
         <form action="{{ route('omsets.index') }}" method="GET" class="mb-3">
             <div class="input-group" style="max-width: 400px;">

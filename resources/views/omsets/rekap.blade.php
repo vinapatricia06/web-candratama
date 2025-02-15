@@ -3,6 +3,9 @@
 @section('content')
 <div class="container">
     <h1>Grafik Omset Tahunan</h1>
+    <div class="d-flex justify-content-end">
+        <button><a href="{{ route('omsets.index') }}" class="btn btn-primary">Kembali</a></button>
+    </div> 
 
     {{-- Tabel Rekap Omset --}}
     <table class="table table-bordered">
