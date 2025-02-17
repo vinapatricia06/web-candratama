@@ -17,4 +17,9 @@ class User1 extends Model
     protected $hidden = [
         'password',
     ];
+
+    public function progressProjects()
+    {
+        return $this->hasMany(ProgressProject::class, 'teknisi_id', 'id_user');
+    }
 }

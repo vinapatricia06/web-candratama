@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
+
+@section('title', 'Tambah Omset')
 
 @section('content')
 <div class="container">
@@ -30,7 +32,7 @@
             <input type="number" name="nominal" id="nominal" class="form-control" required>
         </div>
         <br>
-
+        <a href="{{ route('omsets.index') }}" class="btn btn-danger mr-2">Kembali</a>
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
 </div>

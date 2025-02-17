@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
+
+@section('title', 'Edit Omset')
 
 @section('content')
     <div class="container">
@@ -31,8 +33,8 @@
                 <label>Nominal</label>
                 <input type="number" name="nominal" class="form-control" value="{{ $omset->nominal }}" required>
             </div>
+            <a href="{{ route('omsets.index') }}" class="btn btn-danger mr-2">Kembali</a>
             <button type="submit" class="btn btn-success">Update</button>
-            <a href="{{ route('omsets.index') }}" class="btn btn-secondary">Batal</a>
         </form>
     </div>
 @endsection

@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('layouts.admin.app')
+
+@section('title', 'Tambah User')
 
 @section('content')
 <div class="container">
@@ -30,6 +32,7 @@
                 <option value="teknisi">teknisi</option>
             </select>
         </div>
+        <a href="{{ route('users.index') }}" class="btn btn-danger mr-2">Kembali</a>
         <button type="submit" class="btn btn-primary">Simpan</button>
     </form>
 </div>

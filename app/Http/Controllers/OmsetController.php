@@ -89,41 +89,6 @@ class OmsetController extends Controller
         return redirect()->route('omsets.index')->with('success', 'Data omset berhasil dihapus!');
     }
 
-    // public function rekapBulanan()
-    // {
-    //     $rekap = Omset::selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan, SUM(nominal) as total_omset')
-    //         ->groupBy('tahun', 'bulan')
-    //         ->orderByDesc('tahun')
-    //         ->orderBy('bulan')
-    //         ->get();
-
-    //     $data = [];
-    //     $totals = []; 
-    //     $labels = [];
-    //     $totalPerTahun = []; 
-
-    //     foreach ($rekap as $item) {
-    //         $tahun = $item->tahun;
-    //         $bulan = $item->bulan;
-
-    //         if (!isset($data[$tahun])) {
-    //             $data[$tahun] = array_fill(1, 12, 0); 
-    //             $totals[$tahun] = 0;
-    //         }
-
-    //         $data[$tahun][$bulan] = $item->total_omset;
-    //         $totals[$tahun] += $item->total_omset;
-    //     }
-
-
-    //     foreach ($totals as $tahun => $total) {
-    //         $labels[] = $tahun;
-    //         $totalPerTahun[] = $total;
-    //     }
-
-    //     return view('omsets.rekap', compact('data', 'totals', 'labels', 'totalPerTahun'));
-    // }
-
         public function rekapBulanan()
     {
         $rekap = Omset::selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan, SUM(nominal) as total_omset')
