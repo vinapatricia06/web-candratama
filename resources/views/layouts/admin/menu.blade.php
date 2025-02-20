@@ -20,6 +20,28 @@
                 <p>Progress</p>
             </a>
         </li>
+        
+        <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p>Surat</p>
+                <i class="fas fa-chevron-down"></i>
+            </a>
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li>
+                        <a href="digital-marketing/list" class="nav-link text-white">Digital Marketing</a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link text-white">Finance</a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link text-white">Administrasi</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
                                                
     </ul>
 </nav>

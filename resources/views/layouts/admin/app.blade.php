@@ -84,7 +84,7 @@
                 </li>
                 <li style="margin-bottom: -20px; margin-left:20px">
                     <h4 class="text-white fw-bold">
-                        CANDRAMATA GRANITE
+                        CANDRAMATA GRANITES
                     </h4>
                 </li>                
             </ul>
