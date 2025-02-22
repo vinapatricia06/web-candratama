@@ -154,61 +154,63 @@ class OmsetController extends Controller
 
         return Excel::download(new OmsetExport($omsets), 'omsets.xlsx');
     }
-            public function downloadPDF()
-        {
-            // Cek apakah session memiliki data
-            $data = session('data', []);
-            $labels = session('labels', []);
-            $totalPerTahun = session('totalPerTahun', []);
-
-            // Jika session kosong, ambil ulang data dari database
-            if (empty($data) || empty($labels) || empty($totalPerTahun)) {
-                $rekap = Omset::selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan, SUM(nominal) as total_omset')
-                    ->groupBy('tahun', 'bulan')
-                    ->orderByDesc('tahun')
-                    ->orderBy('bulan')
-                    ->get();
-
-                $data = [];
-                $totals = [];
-                $labels = [];
-                $totalPerTahun = [];
-
-                foreach ($rekap as $item) {
-                    $tahun = $item->tahun;
-                    $bulan = $item->bulan;
-
-                    if (!isset($data[$tahun])) {
-                        $data[$tahun] = array_fill(1, 12, 0);
-                        $totals[$tahun] = 0;
-                    }
-
-                    $data[$tahun][$bulan] = $item->total_omset;
-                    $totals[$tahun] += $item->total_omset;
+    public function downloadPDF()
+    {
+        // Cek apakah session memiliki data
+        $data = session('data', []);
+        $labels = session('labels', []);
+        $totalPerTahun = session('totalPerTahun', []);
+    
+        // Jika session kosong, ambil ulang data dari database
+        if (empty($data) || empty($labels) || empty($totalPerTahun)) {
+            $rekap = Omset::selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan, SUM(nominal) as total_omset')
+                ->groupBy('tahun', 'bulan')
+                ->orderByDesc('tahun')
+                ->orderBy('bulan')
+                ->get();
+    
+            $data = [];
+            $totals = [];
+            $labels = [];
+            $totalPerTahun = [];
+    
+            foreach ($rekap as $item) {
+                $tahun = $item->tahun;
+                $bulan = $item->bulan;
+    
+                if (!isset($data[$tahun])) {
+                    $data[$tahun] = array_fill(1, 12, 0);
+                    $totals[$tahun] = 0;
                 }
-
-                foreach ($totals as $tahun => $total) {
-                    $labels[] = $tahun;
-                    $totalPerTahun[] = $total;
-                }
+    
+                $data[$tahun][$bulan] = $item->total_omset;
+                $totals[$tahun] += $item->total_omset;
             }
-
-            if (empty($data)) {
-                return redirect()->back()->with('error', 'Data tidak tersedia untuk diunduh.');
+    
+            foreach ($totals as $tahun => $total) {
+                $labels[] = $tahun;
+                $totalPerTahun[] = $total;
             }
-
-            // Tentukan jalur gambar grafik
-            $chartPath = storage_path('app/public/chart-omset.png');
-
-            if (!file_exists($chartPath)) {
-                return redirect()->back()->with('error', 'Gambar grafik tidak ditemukan.');
-            }
-
-            $pdf = Pdf::loadView('pdf.grafik-omset', compact('data', 'labels', 'totalPerTahun', 'chartPath'));
-
-            return $pdf->download('grafik_omset.pdf');
         }
-
+    
+        if (empty($data)) {
+            return redirect()->back()->with('error', 'Data tidak tersedia untuk diunduh.');
+        }
+    
+        // Tentukan jalur gambar grafik
+        $chartPath = storage_path('app/public/chart-omset.png');
+    
+        if (!file_exists($chartPath)) {
+            return redirect()->back()->with('error', 'Gambar grafik tidak ditemukan.');
+        }
+    
+        // Mengatur orientasi PDF menjadi landscape
+        $pdf = Pdf::loadView('pdf.grafik-omset', compact('data', 'labels', 'totalPerTahun', 'chartPath'))
+            ->setPaper('a4', 'landscape');  // Menambahkan pengaturan landscape di sini
+    
+        return $pdf->download('grafik_omset.pdf');
+    }
+    
         private function generateChartImage($labels, $values)
         {
             $chartData = [

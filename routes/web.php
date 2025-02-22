@@ -5,8 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OmsetController;
 use App\Http\Controllers\ProgressProjectController;
 use App\Http\Controllers\SuratMarketingController;
-
-
+use App\Http\Controllers\MaintenanceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -80,4 +79,14 @@ Route::put('/surat-marketing/{id}', [SuratMarketingController::class, 'update'])
 Route::delete('/surat-marketing/{id}', [SuratMarketingController::class, 'destroy'])->name('surat.marketing.destroy');
 
 Route::get('/surat/marketing/create', [SuratMarketingController::class, 'create'])->name('surat.marketing.create');
+
+
+
+Route::get('/maintenances', [MaintenanceController::class, 'index'])->name('maintenances.index');
+Route::get('/maintenances/create', [MaintenanceController::class, 'create'])->name('maintenances.create');
+Route::post('/maintenances', [MaintenanceController::class, 'store'])->name('maintenances.store');
+Route::get('/maintenances/{maintenance}/edit', [MaintenanceController::class, 'edit'])->name('maintenances.edit');
+Route::put('/maintenances/{maintenance}', [MaintenanceController::class, 'update'])->name('maintenances.update');
+Route::delete('/maintenances/{maintenance}', [MaintenanceController::class, 'destroy'])->name('maintenances.destroy');
+Route::get('/maintenances/download', [MaintenanceController::class, 'downloadPdf'])->name('maintenances.downloadPdf');
 
