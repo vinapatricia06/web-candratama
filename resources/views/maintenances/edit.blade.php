@@ -43,7 +43,7 @@
                 <label>Dokumentasi</label>
                 <br>
                 @if ($maintenance->dokumentasi)
-                    <img src="{{ asset('storage/' . $maintenance->dokumentasi) }}" alt="Dokumentasi" width="150">
+                    <img src="{{ asset($maintenance->dokumentasi) }}" alt="Dokumentasi" width="150">
                 @else
                     Tidak ada gambar
                 @endif

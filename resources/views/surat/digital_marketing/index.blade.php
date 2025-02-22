@@ -1,6 +1,8 @@
 @extends('layouts.admin.app')
 
+@section('title', 'Kelola Surat Marketing')
 @section('content')
+
     <h1>Daftar Surat Pengajuan</h1>
     @if (session('success'))
         <div class="alert alert-success">
@@ -9,7 +11,7 @@
     @endif
 
     <div style="margin-bottom: 20px;">
-        <a href="{{ route('surat.marketing.generate') }}" class="btn btn-primary">Tambah Surat</a>
+        <a href="{{ route('surat.marketing.create') }}" class="btn btn-primary">Tambah Surat</a>
     </div>
     <table border="1" cellpadding="10" style="width: 100%; margin: 0 auto; border-collapse: collapse; text-align: center;">
         <thead>

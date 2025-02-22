@@ -75,7 +75,7 @@
     <div class="wrapper">
 
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand fixed-top" style="background: #dc3545">
+        <nav class="main-header navbar navbar-expand fixed-top" style="background: #ca3329">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -100,11 +100,13 @@
         </nav>
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar elevation-4" style="background:#dc3545">
+        <aside class="main-sidebar elevation-4" style="background:#ca3329">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center">
+                <img src="{{ asset('images/logo .png') }}" alt="Logo" style="width: 70%; height: auto; margin-right: 10px;">
+
                 <div style="color: #ffffff; font-family: 'Roboto', sans-serif">
-                    <div class="fw-bold" style="font-size: 20px">CANDRAMATA</div>
+                    {{-- <div class="fw-bold" style="font-size: 20px">CANDRAMATA</div> --}}
                 </div>
             </a>
             

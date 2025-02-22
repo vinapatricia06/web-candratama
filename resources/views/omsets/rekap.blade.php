@@ -3,73 +3,71 @@
 @section('title', 'Grafik Omset Tahunan')
 
 @section('content')
-<div class="container">
-    <h1>Grafik Omset Tahunan</h1>
-    <div class="d-flex justify-content-end mb-3">
+<div class="container-fluid" style="padding-left: 20px; padding-right: 20px;">
+    <h1 class="text-center mb-4">Grafik Omset Tahunan</h1>
+    <div class="d-flex justify-content-between mb-3">
         <a href="{{ route('omset.download-pdf') }}" class="btn btn-danger" id="downloadPdfBtn">Download PDF</a>
+        <a href="{{ route('omsets.index') }}" class="btn btn-primary">Kembali</a>
     </div>
-    
-    <div class="d-flex justify-content-end">
-        <button><a href="{{ route('omsets.index') }}" class="btn btn-primary">Kembali</a></button>
-    </div> 
 
     {{-- Tabel Rekap Omset --}}
-      {{-- Tabel Rekap Omset --}}
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>THN</th>
-                <th>JANUARI</th>
-                <th>FEBRUARI</th>
-                <th>MARET</th>
-                <th>APRIL</th>
-                <th>MEI</th>
-                <th>JUNI</th>
-                <th>JULI</th>
-                <th>AGUSTUS</th>
-                <th>SEPTEMBER</th>
-                <th>OKTOBER</th>
-                <th>NOVEMBER</th>
-                <th>DESEMBER</th>
-                <th>TOTAL</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $year => $months)
-                @php
-                    $total = 0;
-                    $maxOmset = max($months); // Nilai tertinggi per tahun
-                    $minOmset = min($months); // Nilai terendah per tahun
-                @endphp
+    <div class="table-responsive mb-4">
+        <table class="table table-bordered">
+            <thead>
                 <tr>
-                    <td>{{ $year }}</td>
-                    @for ($month = 1; $month <= 12; $month++)
-                        @php
-                            $omset = $months[$month] ?? 0;
-                            $total += $omset;
-
-                            // Tentukan kelas warna
-                            $class = '';
-                            if ($omset == $maxOmset) {
-                                $class = 'table-success'; // Hijau untuk nilai tertinggi
-                            } elseif ($omset == $minOmset) {
-                                $class = 'table-danger'; // Merah untuk nilai terendah
-                            } else {
-                                $class = 'table-info'; // Biru untuk nilai lainnya
-                            }
-                        @endphp
-                        <td class="{{ $class }}">Rp {{ number_format($omset, 0, ',', '.') }}</td>
-                    @endfor
-                    <td><strong>Rp {{ number_format($total, 0, ',', '.') }}</strong></td>
+                    <th>THN</th>
+                    <th>JANUARI</th>
+                    <th>FEBRUARI</th>
+                    <th>MARET</th>
+                    <th>APRIL</th>
+                    <th>MEI</th>
+                    <th>JUNI</th>
+                    <th>JULI</th>
+                    <th>AGUSTUS</th>
+                    <th>SEPTEMBER</th>
+                    <th>OKTOBER</th>
+                    <th>NOVEMBER</th>
+                    <th>DESEMBER</th>
+                    <th>TOTAL</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($data as $year => $months)
+                    @php
+                        $total = 0;
+                        $maxOmset = max($months); // Nilai tertinggi per tahun
+                        $minOmset = min($months); // Nilai terendah per tahun
+                    @endphp
+                    <tr>
+                        <td>{{ $year }}</td>
+                        @for ($month = 1; $month <= 12; $month++)
+                            @php
+                                $omset = $months[$month] ?? 0;
+                                $total += $omset;
 
+                                // Tentukan kelas warna
+                                $class = '';
+                                if ($omset == $maxOmset) {
+                                    $class = 'table-success'; // Hijau untuk nilai tertinggi
+                                } elseif ($omset == $minOmset) {
+                                    $class = 'table-danger'; // Merah untuk nilai terendah
+                                } else {
+                                    $class = 'table-info'; // Biru untuk nilai lainnya
+                                }
+                            @endphp
+                            <td class="{{ $class }}">Rp {{ number_format($omset, 0, ',', '.') }}</td>
+                        @endfor
+                        <td><strong>Rp {{ number_format($total, 0, ',', '.') }}</strong></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
-
-    <h2 class="mt-5">Grafik Omset Tahunan</h2>
-    <canvas id="chartOmset"></canvas>
+    <h2 class="mt-5 text-center">Grafik Omset Tahunan</h2>
+    <div class="chart-container" style="display: flex; justify-content: center; margin-top: 20px;">
+        <canvas id="chartOmset" style="width: 80%; max-width: 1000px;"></canvas>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -130,5 +128,4 @@
         });
     });
 </script>
-
 @endsection

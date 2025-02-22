@@ -1,5 +1,6 @@
 @extends('layouts.admin.app')
 
+@section('title', 'Kelola Surat Marketing')
 @section('content')
     <h1>Edit Surat</h1>
 

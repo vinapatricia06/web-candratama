@@ -79,12 +79,18 @@ class SuratMarketingController extends Controller
 
         $filePath = public_path('storage/' . $surat->file_path);
 
+        // Mengecek apakah file ada
         if (file_exists($filePath)) {
-            return response()->download($filePath);
+            // Membuat nama file kustom berdasarkan ID surat
+            $fileName = "SuratMarketing_{$surat->id}_{$surat->jenis_surat}.pdf"; // Sesuaikan ekstensi file jika diperlukan
+
+            // Mengunduh file dengan nama yang sudah diatur
+            return response()->download($filePath, $fileName);
         } else {
             return redirect()->back()->withErrors('File tidak ditemukan.');
         }
     }
+
 
     public function updateStatusPengajuan(Request $request, $id)
     {

@@ -39,10 +39,11 @@
                         <td>{{ $maintenance->maintenance ?? 'Tidak Ada' }}</td> <!-- Menampilkan data maintenance -->
                         <td>
                             @if ($maintenance->dokumentasi)
-                                <img src="{{ asset('storage/' . $maintenance->dokumentasi) }}" alt="Dokumentasi" width="100">
+                                <img src="{{ asset($maintenance->dokumentasi) }}" alt="Dokumentasi" width="100">
                             @else
                                 Tidak ada gambar
                             @endif
+                            
                         </td>
                         <td>{{ $maintenance->status }}</td>
                         <td>
