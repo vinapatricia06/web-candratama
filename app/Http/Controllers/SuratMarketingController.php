@@ -162,4 +162,25 @@ class SuratMarketingController extends Controller
     {
         return view('surat.digital_marketing.create');
     }
+
+    public function dashboard()
+    {
+        $pending = SuratMarketing::where('status_pengajuan', 'Pending')->count();
+        $acc = SuratMarketing::where('status_pengajuan', 'ACC')->count();
+        $tolak = SuratMarketing::where('status_pengajuan', 'Tolak')->count();
+
+        $monthlyCounts = SuratMarketing::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
+            ->groupBy('month')
+            ->orderBy('month', 'asc')
+            ->pluck('count', 'month');
+
+        return view('surat.digital_marketing.dashboard', [
+            'pending' => $pending,
+            'acc' => $acc,
+            'tolak' => $tolak,
+            'months' => $monthlyCounts->keys(),
+            'monthlyCounts' => $monthlyCounts->values(),
+        ]);
+    }
+
 }

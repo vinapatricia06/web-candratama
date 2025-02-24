@@ -38,6 +38,9 @@
             <div class="collapse" id="menuSurat">
                 <ul class="ps-4 list-unstyled">
                     <li>
+                        <a href="/dashboard" class="nav-link text-white">Dashboard</a>
+                    </li>
+                    <li>
                         <a href="digital-marketing/list" class="nav-link text-white">Digital Marketing</a>
                     </li>
                     <li>

@@ -79,6 +79,8 @@ Route::put('/surat-marketing/{id}', [SuratMarketingController::class, 'update'])
 Route::delete('/surat-marketing/{id}', [SuratMarketingController::class, 'destroy'])->name('surat.marketing.destroy');
 
 Route::get('/surat/marketing/create', [SuratMarketingController::class, 'create'])->name('surat.marketing.create');
+Route::get('/dashboard', [SuratMarketingController::class, 'dashboard'])->name('dashboard');
+
 
 
 
