@@ -37,6 +37,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Tanggal</th>
+                    <th>No Induk</th> <!-- Kolom untuk No Induk -->
                     <th>Nama Klien</th>
                     <th>Alamat</th>
                     <th>Project</th>
@@ -50,6 +51,7 @@
                     <tr>
                         <td>{{ $omset->id_omset }}</td>
                         <td>{{ $omset->tanggal }}</td>
+                        <td>{{ $omset->no_induk }}</td> <!-- Tampilkan No Induk -->
                         <td>{{ $omset->nama_klien }}</td>
                         <td>{{ $omset->alamat }}</td>
                         <td>{{ $omset->project }}</td>

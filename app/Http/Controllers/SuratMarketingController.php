@@ -102,8 +102,15 @@ class SuratMarketingController extends Controller
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
+        // Cek apakah status surat ditujukan untuk DM
+        if ($surat->divisi_tujuan == 'DM' && $surat->status_pengajuan != 'Pending') {
+            // Hilangkan notifikasi setelah surat diubah statusnya
+            session()->forget('suratKeDM'); // Menghapus notifikasi dari sesi
+        }
+
         return redirect()->route('surat.digital_marketing.list')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
+
 
     public function viewPDF($id)
     {
@@ -169,6 +176,16 @@ class SuratMarketingController extends Controller
         $acc = SuratMarketing::where('status_pengajuan', 'ACC')->count();
         $tolak = SuratMarketing::where('status_pengajuan', 'Tolak')->count();
 
+        $divisi_pembuat = SuratMarketing::distinct()->pluck('divisi_pembuat');
+
+        // Menghitung surat yang divisi tujuannya ke DM
+        $suratKeDM = SuratMarketing::where('divisi_tujuan', 'DM')->where('status_pengajuan', 'Pending')->count();
+
+        // Menyimpan informasi surat ke DM di sesi jika ada
+        if ($suratKeDM > 0) {
+            session(['suratKeDM' => $suratKeDM]);
+        }
+
         $monthlyCounts = SuratMarketing::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
             ->groupBy('month')
             ->orderBy('month', 'asc')
@@ -180,6 +197,8 @@ class SuratMarketingController extends Controller
             'tolak' => $tolak,
             'months' => $monthlyCounts->keys(),
             'monthlyCounts' => $monthlyCounts->values(),
+            'suratKeDM' => $suratKeDM,
+            'divisi_pembuat' => $divisi_pembuat // Pastikan variabel ini dikirimkan ke view
         ]);
     }
 

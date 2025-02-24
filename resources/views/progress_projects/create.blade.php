@@ -38,10 +38,7 @@
             </div>
             <div class="mb-3">
                 <label>Status</label>
-                <select name="status" class="form-control">
-                    <option value="Waiting List">Waiting List</option>
-                    <option value="Selesai">Selesai</option>
-                </select>
+                <input type="text" name="status" class="form-control" required>
             </div>
             <a href="{{ route('progress_projects.index') }}" class="btn btn-danger mr-2">Kembali</a>
             <button type="submit" class="btn btn-success">Simpan</button>

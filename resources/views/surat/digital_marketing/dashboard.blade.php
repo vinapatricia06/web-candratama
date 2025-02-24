@@ -2,8 +2,15 @@
 
 @section('title', 'Dashboard Surat Marketing')
 @section('content')
-    <h1>Rekap Surat Marketing</h1>
     
+    
+    @if($suratKeDM > 0)
+        <div class="alert alert-warning">
+            Ada {{ $suratKeDM }} surat yang masuk dari Finance.
+        </div>
+    @endif
+
+    <h1>Rekap Surat Marketing</h1>
     <div class="row">
         <div class="col-md-6">
             <canvas id="statusChart"></canvas>
@@ -40,5 +47,18 @@
                 }]
             }
         });
+    
+        // Fungsi untuk memutar suara notifikasi
+        function playNotificationSound() {
+            // Menggunakan asset() untuk menghasilkan URL yang benar
+            var audio = new Audio('{{ asset('sounds/notv.wav') }}'); 
+            audio.play();
+        }
+
+        // Cek apakah ada notifikasi
+        @if(session('suratKeDM') > 0)
+            playNotificationSound(); // Memainkan suara jika ada notifikasi
+        @endif
+
     </script>
 @endsection

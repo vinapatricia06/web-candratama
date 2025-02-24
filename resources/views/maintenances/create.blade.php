@@ -29,7 +29,7 @@
 
             <div class="mb-3">
                 <label>Tanggal Serah Terima</label>
-                <input type="date" name="tanggal_serah_terima" class="form-control" required>
+                <input type="date" name="tanggal_serah_terima" class="form-control" >
             </div>
 
             <div class="mb-3">

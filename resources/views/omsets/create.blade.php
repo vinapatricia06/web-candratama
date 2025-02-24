@@ -11,6 +11,11 @@
             <label>Tanggal</label>
             <input type="date" name="tanggal" class="form-control" required>
         </div>
+        <div class="form-group">
+            <label for="no_induk">No Induk</label>
+            <input type="number" class="form-control" name="no_induk" id="no_induk" required>
+        </div>
+             
         <div class="mb-3">
             <label>Nama Klien</label>
             <input type="text" name="nama_klien" class="form-control" required>

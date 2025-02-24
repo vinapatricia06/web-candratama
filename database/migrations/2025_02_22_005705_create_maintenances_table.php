@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->text('alamat');
             $table->string('project');
             $table->date('tanggal_setting');
-            $table->date('tanggal_serah_terima');
+            $table->date('tanggal_serah_terima')->nullable();
             $table->string('maintenance');
             $table->string('dokumentasi')->nullable();
             $table->enum('status', ['Waiting List', 'Selesai'])->default('Waiting List');

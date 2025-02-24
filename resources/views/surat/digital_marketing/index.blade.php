@@ -4,15 +4,24 @@
 @section('content')
 
     <h1>Daftar Surat Pengajuan</h1>
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
 
+    <!-- Notifikasi Surat untuk DM -->
+    @if (session('suratKeDM') > 0)
+        <div class="alert alert-warning" id="notification-alert">
+            Ada {{ session('suratKeDM') }} surat yang masuk untuk divisi DM dengan status Pending.
+        </div>
+    @endif
+
     <div style="margin-bottom: 20px;">
         <a href="{{ route('surat.marketing.create') }}" class="btn btn-primary">Tambah Surat</a>
     </div>
+
     <table border="1" cellpadding="10" style="width: 100%; margin: 0 auto; border-collapse: collapse; text-align: center;">
         <thead>
             <tr style="background-color: #f0f0f0;">
@@ -85,4 +94,18 @@
             @endforeach
         </tbody>
     </table>
+
+    <script>
+       / Fungsi untuk memutar suara notifikasi
+        function playNotificationSound() {
+            // Menggunakan asset() untuk menghasilkan URL yang benar
+            var audio = new Audio('{{ asset('sounds/notv.wav') }}'); 
+            audio.play();
+        }
+
+        // Cek apakah ada notifikasi
+        @if(session('suratKeDM') > 0)
+            playNotificationSound(); // Memainkan suara jika ada notifikasi
+        @endif
+    </script>
 @endsection

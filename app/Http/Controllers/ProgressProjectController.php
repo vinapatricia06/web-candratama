@@ -28,7 +28,7 @@ class ProgressProjectController extends Controller
             'project' => 'required|string|max:255',
             'tanggal_setting' => 'required|date',
             'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'status' => 'required|in:Waiting List,Selesai',
+            'status' => 'required|string|max:255', // Mengubah validasi status menjadi string tanpa batasan enum
         ]);
 
         $data = $request->except(['dokumentasi']);
@@ -60,7 +60,7 @@ class ProgressProjectController extends Controller
             'project' => 'required|string|max:255',
             'tanggal_setting' => 'required|date',
             'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'status' => 'required|in:Waiting List,Selesai',
+            'status' => 'required|string|max:255', // Mengubah validasi status menjadi string tanpa batasan enum
         ]);
     
         $progress_project = ProgressProject::findOrFail($id);
@@ -96,16 +96,16 @@ class ProgressProjectController extends Controller
     }
 
     public function downloadPdf()
-{
-    // Mengambil data project
-    $projects = ProgressProject::with('teknisi')->get();
+    {
+        // Mengambil data project
+        $projects = ProgressProject::with('teknisi')->get();
 
-    // Load view untuk PDF
-    $pdf = PDF::loadView('progress_projects.pdf', compact('projects'));
+        // Load view untuk PDF
+        $pdf = PDF::loadView('progress_projects.pdf', compact('projects'));
 
-    $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
+        $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
 
-    // Download file PDF
-    return $pdf->download('progress_projects.pdf');
-}
+        // Download file PDF
+        return $pdf->download('progress_projects.pdf');
+    }
 }

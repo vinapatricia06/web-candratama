@@ -31,7 +31,7 @@
 
             <div class="mb-3">
                 <label>Tanggal Serah Terima</label>
-                <input type="date" name="tanggal_serah_terima" class="form-control" value="{{ $maintenance->tanggal_serah_terima }}" required>
+                <input type="date" name="tanggal_serah_terima" class="form-control" value="{{ $maintenance->tanggal_serah_terima }}" >
             </div>
 
             <div class="mb-3">

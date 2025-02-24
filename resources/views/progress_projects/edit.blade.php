@@ -49,10 +49,7 @@
             </div>
             <div class="mb-3">
                 <label>Status</label>
-                <select name="status" class="form-control">
-                    <option value="Waiting List" {{ $progress_project->status == 'Waiting List' ? 'selected' : '' }}>Waiting List</option>
-                    <option value="Selesai" {{ $progress_project->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                </select>
+                <input type="text" name="status" class="form-control" value="{{ $progress_project->status }}" required>
             </div>
             <a href="{{ route('progress_projects.index') }}" class="btn btn-danger mr-2">Kembali</a>
             <button type="submit" class="btn btn-success">Update</button>

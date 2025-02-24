@@ -17,7 +17,7 @@
         <li class="nav-item">
             <a href="{{ route('progress_projects.index') }}" class="nav-link text-white">
                 <i class="nav-icon fas fa-tasks"></i>
-                <p>Progress</p>
+                <p>Progress Project</p>
             </a>
         </li>
 
@@ -38,10 +38,10 @@
             <div class="collapse" id="menuSurat">
                 <ul class="ps-4 list-unstyled">
                     <li>
-                        <a href="/dashboard" class="nav-link text-white">Dashboard</a>
+                        <a href="{{ route('dashboard') }}" class="nav-link text-white">Dashboard</a>
                     </li>
                     <li>
-                        <a href="digital-marketing/list" class="nav-link text-white">Digital Marketing</a>
+                        <a href="{{ route('surat.digital_marketing.list') }}" class="nav-link text-white">Digital Marketing</a>
                     </li>
                     <li>
                         <a href="#" class="nav-link text-white">Finance</a>
