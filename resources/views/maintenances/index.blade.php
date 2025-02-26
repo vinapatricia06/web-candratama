@@ -3,7 +3,7 @@
 @section('title', 'Kelola Maintenance Project')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <h2>Daftar Maintenance Project</h2>
         <a href="{{ route('maintenances.create') }}" class="btn btn-primary mb-3">Tambah Maintenance</a>
         <a href="{{ route('maintenances.downloadPdf') }}" class="btn btn-success mb-3">Download PDF</a>
@@ -12,40 +12,39 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <table class="table table-bordered">
-            <thead>
+        <table class="table table-bordered" style="font-size: 16px; width: 100%; table-layout: auto;">
+            <thead class="table-light">
                 <tr>
-                    <th>No</th>
-                    <th>Klien</th>
-                    <th>Alamat</th>
-                    <th>Project</th>
-                    <th>Tanggal Setting</th>
-                    <th>Tanggal Serah Terima</th>
-                    <th>Maintenance</th> <!-- Kolom maintenance ditambahkan -->
-                    <th>Dokumentasi</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
+                    <th style="font-size: 18px;">No</th>
+                    <th style="font-size: 18px;">Klien</th>
+                    <th style="font-size: 18px;">Alamat</th>
+                    <th style="font-size: 18px;">Project</th>
+                    <th style="font-size: 18px;">Tanggal Setting</th>
+                    <th style="font-size: 18px;">Tanggal Serah Terima</th>
+                    <th style="font-size: 18px;">Maintenance</th>
+                    <th style="font-size: 18px;">Dokumentasi</th>
+                    <th style="font-size: 18px;">Status</th>
+                    <th style="font-size: 18px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($maintenances as $key => $maintenance)
                     <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $maintenance->nama_klien }}</td>
-                        <td>{{ $maintenance->alamat }}</td>
-                        <td>{{ $maintenance->project }}</td>
-                        <td>{{ $maintenance->tanggal_setting }}</td>
-                        <td>{{ $maintenance->tanggal_serah_terima }}</td>
-                        <td>{{ $maintenance->maintenance ?? 'Tidak Ada' }}</td> <!-- Menampilkan data maintenance -->
-                        <td>
+                        <td style="font-size: 16px;">{{ $key + 1 }}</td>
+                        <td style="font-size: 16px;">{{ $maintenance->nama_klien }}</td>
+                        <td style="font-size: 16px;">{{ $maintenance->alamat }}</td>
+                        <td style="font-size: 16px;">{{ $maintenance->project }}</td>
+                        <td style="font-size: 16px;">{{ $maintenance->tanggal_setting }}</td>
+                        <td style="font-size: 16px;">{{ $maintenance->tanggal_serah_terima }}</td>
+                        <td style="font-size: 16px;">{{ $maintenance->maintenance ?? 'Tidak Ada' }}</td>
+                        <td style="font-size: 16px;">
                             @if ($maintenance->dokumentasi)
-                                <img src="{{ asset($maintenance->dokumentasi) }}" alt="Dokumentasi" width="100">
+                                <img src="{{ asset($maintenance->dokumentasi) }}" alt="Dokumentasi" width="120">
                             @else
                                 Tidak ada gambar
                             @endif
-                            
                         </td>
-                        <td>{{ $maintenance->status }}</td>
+                        <td style="font-size: 16px;">{{ $maintenance->status }}</td>
                         <td>
                             <a href="{{ route('maintenances.edit', $maintenance->id) }}" class="btn btn-warning">Edit</a>
                             <form action="{{ route('maintenances.destroy', $maintenance->id) }}" method="POST" style="display:inline;">

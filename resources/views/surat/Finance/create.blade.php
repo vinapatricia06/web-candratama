@@ -1,12 +1,12 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Kelola Surat Marketing')
+@section('title', 'Pengajuan Surat Finance')
 @section('content')
 
-<h1>Surat Pengajuan</h1>
+<h1>Surat Pengajuan Finance</h1>
 
 <!-- Form Pengajuan -->
-<form action="{{ route('surat.marketing.generate') }}" method="POST" class="space-y-4" enctype="multipart/form-data">
+<form action="{{ route('surat.finance.generate') }}" method="POST" class="space-y-4" enctype="multipart/form-data">
     @csrf
 
     <div class="mb-3">
@@ -20,7 +20,7 @@
     <div class="mb-3">
         <label>Dari Divisi</label>
         <select name="divisi_pembuat" class="form-control" required>
-            <option value="DM">Digital Marketing</option>
+            <option value="FNC">Finance</option>
         </select>
     </div>
 
@@ -32,7 +32,7 @@
             <option value="DM">Digital Marketing</option>
             <option value="ADM">Administrasi</option>
             <option value="WRH">Warehouse</option>
-            <option value="IC">Interior Consultan</option>
+            <option value="IC">Interior Consultant</option>
         </select>
     </div>
 

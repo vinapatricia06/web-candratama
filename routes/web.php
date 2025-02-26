@@ -60,9 +60,8 @@ Route::post('/surat-marketing/generate', [SuratMarketingController::class, 'gene
 Route::get('/digital-marketing/list', [SuratMarketingController::class, 'list'])->name('surat.digital_marketing.list');
 
 
-// Update status pengajuan surat
-Route::put('/surat-marketing/{id}/update-status', [SuratMarketingController::class, 'updateStatusPengajuan'])->name('surat.marketing.updateStatusPengajuan');
-
+// Route untuk update status pengajuan surat marketing
+Route::put('/surat/marketing/updateStatusPengajuan/{id}', [SuratMarketingController::class, 'updateStatusPengajuan'])->name('surat.marketing.updateStatusPengajuan');
 // Download file surat
 Route::get('/surat-marketing/download/{id}', [SuratMarketingController::class, 'downloadfile'])->name('surat.marketing.downloadfile');
 
@@ -92,3 +91,32 @@ Route::put('/maintenances/{maintenance}', [MaintenanceController::class, 'update
 Route::delete('/maintenances/{maintenance}', [MaintenanceController::class, 'destroy'])->name('maintenances.destroy');
 Route::get('/maintenances/download', [MaintenanceController::class, 'downloadPdf'])->name('maintenances.downloadPdf');
 
+
+use App\Http\Controllers\SuratFinanceController;
+
+// Route untuk halaman daftar surat Finance
+Route::get('/surat/finance', [SuratFinanceController::class, 'index'])->name('surat.finance.index');
+
+// Route untuk membuat surat Finance
+Route::get('/surat/finance/create', [SuratFinanceController::class, 'create'])->name('surat.finance.create');
+Route::post('/surat/finance/generate', [SuratFinanceController::class, 'generate'])->name('surat.finance.generate');
+
+// Route untuk mengunduh file surat Finance
+Route::get('/surat/finance/downloadfile/{id}', [SuratFinanceController::class, 'downloadfile'])->name('surat.finance.downloadfile');
+
+// Route untuk melihat PDF surat Finance
+Route::get('/surat/finance/viewpdf/{id}', [SuratFinanceController::class, 'viewPDF'])->name('surat.finance.viewPDF');
+
+// Route untuk mengedit surat Finance
+Route::get('/surat/finance/edit/{id}', [SuratFinanceController::class, 'edit'])->name('surat.finance.edit');
+Route::put('/surat/finance/update/{id}', [SuratFinanceController::class, 'update'])->name('surat.finance.update');
+
+// Route untuk menghapus surat Finance
+Route::delete('/surat/finance/{id}', [SuratFinanceController::class, 'destroy'])->name('surat.finance.destroy');
+
+// Route untuk dashboard Surat Finance
+Route::get('/surat/finance/dashboard', [SuratFinanceController::class, 'dashboard'])->name('surat.finance.dashboard');
+
+
+// Update status pengajuan surat
+Route::put('/surat-marketing/{id}/update-status', [SuratFinanceController::class, 'updateStatusPengajuan'])->name('surat.finance.updateStatusPengajuan');

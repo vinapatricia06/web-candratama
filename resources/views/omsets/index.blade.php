@@ -3,7 +3,7 @@
 @section('title', 'Kelola Omset')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <h2>Data Omset</h2>
 
         <div class="d-flex justify-content-end">
@@ -32,31 +32,31 @@
 
         <a href="{{ route('omsets.create') }}" class="btn btn-primary mb-3">Tambah Omset</a>
 
-        <table class="table table-bordered">
-            <thead>
+        <table class="table table-bordered" style="font-size: 18px; width: 100%; table-layout: fixed;">
+            <thead class="table-light">
                 <tr>
-                    <th>ID</th>
-                    <th>Tanggal</th>
-                    <th>No Induk</th> <!-- Kolom untuk No Induk -->
-                    <th>Nama Klien</th>
-                    <th>Alamat</th>
-                    <th>Project</th>
-                    <th>Sumber Lead</th>
-                    <th>Nominal</th>
-                    <th>Aksi</th>
+                    <th style="font-size: 20px;">ID</th>
+                    <th style="font-size: 20px;">Tanggal</th>
+                    <th style="font-size: 20px;">No Induk</th> <!-- Kolom untuk No Induk -->
+                    <th style="font-size: 20px;">Nama Klien</th>
+                    <th style="font-size: 20px;">Alamat</th>
+                    <th style="font-size: 20px;">Project</th>
+                    <th style="font-size: 20px;">Sumber Lead</th>
+                    <th style="font-size: 20px;">Nominal</th>
+                    <th style="font-size: 20px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($omsets as $omset)
                     <tr>
-                        <td>{{ $omset->id_omset }}</td>
-                        <td>{{ $omset->tanggal }}</td>
-                        <td>{{ $omset->no_induk }}</td> <!-- Tampilkan No Induk -->
-                        <td>{{ $omset->nama_klien }}</td>
-                        <td>{{ $omset->alamat }}</td>
-                        <td>{{ $omset->project }}</td>
-                        <td>{{ $omset->sumber_lead }}</td>
-                        <td>Rp {{ number_format($omset->nominal, 2, ',', '.') }}</td>
+                        <td style="font-size: 18px;">{{ $omset->id_omset }}</td>
+                        <td style="font-size: 18px;">{{ $omset->tanggal }}</td>
+                        <td style="font-size: 18px;">{{ $omset->no_induk }}</td> <!-- Tampilkan No Induk -->
+                        <td style="font-size: 18px;">{{ $omset->nama_klien }}</td>
+                        <td style="font-size: 18px;">{{ $omset->alamat }}</td>
+                        <td style="font-size: 18px;">{{ $omset->project }}</td>
+                        <td style="font-size: 18px;">{{ $omset->sumber_lead }}</td>
+                        <td style="font-size: 18px;">Rp {{ number_format($omset->nominal, 2, ',', '.') }}</td>
                         <td>
                             <a href="{{ route('omsets.edit', $omset->id_omset) }}" class="btn btn-warning">Edit</a>
                             <form action="{{ route('omsets.destroy', $omset->id_omset) }}" method="POST" class="d-inline">

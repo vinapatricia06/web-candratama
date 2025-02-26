@@ -44,7 +44,7 @@
                         <a href="{{ route('surat.digital_marketing.list') }}" class="nav-link text-white">Digital Marketing</a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">Finance</a>
+                        <a href="{{ route('surat.finance.index') }}"  class="nav-link text-white">Finance</a>
                     </li>
                     <li>
                         <a href="#" class="nav-link text-white">Administrasi</a>
