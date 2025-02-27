@@ -47,7 +47,13 @@
                         <a href="{{ route('surat.finance.index') }}"  class="nav-link text-white">Finance</a>
                     </li>
                     <li>
-                        <a href="#" class="nav-link text-white">Administrasi</a>
+                        <a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('surat.purchasing.index') }}" class="nav-link text-white">Purchasing</a>
                     </li>
                 </ul>
             </div>

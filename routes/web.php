@@ -118,4 +118,78 @@ Route::get('/surat/finance/dashboard', [SuratFinanceController::class, 'dashboar
 
 
 // Update status pengajuan surat
-Route::put('/surat-marketing/{id}/update-status', [SuratFinanceController::class, 'updateStatusPengajuan'])->name('surat.finance.updateStatusPengajuan');
+Route::put('/surat-marketing/{id}/update-status', [SuratFinanceController::class, 'updateStatusPengajuan'])->name('surat.finance.updateStatusPengajuan'); 
+
+
+use App\Http\Controllers\SuratAdminController;
+
+// Route untuk halaman daftar surat Admin
+Route::get('/surat/admin', [SuratAdminController::class, 'index'])->name('surat.admin.index');
+
+// Route untuk membuat surat Admin
+Route::get('/surat/admin/create', [SuratAdminController::class, 'create'])->name('surat.admin.create');
+Route::post('/surat/admin/generate', [SuratAdminController::class, 'generate'])->name('surat.admin.generate');
+
+// Route untuk mengunduh file surat Admin
+Route::get('/surat/admin/downloadfile/{id}', [SuratAdminController::class, 'downloadfile'])->name('surat.admin.downloadfile');
+
+// Route untuk melihat PDF surat Admin
+Route::get('/surat/admin/viewpdf/{id}', [SuratAdminController::class, 'viewPDF'])->name('surat.admin.viewPDF');
+
+// Route untuk mengedit surat Admin
+Route::get('/surat/admin/edit/{id}', [SuratAdminController::class, 'edit'])->name('surat.admin.edit');
+Route::put('/surat/admin/update/{id}', [SuratAdminController::class, 'update'])->name('surat.admin.update');
+
+// Route untuk menghapus surat Admin
+Route::delete('/surat/admin/{id}', [SuratAdminController::class, 'destroy'])->name('surat.admin.destroy');
+
+// Route untuk dashboard Surat Admin
+Route::get('/surat/admin/dashboard', [SuratAdminController::class, 'dashboard'])->name('surat.admin.dashboard');
+
+// Update status pengajuan surat
+Route::put('/surat-admin/{id}/update-status', [SuratAdminController::class, 'updateStatusPengajuan'])->name('surat.admin.updateStatusPengajuan');
+
+
+use App\Http\Controllers\SuratWarehouseController;
+
+Route::get('/surat-warehouse', [SuratWarehouseController::class, 'index'])->name('surat.warehouse.index');
+Route::post('/surat-warehouse/generate', [SuratWarehouseController::class, 'generate'])->name('surat.warehouse.generate');
+Route::get('/surat-warehouse/download/{id}', [SuratWarehouseController::class, 'downloadfile'])->name('surat.warehouse.download');
+Route::put('/surat-warehouse/status/{id}', [SuratWarehouseController::class, 'updateStatusPengajuan'])->name('surat.warehouse.updateStatus');
+Route::get('/surat-warehouse/view/{id}', [SuratWarehouseController::class, 'viewPDF'])->name('surat.warehouse.view');
+Route::get('/surat-warehouse/edit/{id}', [SuratWarehouseController::class, 'edit'])->name('surat.warehouse.edit');
+Route::put('/surat-warehouse/update/{id}', [SuratWarehouseController::class, 'update'])->name('surat.warehouse.update');
+Route::delete('/surat-warehouse/delete/{id}', [SuratWarehouseController::class, 'destroy'])->name('surat.warehouse.destroy');
+Route::get('/surat-warehouse/create', [SuratWarehouseController::class, 'create'])->name('surat.warehouse.create');
+
+use App\Http\Controllers\SuratPurchasingController;
+
+// Rute untuk halaman utama daftar surat
+Route::get('/surat/purchasing', [SuratPurchasingController::class, 'index'])->name('surat.purchasing.index');
+
+// Rute untuk generate nomor surat
+Route::post('/surat/purchasing/generate', [SuratPurchasingController::class, 'generate'])->name('surat.purchasing.generate');
+
+// Rute untuk mendownload file surat
+Route::get('/surat/purchasing/download/{id}', [SuratPurchasingController::class, 'downloadfile'])->name('surat.purchasing.download');
+
+// Rute untuk memperbarui status pengajuan surat
+Route::put('/surat/purchasing/update-status/{id}', [SuratPurchasingController::class, 'updateStatusPengajuan'])->name('surat.purchasing.updateStatus');
+
+// Rute untuk melihat file PDF di halaman web
+Route::get('/surat/purchasing/view/{id}', [SuratPurchasingController::class, 'viewPDF'])->name('surat.purchasing.view');
+
+// Rute untuk form edit surat
+Route::get('/surat/purchasing/edit/{id}', [SuratPurchasingController::class, 'edit'])->name('surat.purchasing.edit');
+
+// Rute untuk mengupdate surat
+Route::put('/surat/purchasing/update/{id}', [SuratPurchasingController::class, 'update'])->name('surat.purchasing.update');
+
+// Rute untuk menghapus surat
+Route::delete('/surat/purchasing/destroy/{id}', [SuratPurchasingController::class, 'destroy'])->name('surat.purchasing.destroy');
+
+// Rute untuk menampilkan form tambah surat
+Route::get('/surat/purchasing/create', [SuratPurchasingController::class, 'create'])->name('surat.purchasing.create');
+
+// Rute untuk dashboard finance
+Route::get('/surat/finance/dashboard', [SuratPurchasingController::class, 'dashboard'])->name('surat.finance.dashboard');

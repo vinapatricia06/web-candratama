@@ -13,6 +13,10 @@ return array(
     'App\\Http\\Controllers\\MaintenanceController' => $baseDir . '/app/Http/Controllers/MaintenanceController.php',
     'App\\Http\\Controllers\\OmsetController' => $baseDir . '/app/Http/Controllers/OmsetController.php',
     'App\\Http\\Controllers\\ProgressProjectController' => $baseDir . '/app/Http/Controllers/ProgressProjectController.php',
+<<<<<<< HEAD
+=======
+    'App\\Http\\Controllers\\SuratAdminController' => $baseDir . '/app/Http/Controllers/SuratAdminController.php',
+>>>>>>> cf1fac1fca2cb1f9eca330e4e19e65700d6a5531
     'App\\Http\\Controllers\\SuratFinanceController' => $baseDir . '/app/Http/Controllers/SuratFinanceController.php',
     'App\\Http\\Controllers\\SuratMarketingController' => $baseDir . '/app/Http/Controllers/SuratMarketingController.php',
     'App\\Http\\Controllers\\UserController' => $baseDir . '/app/Http/Controllers/UserController.php',
@@ -30,6 +34,10 @@ return array(
     'App\\Models\\Maintenance' => $baseDir . '/app/Models/Maintenance.php',
     'App\\Models\\Omset' => $baseDir . '/app/Models/Omset.php',
     'App\\Models\\ProgressProject' => $baseDir . '/app/Models/ProgressProject.php',
+<<<<<<< HEAD
+=======
+    'App\\Models\\SuratAdmin' => $baseDir . '/app/Models/SuratAdmin.php',
+>>>>>>> cf1fac1fca2cb1f9eca330e4e19e65700d6a5531
     'App\\Models\\SuratFinance' => $baseDir . '/app/Models/SuratFinance.php',
     'App\\Models\\SuratMarketing' => $baseDir . '/app/Models/SuratMarketing.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',

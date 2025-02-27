@@ -1,9 +1,9 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Kelola Surat Marketing')
+@section('title', 'Kelola Surat Purchasing')
 @section('content')
 
-    <h1>Daftar Surat Pengajuan</h1>
+    <h1>Daftar Surat Pengajuan Purchasing</h1>
 
     @if (session('success'))
         <div class="alert alert-success">
@@ -11,15 +11,15 @@
         </div>
     @endif
 
-    <!-- Notifikasi Surat untuk DM -->
-    @if (session('suratKeDM') > 0)
+    <!-- Notifikasi Surat untuk PCH -->
+    @if (session('suratKePCH') > 0)
         <div class="alert alert-warning" id="notification-alert">
-            Ada {{ session('suratKeDM') }} surat yang masuk untuk divisi DM dengan status Pending.
+            Ada {{ session('suratKePCH') }} surat yang masuk untuk divisi Purchasing dengan status Pending.
         </div>
     @endif
 
     <div style="margin-bottom: 20px;">
-        <a href="{{ route('surat.marketing.create') }}" class="btn btn-primary">Tambah Surat</a>
+        <a href="{{ route('surat.purchasing.create') }}" class="btn btn-primary">Tambah Surat</a>
     </div>
 
     <table border="1" cellpadding="10" style="width: 100%; margin: 0 auto; border-collapse: collapse; text-align: center;">
@@ -36,7 +36,6 @@
         </thead>
         <tbody>
             @php
-                // Mapping divisi untuk efisiensi
                 $divisiMapping = [
                     'FNC' => 'Finance',
                     'PCH' => 'Purchasing',
@@ -47,7 +46,7 @@
                 ];
             @endphp
 
-            @foreach($suratMarketings as $index => $surat)
+            @foreach($suratPurchasing as $index => $surat)
             <tr style="background-color: {{ $index % 2 == 0 ? '#ffffff' : '#f9f9f9' }};">
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $surat->formatted_nomor_surat }}</td>
@@ -55,15 +54,14 @@
                 <td>{{ $divisiMapping[$surat->divisi_tujuan] ?? $surat->divisi_tujuan }}</td>
                 <td>
                     @if ($surat->file_path)
-                        <a href="{{ route('surat.marketing.downloadfile', $surat->id) }}" class="btn btn-success">Download File</a>
+                        <a href="{{ route('surat.purchasing.download', $surat->id) }}" class="btn btn-success">Download File</a>
                     @else
                         Tidak Ada File
                     @endif
                 </td>
 
                 <td>
-                    <!-- Form untuk update status -->
-                    <form action="{{ route('surat.marketing.updateStatusPengajuan', $surat->id) }}" method="POST">
+                    <form action="{{ route('surat.purchasing.updateStatus', $surat->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         <select name="status_pengajuan" class="form-select">
@@ -77,18 +75,14 @@
 
                 <td>
                     @if ($surat->file_path)
-                        <a href="{{ route('surat.marketing.viewPDF', $surat->id) }}" class="btn btn-primary">View File</a>
+                        <a href="{{ route('surat.purchasing.view', $surat->id) }}" class="btn btn-primary">View File</a>
                     @endif
 
-                    <!-- Tombol Edit -->
-                    <a href="{{ route('surat.marketing.edit', $surat->id) }}" class="btn btn-warning">Edit</a>
-                
-                   
+                    <a href="{{ route('surat.purchasing.edit', $surat->id) }}" class="btn btn-warning">Edit</a>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
-    
 @endsection

@@ -637,6 +637,10 @@ class ComposerStaticInitc8113ec9a7cc9b0463b24bb7e92f2326
         'App\\Http\\Controllers\\MaintenanceController' => __DIR__ . '/../..' . '/app/Http/Controllers/MaintenanceController.php',
         'App\\Http\\Controllers\\OmsetController' => __DIR__ . '/../..' . '/app/Http/Controllers/OmsetController.php',
         'App\\Http\\Controllers\\ProgressProjectController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProgressProjectController.php',
+<<<<<<< HEAD
+=======
+        'App\\Http\\Controllers\\SuratAdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/SuratAdminController.php',
+>>>>>>> cf1fac1fca2cb1f9eca330e4e19e65700d6a5531
         'App\\Http\\Controllers\\SuratFinanceController' => __DIR__ . '/../..' . '/app/Http/Controllers/SuratFinanceController.php',
         'App\\Http\\Controllers\\SuratMarketingController' => __DIR__ . '/../..' . '/app/Http/Controllers/SuratMarketingController.php',
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
@@ -654,6 +658,10 @@ class ComposerStaticInitc8113ec9a7cc9b0463b24bb7e92f2326
         'App\\Models\\Maintenance' => __DIR__ . '/../..' . '/app/Models/Maintenance.php',
         'App\\Models\\Omset' => __DIR__ . '/../..' . '/app/Models/Omset.php',
         'App\\Models\\ProgressProject' => __DIR__ . '/../..' . '/app/Models/ProgressProject.php',
+<<<<<<< HEAD
+=======
+        'App\\Models\\SuratAdmin' => __DIR__ . '/../..' . '/app/Models/SuratAdmin.php',
+>>>>>>> cf1fac1fca2cb1f9eca330e4e19e65700d6a5531
         'App\\Models\\SuratFinance' => __DIR__ . '/../..' . '/app/Models/SuratFinance.php',
         'App\\Models\\SuratMarketing' => __DIR__ . '/../..' . '/app/Models/SuratMarketing.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
