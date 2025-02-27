@@ -51,7 +51,6 @@ Route::delete('/progress_projects/{progressProject}', [ProgressProjectController
 Route::get('/progress-projects/download', [ProgressProjectController::class, 'downloadPdf'])->name('progress_projects.downloadPdf');
 
 
-
 // Form untuk generate surat
 Route::get('/surat-marketing/generate', [SuratMarketingController::class, 'index'])->name('surat.marketing.generate.form');
 Route::post('/surat-marketing/generate', [SuratMarketingController::class, 'generate'])->name('surat.marketing.generate');
