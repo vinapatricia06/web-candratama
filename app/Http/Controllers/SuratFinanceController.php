@@ -12,7 +12,8 @@ class SuratFinanceController extends Controller
     public function index()
     {
         $nomorSurat = null; // Awalnya kosong
-        $suratFinances = SuratFinance::all(); // Ambil semua surat jika diperlukan
+        $suratFinances = SuratFinance::orderBy('created_at', 'desc')->get();
+        
         return view('surat.finance.index', compact('nomorSurat', 'suratFinances'));
     }
 
@@ -167,7 +168,7 @@ class SuratFinanceController extends Controller
         $divisi_pembuat = SuratFinance::distinct()->pluck('divisi_pembuat');
 
         // Menghitung surat yang divisi tujuannya ke Finance
-        $suratKeFinance = SuratFinance::where('divisi_tujuan', 'Finance')->where('status_pengajuan', 'Pending')->count();
+        $suratKeFinance = SuratFinance::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
 
         // Menyimpan informasi surat ke Finance di sesi jika ada
         if ($suratKeFinance > 0) {
