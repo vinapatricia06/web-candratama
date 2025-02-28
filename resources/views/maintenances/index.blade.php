@@ -5,46 +5,81 @@
 @section('content')
     <div class="container-fluid">
         <h2>Daftar Maintenance Project</h2>
-        <a href="{{ route('maintenances.create') }}" class="btn btn-primary mb-3">Tambah Maintenance</a>
-        <a href="{{ route('maintenances.downloadPdf') }}" class="btn btn-success mb-3">Download PDF</a>
 
+        <!-- Flexbox layout for positioning "Tambah Maintenance" button -->
+        <div class="d-flex justify-content-between mb-3" style="max-width: 650px;">
+            <a href="{{ route('maintenances.create') }}" class="btn btn-primary">Tambah Maintenance</a>
+        </div>
+
+        <!-- Form untuk memilih bulan dengan desain yang lebih rapi -->
+        <form action="{{ route('maintenances.index') }}" method="GET" class="mb-3 d-flex" style="max-width: 500px;">
+            <div class="input-group" style="max-width: 300px;">
+                <select name="bulan" id="bulan" class="form-control">
+                    <option value="">Pilih Bulan</option>
+                    @foreach (range(1, 12) as $bulan)
+                        <option value="{{ $bulan }}" {{ request()->get('bulan') == $bulan ? 'selected' : '' }}>
+                            {{ \Carbon\Carbon::create()->month($bulan)->format('F') }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary ml-3">Cari</button>
+        </form>
+
+        <!-- Tombol untuk hapus semua data bulan yang dipilih -->
+        @if(request()->get('bulan'))
+            <form action="{{ route('maintenances.hapusBulan') }}" method="POST" class="mb-3">
+                @csrf
+                <input type="hidden" name="bulan" value="{{ request()->get('bulan') }}">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus semua data bulan ini? Semua data akan hilang.')">Hapus Semua Data Bulan Ini</button>
+            </form>
+        @endif
+
+        <!-- Menampilkan pesan sukses -->
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        <!-- Positioning the "Download PDF" button above the "Aksi" column -->
+        <div class="d-flex justify-content-end mb-3">
+            <a href="{{ route('maintenances.downloadPdf') }}" class="btn btn-success">Download PDF</a>
+        </div>
+
+        <!-- Tabel untuk menampilkan maintenance project -->
         <table class="table table-bordered" style="font-size: 16px; width: 100%; table-layout: auto;">
             <thead class="table-light">
                 <tr>
-                    <th style="font-size: 18px;">No</th>
-                    <th style="font-size: 18px;">Klien</th>
-                    <th style="font-size: 18px;">Alamat</th>
-                    <th style="font-size: 18px;">Project</th>
-                    <th style="font-size: 18px;">Tanggal Setting</th>
-                    <th style="font-size: 18px;">Tanggal Serah Terima</th>
-                    <th style="font-size: 18px;">Maintenance</th>
-                    <th style="font-size: 18px;">Dokumentasi</th>
-                    <th style="font-size: 18px;">Status</th>
-                    <th style="font-size: 18px;">Aksi</th>
+                    <th>No</th>
+                    <th>Klien</th>
+                    <th>Alamat</th>
+                    <th>Project</th>
+                    <th>Tanggal Setting</th>
+                    <th>Tanggal Serah Terima</th>
+                    <th>Maintenance</th>
+                    <th>Dokumentasi</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($maintenances as $key => $maintenance)
                     <tr>
-                        <td style="font-size: 16px;">{{ $key + 1 }}</td>
-                        <td style="font-size: 16px;">{{ $maintenance->nama_klien }}</td>
-                        <td style="font-size: 16px;">{{ $maintenance->alamat }}</td>
-                        <td style="font-size: 16px;">{{ $maintenance->project }}</td>
-                        <td style="font-size: 16px;">{{ $maintenance->tanggal_setting }}</td>
-                        <td style="font-size: 16px;">{{ $maintenance->tanggal_serah_terima }}</td>
-                        <td style="font-size: 16px;">{{ $maintenance->maintenance ?? 'Tidak Ada' }}</td>
-                        <td style="font-size: 16px;">
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $maintenance->nama_klien }}</td>
+                        <td>{{ $maintenance->alamat }}</td>
+                        <td>{{ $maintenance->project }}</td>
+                        <td>{{ $maintenance->tanggal_setting }}</td>
+                        <td>{{ $maintenance->tanggal_serah_terima }}</td>
+                        <td>{{ $maintenance->maintenance ?? 'Tidak Ada' }}</td>
+                        <td>
                             @if ($maintenance->dokumentasi)
                                 <img src="{{ asset($maintenance->dokumentasi) }}" alt="Dokumentasi" width="120">
+                                
                             @else
                                 Tidak ada gambar
                             @endif
                         </td>
-                        <td style="font-size: 16px;">{{ $maintenance->status }}</td>
+                        <td>{{ $maintenance->status }}</td>
                         <td>
                             <a href="{{ route('maintenances.edit', $maintenance->id) }}" class="btn btn-warning">Edit</a>
                             <form action="{{ route('maintenances.destroy', $maintenance->id) }}" method="POST" style="display:inline;">

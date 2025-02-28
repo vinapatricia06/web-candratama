@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -8,38 +9,44 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class MaintenanceController extends Controller
 {
-    public function index() {
-        // Menampilkan semua data maintenance
-        $maintenances = Maintenance::all();
+    public function index(Request $request) {
+        // If there's a month selected, filter the data by the selected month
+        if ($request->has('bulan')) {
+            $bulan = $request->get('bulan');
+            $maintenances = Maintenance::whereMonth('tanggal_setting', $bulan)->get();
+        } else {
+            $maintenances = Maintenance::all();
+        }
+        
         return view('maintenances.index', compact('maintenances'));
     }
 
     public function create() {
-        // Menampilkan form untuk menambah data maintenance
+        // Display the form to add a new maintenance project
         return view('maintenances.create');
     }
 
     public function store(Request $request) {
-        // Validasi inputan
+        // Validate input
         $request->validate([
             'nama_klien' => 'required|string|max:255',
             'alamat' => 'required|string',
             'project' => 'required|string|max:255',
             'tanggal_setting' => 'required|date',
-            'tanggal_serah_terima' => 'nullable|date', // Menghapus 'required' dan hanya menggunakan 'nullable|date'
+            'tanggal_serah_terima' => 'nullable|date', // Make it nullable
             'maintenance' => 'required|string',
             'status' => 'required|in:Waiting List,Selesai',
             'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Menyimpan data maintenance
+        // Store the data
         $data = $request->except(['dokumentasi']);
 
         if ($request->hasFile('dokumentasi')) {
             $file = $request->file('dokumentasi');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('storage/dokumentasi'), $filename);
-            $data['dokumentasi'] = 'storage/dokumentasi/' . $filename; // Pastikan path benar
+            $data['dokumentasi'] = 'storage/dokumentasi/' . $filename; // Ensure correct path
         }
 
         Maintenance::create($data);
@@ -49,40 +56,42 @@ class MaintenanceController extends Controller
     }
 
     public function edit($id) {
-        // Menampilkan form untuk edit data maintenance
+        // Display the form to edit a maintenance project
         $maintenance = Maintenance::findOrFail($id);
         return view('maintenances.edit', compact('maintenance'));
     }
 
     public function update(Request $request, $id) {
-        // Validasi inputan
+        // Validate input
         $request->validate([
             'nama_klien' => 'required|string|max:255',
             'alamat' => 'required|string',
             'project' => 'required|string|max:255',
             'tanggal_setting' => 'required|date',
-            'tanggal_serah_terima' => 'nullable|date', // Menghapus 'required' dan hanya menggunakan 'nullable|date'
+            'tanggal_serah_terima' => 'nullable|date',
             'maintenance' => 'required|string',
             'status' => 'required|in:Waiting List,Selesai',
             'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        // Find the maintenance project to update
         $maintenance = Maintenance::findOrFail($id);
         $data = $request->except(['dokumentasi']);
 
         if ($request->hasFile('dokumentasi')) {
-            // Menghapus file lama jika ada
+            // Delete old file if exists
             if ($maintenance->dokumentasi && File::exists(public_path($maintenance->dokumentasi))) {
                 File::delete(public_path($maintenance->dokumentasi));
             }
 
-            // Menyimpan file baru
+            // Save new file
             $file = $request->file('dokumentasi');
             $filename = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('storage/dokumentasi'), $filename);
             $data['dokumentasi'] = 'storage/dokumentasi/' . $filename;
         }
 
+        // Update the maintenance data
         $maintenance->update($data);
 
         return redirect()->route('maintenances.index')
@@ -90,7 +99,7 @@ class MaintenanceController extends Controller
     }
 
     public function destroy($id) {
-        // Menghapus data maintenance
+        // Delete maintenance project
         $maintenance = Maintenance::findOrFail($id);
         if ($maintenance->dokumentasi && File::exists(public_path($maintenance->dokumentasi))) {
             File::delete(public_path($maintenance->dokumentasi));
@@ -104,12 +113,12 @@ class MaintenanceController extends Controller
 
     public function downloadPdf()
     {
-        // Mengambil data maintenance
+        // Retrieve all maintenance projects
         $maintenances = Maintenance::all();
 
-        // Load view untuk PDF
+        // Load the view for PDF
         $pdf = PDF::loadView('maintenances.pdf', compact('maintenances'))
-                  ->setPaper('A4', 'landscape')  // Menambahkan orientasi landscape jika dibutuhkan
+                  ->setPaper('A4', 'landscape')  // Set orientation to landscape if needed
                   ->setOptions([
                       'isHtml5ParserEnabled' => true,
                       'isPhpEnabled' => true,
@@ -119,7 +128,19 @@ class MaintenanceController extends Controller
                       'margin-bottom' => 10
                   ]);
 
-        // Download file PDF
+        // Download the PDF file
         return $pdf->download('maintenances.pdf');
+    }
+
+    public function hapusBulan(Request $request)
+    {
+        // Get the month from the request
+        $bulan = $request->input('bulan');
+
+        // Delete all maintenance records for the selected month
+        Maintenance::whereMonth('tanggal_setting', $bulan)->delete();
+
+        return redirect()->route('maintenances.index')
+                         ->with('success', 'Semua data bulan ini telah dihapus.');
     }
 }

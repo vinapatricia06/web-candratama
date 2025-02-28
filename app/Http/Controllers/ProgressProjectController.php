@@ -10,8 +10,17 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProgressProjectController extends Controller
 {
-    public function index() {
-        $projects = ProgressProject::with('teknisi')->get();
+    public function index(Request $request) {
+        // Jika ada bulan yang dipilih, filter data berdasarkan bulan tersebut
+        if ($request->has('bulan')) {
+            $bulan = $request->get('bulan');
+            // Menyaring project berdasarkan bulan
+            $projects = ProgressProject::whereMonth('tanggal_setting', $bulan)->with('teknisi')->get();
+        } else {
+            // Ambil semua project jika bulan tidak dipilih
+            $projects = ProgressProject::with('teknisi')->get();
+        }
+
         return view('progress_projects.index', compact('projects'));
     }
 
@@ -28,7 +37,7 @@ class ProgressProjectController extends Controller
             'project' => 'required|string|max:255',
             'tanggal_setting' => 'required|date',
             'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'status' => 'required|string|max:255', // Mengubah validasi status menjadi string tanpa batasan enum
+            'status' => 'required|string|max:255',
         ]);
 
         $data = $request->except(['dokumentasi']);
@@ -51,7 +60,7 @@ class ProgressProjectController extends Controller
         $teknisiList = User1::where('role', 'teknisi')->get();
         return view('progress_projects.edit', compact('progress_project', 'teknisiList'));
     }
-    
+
     public function update(Request $request, $id) {
         $request->validate([
             'teknisi_id' => 'required|exists:users1,id_user',
@@ -60,7 +69,7 @@ class ProgressProjectController extends Controller
             'project' => 'required|string|max:255',
             'tanggal_setting' => 'required|date',
             'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'status' => 'required|string|max:255', // Mengubah validasi status menjadi string tanpa batasan enum
+            'status' => 'required|string|max:255',
         ]);
     
         $progress_project = ProgressProject::findOrFail($id);
@@ -100,12 +109,29 @@ class ProgressProjectController extends Controller
         // Mengambil data project
         $projects = ProgressProject::with('teknisi')->get();
 
-        // Load view untuk PDF
-        $pdf = PDF::loadView('progress_projects.pdf', compact('projects'));
 
-        $pdf->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
+        // Load view untuk PDF
+        $pdf = PDF::loadView('progress_projects.pdf', compact('projects'))
+            ->setOptions([
+                'isHtml5ParserEnabled' => true,
+                'isPhpEnabled' => true
+            ]);
 
         // Download file PDF
         return $pdf->download('progress_projects.pdf');
+    }
+
+    
+
+    public function hapusBulan(Request $request)
+    {
+        // Ambil bulan dari request
+        $bulan = $request->input('bulan');
+
+        // Hapus semua project di bulan yang dipilih
+        ProgressProject::whereMonth('tanggal_setting', $bulan)->delete();
+
+        return redirect()->route('progress_projects.index')
+                         ->with('success', 'Semua data bulan ini telah dihapus.');
     }
 }

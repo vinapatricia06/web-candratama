@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,33 +10,44 @@
             font-family: Arial, sans-serif;
             margin: 20px;
         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid black;
         }
-        th, td {
+
+        th,
+        td {
             padding: 10px;
             text-align: left;
         }
+
         th {
             background-color: #f4f4f4;
         }
+
         .header {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .header h1 {
             margin: 0;
         }
+
         .header p {
             font-size: 14px;
         }
     </style>
 </head>
+
 <body>
 
     <div class="header">
@@ -67,16 +79,17 @@
                     <td>{{ $project->tanggal_setting }}</td>
                     <td>
                         @if ($project->dokumentasi)
-                            <img src="{{ asset($project->dokumentasi) }}" alt="Dokumentasi" width="100">
+                        <img src="{{ asset($project->dokumentasi) }}" alt="Dokumentasi" width="120">
                         @else
                             Tidak ada gambar
                         @endif
                     </td>
                     <td>{{ $project->status }}</td>
-                </tr>z
+                </tr>
             @endforeach
         </tbody>
     </table>
 
 </body>
+
 </html>

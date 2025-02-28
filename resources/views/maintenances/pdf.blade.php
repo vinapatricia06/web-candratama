@@ -75,7 +75,8 @@
                     <td>{{ $maintenance->maintenance }}</td>
                     <td>
                         @if ($maintenance->dokumentasi)
-                            <img src="{{ asset('storage/' . $maintenance->dokumentasi) }}" alt="Dokumentasi" width="100">
+                            <img src="{{ url('storage/dokumentasi/' . $maintenance->dokumentasi) }}" alt="Dokumentasi" width="120">
+                            
                         @else
                             Tidak ada gambar
                         @endif
