@@ -27,11 +27,13 @@
         </form>
 
         <!-- Tombol untuk hapus semua data bulan yang dipilih -->
-        @if(request()->get('bulan'))
+        @if (request()->get('bulan'))
             <form action="{{ route('progress_projects.hapusBulan') }}" method="POST" class="mb-3">
                 @csrf
                 <input type="hidden" name="bulan" value="{{ request()->get('bulan') }}">
-                <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus semua data bulan ini? Semua data akan hilang.')">Hapus Semua Data Bulan Ini</button>
+                <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('Yakin ingin menghapus semua data bulan ini? Semua data akan hilang.')">Hapus
+                    Semua Data Bulan Ini</button>
             </form>
         @endif
 
@@ -71,7 +73,8 @@
                         <td>
                             @if ($project->dokumentasi)
                                 <!-- Menambahkan tautan untuk melihat gambar lebih besar -->
-                                <a href="#" data-toggle="modal" data-target="#imageModal" onclick="showImage('{{ asset($project->dokumentasi) }}')">
+                                <a href="#" data-toggle="modal" data-target="#imageModal"
+                                    onclick="showImage('{{ asset($project->dokumentasi) }}')">
                                     <img src="{{ asset($project->dokumentasi) }}" alt="Dokumentasi" width="120">
                                 </a>
                             @else
@@ -81,10 +84,12 @@
                         <td>{{ $project->status }}</td>
                         <td>
                             <a href="{{ route('progress_projects.edit', $project->id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('progress_projects.destroy', $project->id) }}" method="POST" style="display:inline;">
+                            <form action="{{ route('progress_projects.destroy', $project->id) }}" method="POST"
+                                style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                <button type="submit" class="btn btn-danger"
+                                    onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
                             </form>
                         </td>
                     </tr>
@@ -93,7 +98,8 @@
         </table>
 
         <!-- Modal untuk menampilkan gambar besar -->
-        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-xl" role="document"> <!-- Menggunakan modal-xl untuk memperbesar ukuran modal -->
                 <div class="modal-content">
                     <div class="modal-header">
@@ -103,7 +109,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <img id="modalImage" src="" alt="Dokumentasi" style="width: 100%; height: auto; max-height: 95vh; object-fit: contain;">
+                        <img id="modalImage" src="" alt="Dokumentasi"
+                            style="width: 100%; height: auto; max-height: 95vh; object-fit: contain;">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
