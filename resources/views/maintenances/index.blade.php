@@ -73,8 +73,10 @@
                         <td>{{ $maintenance->maintenance ?? 'Tidak Ada' }}</td>
                         <td>
                             @if ($maintenance->dokumentasi)
-                                <img src="{{ asset($maintenance->dokumentasi) }}" alt="Dokumentasi" width="120">
-                                
+                                <!-- Menambahkan tautan untuk melihat gambar lebih besar -->
+                                <a href="#" data-toggle="modal" data-target="#imageModal" onclick="showImage('{{ asset($maintenance->dokumentasi) }}')">
+                                    <img src="{{ asset($maintenance->dokumentasi) }}" alt="Dokumentasi" width="120">
+                                </a>
                             @else
                                 Tidak ada gambar
                             @endif
@@ -93,4 +95,30 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Modal untuk menampilkan gambar besar -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document"> <!-- Menggunakan modal-xl untuk memperbesar ukuran modal -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="imageModalLabel">Dokumentasi Gambar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImage" src="" alt="Dokumentasi" style="width: 100%; height: auto; max-height: 95vh; object-fit: contain;">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showImage(src) {
+            document.getElementById('modalImage').src = src;
+        }
+    </script>
 @endsection

@@ -82,7 +82,6 @@ Route::get('/dashboard', [SuratMarketingController::class, 'dashboard'])->name('
 
 
 
-
 Route::get('/maintenances', [MaintenanceController::class, 'index'])->name('maintenances.index');
 Route::get('/maintenances/create', [MaintenanceController::class, 'create'])->name('maintenances.create');
 Route::post('/maintenances', [MaintenanceController::class, 'store'])->name('maintenances.store');
