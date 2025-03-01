@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <h2>Daftar Maintenance Project</h2>
 
-        <!-- Flexbox layout for positioning "Tambah Maintenance" button -->
+        <!-- Flexbox layout untuk penempatan tombol "Tambah Maintenance" -->
         <div class="d-flex justify-content-between mb-3" style="max-width: 650px;">
             <a href="{{ route('maintenances.create') }}" class="btn btn-primary">Tambah Maintenance</a>
         </div>
@@ -40,22 +40,21 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <!-- Positioning the "Download PDF" button above the "Aksi" column -->
+        <!-- Menempatkan tombol "Download PDF" di sebelah kanan kolom "Aksi" -->
         <div class="d-flex justify-content-end mb-3">
             <a href="{{ route('maintenances.downloadPdf') }}" class="btn btn-success">Download PDF</a>
         </div>
 
         <!-- Tabel untuk menampilkan maintenance project -->
-        <table class="table table-bordered" style="font-size: 16px; width: 100%; table-layout: auto;">
+        <table class="table table-bordered" style="font-size: 18px; width: 100%; table-layout: fixed;">
             <thead class="table-light">
                 <tr>
                     <th>No</th>
+                    <th>Teknisi</th>
                     <th>Klien</th>
                     <th>Alamat</th>
                     <th>Project</th>
                     <th>Tanggal Setting</th>
-                    <th>Tanggal Serah Terima</th>
-                    <th>Maintenance</th>
                     <th>Dokumentasi</th>
                     <th>Status</th>
                     <th>Aksi</th>
@@ -65,12 +64,11 @@
                 @foreach ($maintenances as $key => $maintenance)
                     <tr>
                         <td>{{ $key + 1 }}</td>
+                        <td>{{ $maintenance->teknisi->nama ?? 'Tidak Ada' }}</td>
                         <td>{{ $maintenance->nama_klien }}</td>
                         <td>{{ $maintenance->alamat }}</td>
                         <td>{{ $maintenance->project }}</td>
                         <td>{{ $maintenance->tanggal_setting }}</td>
-                        <td>{{ $maintenance->tanggal_serah_terima }}</td>
-                        <td>{{ $maintenance->maintenance ?? 'Tidak Ada' }}</td>
                         <td>
                             @if ($maintenance->dokumentasi)
                                 <!-- Menambahkan tautan untuk melihat gambar lebih besar -->
@@ -94,26 +92,27 @@
                 @endforeach
             </tbody>
         </table>
-    </div>
 
-    <!-- Modal untuk menampilkan gambar besar -->
-    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document"> <!-- Menggunakan modal-xl untuk memperbesar ukuran modal -->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="imageModalLabel">Dokumentasi Gambar</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <img id="modalImage" src="" alt="Dokumentasi" style="width: 100%; height: auto; max-height: 95vh; object-fit: contain;">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+        <!-- Modal untuk menampilkan gambar besar -->
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document"> <!-- Menggunakan modal-xl untuk memperbesar ukuran modal -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imageModalLabel">Dokumentasi Gambar</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="modalImage" src="" alt="Dokumentasi" style="width: 100%; height: auto; max-height: 95vh; object-fit: contain;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
     <script>
