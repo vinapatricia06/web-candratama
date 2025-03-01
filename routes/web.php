@@ -52,33 +52,26 @@ Route::get('/progress-projects/download', [ProgressProjectController::class, 'do
 Route::post('progress_projects/hapusBulan', [ProgressProjectController::class, 'hapusBulan'])->name('progress_projects.hapusBulan');
 
 
-// Form untuk generate surat
-Route::get('/surat-marketing/generate', [SuratMarketingController::class, 'index'])->name('surat.marketing.generate.form');
-Route::post('/surat-marketing/generate', [SuratMarketingController::class, 'generate'])->name('surat.marketing.generate');
 
-// Menampilkan daftar surat marketing
-Route::get('/digital-marketing/list', [SuratMarketingController::class, 'list'])->name('surat.digital_marketing.list');
+Route::middleware(['auth', 'role:marketing'])->group(function () {
+    Route::get('/dashboard/marketing', [SuratMarketingController::class, 'dashboard'])->name('dashboard.marketing');
 
+    Route::get('/surat-marketing/generate', [SuratMarketingController::class, 'index'])->name('surat.marketing.generate.form');
+    Route::post('/surat-marketing/generate', [SuratMarketingController::class, 'generate'])->name('surat.marketing.generate');
 
-// Route untuk update status pengajuan surat marketing
-Route::put('/surat/marketing/updateStatusPengajuan/{id}', [SuratMarketingController::class, 'updateStatusPengajuan'])->name('surat.marketing.updateStatusPengajuan');
-// Download file surat
-Route::get('/surat-marketing/download/{id}', [SuratMarketingController::class, 'downloadfile'])->name('surat.marketing.downloadfile');
+    Route::get('/digital-marketing/list', [SuratMarketingController::class, 'list'])->name('surat.digital_marketing.list');
+    Route::put('/surat/marketing/updateStatusPengajuan/{id}', [SuratMarketingController::class, 'updateStatusPengajuan'])->name('surat.marketing.updateStatusPengajuan');
 
-// View file PDF surat
-Route::get('/surat-marketing/view/{id}', [SuratMarketingController::class, 'viewPDF'])->name('surat.marketing.viewPDF');
+    Route::get('/surat-marketing/download/{id}', [SuratMarketingController::class, 'downloadfile'])->name('surat.marketing.downloadfile');
+    Route::get('/surat-marketing/view/{id}', [SuratMarketingController::class, 'viewPDF'])->name('surat.marketing.viewPDF');
 
-// Edit data surat
-Route::get('/surat-marketing/{id}/edit', [SuratMarketingController::class, 'edit'])->name('surat.marketing.edit');
+    Route::get('/surat-marketing/{id}/edit', [SuratMarketingController::class, 'edit'])->name('surat.marketing.edit');
+    Route::put('/surat-marketing/{id}', [SuratMarketingController::class, 'update'])->name('surat.marketing.update');
+    Route::delete('/surat-marketing/{id}', [SuratMarketingController::class, 'destroy'])->name('surat.marketing.destroy');
 
-// Update data surat
-Route::put('/surat-marketing/{id}', [SuratMarketingController::class, 'update'])->name('surat.marketing.update');
+    Route::get('/surat/marketing/create', [SuratMarketingController::class, 'create'])->name('surat.marketing.create');
+});
 
-// Hapus data surat
-Route::delete('/surat-marketing/{id}', [SuratMarketingController::class, 'destroy'])->name('surat.marketing.destroy');
-
-Route::get('/surat/marketing/create', [SuratMarketingController::class, 'create'])->name('surat.marketing.create');
-Route::get('/dashboard', [SuratMarketingController::class, 'dashboard'])->name('dashboard');
 
 
 
@@ -194,3 +187,39 @@ Route::get('/surat/purchasing/create', [SuratPurchasingController::class, 'creat
 
 // Rute untuk dashboard finance
 Route::get('/surat/finance/dashboard', [SuratPurchasingController::class, 'dashboard'])->name('surat.finance.dashboard');
+
+
+use App\Http\Controllers\AuthController;
+// Route Login & Logout
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// // Route berdasarkan role
+// Route::middleware(['auth', 'role:superadmin'])->group(function () {
+//     Route::get('/superadmin/dashboard', [AdminController::class, 'index'])->name('superadmin.dashboard');
+// });
+
+// Route::middleware(['auth', 'role:admin'])->group(function () {
+//     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+// });
+
+// Route::middleware(['auth', 'role:direktur'])->group(function () {
+//     Route::get('/direktur/dashboard', [DirekturController::class, 'index'])->name('direktur.dashboard');
+// });
+
+// Route::middleware(['auth', 'role:marketing'])->group(function () {
+//     Route::get('/marketing/dashboard', [MarketingController::class, 'index'])->name('marketing.dashboard');
+// });
+
+// Route::middleware(['auth', 'role:teknisi'])->group(function () {
+//     Route::get('/teknisi/dashboard', [TeknisiController::class, 'index'])->name('teknisi.dashboard');
+// });
+
+// // Route umum untuk semua user
+// Route::middleware('auth')->get('/home', function () {
+//     return view('home');
+// })->name('home');

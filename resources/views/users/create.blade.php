@@ -23,12 +23,15 @@
                 <label>Role</label>
                 <select name="role" class="form-control" required>
                     <option value="superadmin">Superadmin</option>
-                    <option value="admin">Admin</option>
+                    <option value="direktur">Direktur</option>
+                    <option value="admin">Administrasi</option>
                     <option value="marketing">Marketing</option>
                     <option value="interior_consultan">Interior_Consultan</option>
                     <option value="warehouse">Warehouse</option>
                     <option value="finance">Finance</option>
-                    <option value="project_production">Project_Production</option>
+                    <option value="purchasing">Purchasing</option>
+                    <option value="ekspedisi">Ekspedisi</option>
+                    <option value="cleaning_services">Cleaning Service</option>
                     <option value="teknisi">Teknisi</option>
                 </select>
             </div>
