@@ -1,13 +1,13 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User1 extends Model
+class User1 extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'users1'; 
     protected $primaryKey = 'id_user'; 
@@ -22,4 +22,16 @@ class User1 extends Model
     {
         return $this->hasMany(ProgressProject::class, 'teknisi_id', 'id_user');
     }
+
+    public function isSuperADM() { return $this->role === 'superadmin'; }
+    public function isAdmin() { return $this->role === 'admin'; }
+    public function isDirektur() { return $this->role === 'direktur'; }
+    public function isDM() { return $this->role === 'marketing'; }
+    public function isIC() { return $this->role === 'interior_consultan'; }
+    public function isWRH() { return $this->role === 'warehouse'; }
+    public function isPCH() { return $this->role === 'purchasing'; }
+    public function isEks() { return $this->role === 'ekspedisi'; }
+    public function isCS() { return $this->role === 'cleaning_services'; }
+    public function isTeknisi() { return $this->role === 'teknisi'; }
+    public function isFNC() { return $this->role === 'finance'; }
 }
