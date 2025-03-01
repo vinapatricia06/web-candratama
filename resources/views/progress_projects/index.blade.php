@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <h2>Daftar Progress Project</h2>
 
-        <!-- Flexbox layout for positioning "Tambah Project" button -->
+        <!-- Flexbox layout untuk penempatan tombol "Tambah Project" -->
         <div class="d-flex justify-content-between mb-3" style="max-width: 650px;">
             <a href="{{ route('progress_projects.create') }}" class="btn btn-primary">Tambah Project</a>
         </div>
@@ -40,11 +40,10 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
-        <!-- Positioning the "Download PDF" button above the "Aksi" column -->
+        <!-- Menempatkan tombol "Download PDF" di sebelah kanan kolom "Aksi" -->
         <div class="d-flex justify-content-end mb-3">
             <a href="{{ route('progress_projects.downloadPdf') }}" class="btn btn-success">Download PDF</a>
         </div>
-
         <!-- Tabel untuk menampilkan progress project -->
         <table class="table table-bordered" style="font-size: 18px; width: 100%; table-layout: fixed;">
             <thead class="table-light">
@@ -71,7 +70,10 @@
                         <td>{{ $project->tanggal_setting }}</td>
                         <td>
                             @if ($project->dokumentasi)
-                                <img src="{{ asset($project->dokumentasi) }}" alt="Dokumentasi" width="120">
+                                <!-- Menambahkan tautan untuk melihat gambar lebih besar -->
+                                <a href="#" data-toggle="modal" data-target="#imageModal" onclick="showImage('{{ asset($project->dokumentasi) }}')">
+                                    <img src="{{ asset($project->dokumentasi) }}" alt="Dokumentasi" width="120">
+                                </a>
                             @else
                                 Tidak ada gambar
                             @endif
@@ -89,5 +91,32 @@
                 @endforeach
             </tbody>
         </table>
+
+        <!-- Modal untuk menampilkan gambar besar -->
+        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document"> <!-- Menggunakan modal-xl untuk memperbesar ukuran modal -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="imageModalLabel">Dokumentasi Gambar</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img id="modalImage" src="" alt="Dokumentasi" style="width: 100%; height: auto; max-height: 95vh; object-fit: contain;">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kembali</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <script>
+        function showImage(src) {
+            document.getElementById('modalImage').src = src;
+        }
+    </script>
 @endsection
