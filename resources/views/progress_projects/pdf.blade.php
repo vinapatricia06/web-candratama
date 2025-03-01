@@ -78,12 +78,12 @@
                     <td>{{ $project->project }}</td>
                     <td>{{ $project->tanggal_setting }}</td>
                     <td>
-                        @if ($project->dokumentasi)
-                        <img src="{{ asset($project->dokumentasi) }}" alt="Dokumentasi" width="120">
+                        @if ($project->dokumentasi_base64)
+                            <img src="{{ $project->dokumentasi_base64 }}" alt="Dokumentasi" width="120">
                         @else
                             Tidak ada gambar
                         @endif
-                    </td>
+                    </td>                    
                     <td>{{ $project->status }}</td>
                 </tr>
             @endforeach

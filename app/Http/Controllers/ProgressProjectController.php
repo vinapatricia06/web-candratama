@@ -106,21 +106,25 @@ class ProgressProjectController extends Controller
 
     public function downloadPdf()
     {
-        // Mengambil data project
         $projects = ProgressProject::with('teknisi')->get();
-
-
-        // Load view untuk PDF
+    
+        foreach ($projects as $project) {
+            if ($project->dokumentasi && file_exists(public_path($project->dokumentasi))) {
+                $path = public_path($project->dokumentasi);
+                $type = pathinfo($path, PATHINFO_EXTENSION);
+                $data = file_get_contents($path);
+                $project->dokumentasi_base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+            } else {
+                $project->dokumentasi_base64 = null;
+            }
+        }
+    
+        // Load view PDF
         $pdf = PDF::loadView('progress_projects.pdf', compact('projects'))
-            ->setOptions([
-                'isHtml5ParserEnabled' => true,
-                'isPhpEnabled' => true
-            ]);
-
-        // Download file PDF
+                  ->setPaper('A4', 'landscape');
+    
         return $pdf->download('progress_projects.pdf');
     }
-
     
 
     public function hapusBulan(Request $request)

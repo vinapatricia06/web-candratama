@@ -7,25 +7,20 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             font-size: 12px;
+            margin: 20px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;  /* Agar lebar kolom lebih terkontrol */
             margin-top: 20px;
         }
         table, th, td {
             border: 1px solid black;
         }
         th, td {
-            padding: 8px 10px;
+            padding: 8px;
             text-align: left;
-            word-wrap: break-word;  /* Memastikan teks panjang bisa terpecah */
-            max-width: 150px;  /* Batasan lebar kolom */
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         th {
             background-color: #f4f4f4;
@@ -39,6 +34,10 @@
         }
         .header p {
             font-size: 14px;
+        }
+        .image-container img {
+            width: 120px;
+            height: auto;
         }
     </style>
 </head>
@@ -74,13 +73,12 @@
                     <td>{{ $maintenance->tanggal_serah_terima }}</td>
                     <td>{{ $maintenance->maintenance }}</td>
                     <td>
-                        @if ($maintenance->dokumentasi)
-                            <img src="{{ url('storage/dokumentasi/' . $maintenance->dokumentasi) }}" alt="Dokumentasi" width="120">
-                            
+                        @if ($maintenance->dokumentasi_base64)
+                            <img src="{{ $maintenance->dokumentasi_base64 }}" alt="Dokumentasi" width="120">
                         @else
                             Tidak ada gambar
                         @endif
-                    </td>
+                    </td>                    
                     <td>{{ $maintenance->status }}</td>
                 </tr>
             @endforeach

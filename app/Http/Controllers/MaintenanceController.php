@@ -112,25 +112,28 @@ class MaintenanceController extends Controller
     }
 
     public function downloadPdf()
-    {
-        // Retrieve all maintenance projects
-        $maintenances = Maintenance::all();
+{
+    $maintenances = Maintenance::all();
 
-        // Load the view for PDF
-        $pdf = PDF::loadView('maintenances.pdf', compact('maintenances'))
-                  ->setPaper('A4', 'landscape')  // Set orientation to landscape if needed
-                  ->setOptions([
-                      'isHtml5ParserEnabled' => true,
-                      'isPhpEnabled' => true,
-                      'margin-top' => 10,
-                      'margin-left' => 10,
-                      'margin-right' => 10,
-                      'margin-bottom' => 10
-                  ]);
-
-        // Download the PDF file
-        return $pdf->download('maintenances.pdf');
+    foreach ($maintenances as $maintenance) {
+        if ($maintenance->dokumentasi && file_exists(public_path($maintenance->dokumentasi))) {
+            $path = public_path( $maintenance->dokumentasi);
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $data = file_get_contents($path);
+            $maintenance->dokumentasi_base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        } else {
+            $maintenance->dokumentasi_base64 = null;
+        }
     }
+
+    // Load view
+    $pdf = PDF::loadView('maintenances.pdf', compact('maintenances'))
+              ->setPaper('A4', 'landscape');
+
+    return $pdf->download('maintenances.pdf');
+}
+
+    
 
     public function hapusBulan(Request $request)
     {
