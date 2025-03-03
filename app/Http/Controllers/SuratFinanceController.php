@@ -175,10 +175,10 @@ class SuratFinanceController extends Controller
             session(['suratKeFinance' => $suratKeFinance]);
         }
 
-        $monthlyCounts = SuratFinance::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
-            ->groupBy('month')
-            ->orderBy('month', 'asc')
-            ->pluck('count', 'month');
+        $monthlyCounts = SuratFinance::selectRaw("YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count")
+            ->groupBy('year', 'month')
+            ->orderByRaw('year ASC, month ASC')
+            ->get();
 
         return view('surat.finance.dashboard', [
             'pending' => $pending,

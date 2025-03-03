@@ -36,7 +36,7 @@ class AuthController extends Controller
             } elseif ($user->isWRH()) {
                 return redirect('/dashboard/warehouse');
             } elseif ($user->isFNC()) {
-                return redirect('/dashboard/finance');
+                return redirect('/surat/finance/dashboard');
             }elseif ($user->isPCH()) {
                 return redirect('/dashboard/purchasing');
             } elseif ($user->isEks()) {
