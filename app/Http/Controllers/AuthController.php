@@ -26,7 +26,7 @@ class AuthController extends Controller
             if ($user->isSuperADM()) {
                 return redirect('/users');
             } elseif ($user->isAdmin()) {
-                return redirect('/dashboard/admin');
+                return redirect('/surat/admin/dashboard');
             } elseif ($user->isDirektur()) {
                 return redirect('/users');
             } elseif ($user->isDM()) {

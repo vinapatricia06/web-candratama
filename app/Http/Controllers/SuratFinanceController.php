@@ -165,6 +165,7 @@ class SuratFinanceController extends Controller
         $acc = SuratFinance::where('status_pengajuan', 'ACC')->count();
         $tolak = SuratFinance::where('status_pengajuan', 'Tolak')->count();
 
+
         $divisi_pembuat = SuratFinance::distinct()->pluck('divisi_pembuat');
 
         // Menghitung surat yang divisi tujuannya ke Finance
@@ -174,20 +175,29 @@ class SuratFinanceController extends Controller
         if ($suratKeFinance > 0) {
             session(['suratKeFinance' => $suratKeFinance]);
         }
+        
+
+        $suratFinances = SuratFinance::orderBy('created_at', 'desc')
+            ->whereIn('status_pengajuan', ['Pending', 'ACC', 'Tolak'])
+            ->get();
+
 
         $monthlyCounts = SuratFinance::selectRaw("YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count")
             ->groupBy('year', 'month')
             ->orderByRaw('year ASC, month ASC')
             ->get();
-
+        
+        dd($monthlyCounts); // Cek hasil perhitungan
+        
+        
         return view('surat.finance.dashboard', [
             'pending' => $pending,
             'acc' => $acc,
             'tolak' => $tolak,
-            'months' => $monthlyCounts->keys(),
-            'monthlyCounts' => $monthlyCounts->values(),
+            'months' => $monthlyCounts->pluck('month')->toArray(),
+            'monthlyCounts' => $monthlyCounts->pluck('count')->toArray(),
             'suratKeFinance' => $suratKeFinance,
-            'divisi_pembuat' => $divisi_pembuat // Pastikan variabel ini dikirimkan ke view
+            'divisi_pembuat' => $divisi_pembuat
         ]);
     }
 }

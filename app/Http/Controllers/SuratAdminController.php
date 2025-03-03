@@ -165,13 +165,13 @@ class SuratAdminController extends Controller
             ->orderBy('month', 'asc')
             ->pluck('count', 'month');
 
-        return view('surat.finance.dashboard', [
+        return view('surat.admin.dashboard', [
             'pending' => $pending,
             'acc' => $acc,
             'tolak' => $tolak,
             'months' => $monthlyCounts->keys(),
             'monthlyCounts' => $monthlyCounts->values(),
-            'suratKeFinance' => $suratKeAdmin,
+            'suratKeAdmin' => $suratKeAdmin,
             'divisi_pembuat' => $divisi_pembuat // Pastikan variabel ini dikirimkan ke view
         ]);
     }
