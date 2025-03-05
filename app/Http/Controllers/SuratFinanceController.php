@@ -187,8 +187,7 @@ class SuratFinanceController extends Controller
             ->orderByRaw('year ASC, month ASC')
             ->get();
         
-        dd($monthlyCounts); // Cek hasil perhitungan
-        
+      
         
         return view('surat.finance.dashboard', [
             'pending' => $pending,

@@ -25,7 +25,7 @@ class User1 extends Authenticatable
 
     public function isSuperADM() { return $this->role === 'superadmin'; }
     public function isAdmin() { return $this->role === 'admin'; }
-    public function isDirektur() { return $this->role === 'direktur'; }
+    public function isCEO() { return $this->role === 'CEO'; }
     public function isDM() { return $this->role === 'marketing'; }
     public function isIC() { return $this->role === 'interior_consultan'; }
     public function isWRH() { return $this->role === 'warehouse'; }

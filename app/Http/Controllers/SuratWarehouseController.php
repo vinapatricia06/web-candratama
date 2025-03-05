@@ -153,11 +153,11 @@ class SuratWarehouseController extends Controller
         $divisi_pembuat = SuratWarehouse::distinct()->pluck('divisi_pembuat');
 
         // Menghitung surat yang divisi tujuannya ke Finance
-        $suratKeWRH = SuratWarehouse::where('divisi_tujuan', 'WRH')->where('status_pengajuan', 'Pending')->count();
+        $suratKeWarehouse = SuratWarehouse::where('divisi_tujuan', 'WRH')->where('status_pengajuan', 'Pending')->count();
 
         // Menyimpan informasi surat ke Finance di sesi jika ada
-        if ($suratKeWRH > 0) {
-            session(['suratKeFinance' => $suratKeWRH]);
+        if ($suratKeWarehouse > 0) {
+            session(['suratKeWarehouse' => $suratKeWarehouse]);
         }
 
         $monthlyCounts = SuratWarehouse::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
@@ -165,13 +165,13 @@ class SuratWarehouseController extends Controller
             ->orderBy('month', 'asc')
             ->pluck('count', 'month');
 
-        return view('surat.finance.dashboard', [
+        return view('surat.warehouse.dashboard', [
             'pending' => $pending,
             'acc' => $acc,
             'tolak' => $tolak,
             'months' => $monthlyCounts->keys(),
             'monthlyCounts' => $monthlyCounts->values(),
-            'suratKeFinance' => $suratKeWRH,
+            'suratKeWarehouse' => $suratKeWarehouse,
             'divisi_pembuat' => $divisi_pembuat // Pastikan variabel ini dikirimkan ke view
         ]);
     }

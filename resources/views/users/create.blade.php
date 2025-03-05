@@ -23,7 +23,7 @@
                 <label>Role</label>
                 <select name="role" class="form-control" required>
                     <option value="superadmin">Superadmin</option>
-                    <option value="direktur">Direktur</option>
+                    <option value="CEO">CEO</option>
                     <option value="admin">Administrasi</option>
                     <option value="marketing">Marketing</option>
                     <option value="interior_consultan">Interior_Consultan</option>

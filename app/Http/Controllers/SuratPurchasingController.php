@@ -157,7 +157,7 @@ class SuratPurchasingController extends Controller
 
         // Menyimpan informasi surat ke Finance di sesi jika ada
         if ($suratKePCH > 0) {
-            session(['suratKeFinance' => $suratKePCH]);
+            session(['suratKePCH' => $suratKePCH]);
         }
 
         $monthlyCounts = SuratPurchasing::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
@@ -165,13 +165,13 @@ class SuratPurchasingController extends Controller
             ->orderBy('month', 'asc')
             ->pluck('count', 'month');
 
-        return view('surat.finance.dashboard', [
+        return view('surat.purchasing.dashboard', [
             'pending' => $pending,
             'acc' => $acc,
             'tolak' => $tolak,
             'months' => $monthlyCounts->keys(),
             'monthlyCounts' => $monthlyCounts->values(),
-            'suratKeFinance' => $suratKePCH,
+            'suratKePCH' => $suratKePCH,
             'divisi_pembuat' => $divisi_pembuat // Pastikan variabel ini dikirimkan ke view
         ]);
     }

@@ -1,11 +1,11 @@
-@extends('layouts.purchasing.app')
+@extends('layouts.admin.app')
 
 @section('title', 'Dashboard Surat Purchasing')
 @section('content')
 
-    @if($suratKePurchasing > 0)
+    @if ($suratKePCH > 0)
         <div class="alert alert-warning">
-            Ada {{ $suratKePurchasing }} surat yang masuk ke Purchasing dengan status Pending.
+            Ada {{ $suratKePCH }} surat yang masuk ke Purchasing dengan status Pending.
         </div>
     @endif
 
@@ -49,14 +49,13 @@
 
         // Fungsi untuk memutar suara notifikasi
         function playNotificationSound() {
-            var audio = new Audio('{{ asset('sounds/notv.wav') }}'); 
+            var audio = new Audio('{{ asset('sounds/notv.wav') }}');
             audio.play();
         }
 
         // Cek apakah ada notifikasi
-        @if(session('suratKePurchasing') > 0)
+        @if (session('suratKePurchasing') > 0)
             playNotificationSound();
         @endif
-
     </script>
 @endsection

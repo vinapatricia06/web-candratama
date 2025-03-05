@@ -24,21 +24,21 @@ class AuthController extends Controller
 
             // Redirect berdasarkan role
             if ($user->isSuperADM()) {
-                return redirect('/users');
+                return redirect('/users'); //sudah
             } elseif ($user->isAdmin()) {
-                return redirect('/surat/admin/dashboard');
-            } elseif ($user->isDirektur()) {
-                return redirect('/users');
+                return redirect('/surat/admin/dashboard'); //sudah
+            } elseif ($user->isCEO()) {
+                return redirect('/dashboard/CEO'); //sudah
             } elseif ($user->isDM()) {
-                return redirect('/dashboard/marketing');
+                return redirect('/dashboard/marketing'); //sudah
             } elseif ($user->isIC()) {
                 return redirect('/users');
             } elseif ($user->isWRH()) {
-                return redirect('/dashboard/warehouse');
+                return redirect('/surat/warehouse/dashboard'); 
             } elseif ($user->isFNC()) {
-                return redirect('/surat/finance/dashboard');
+                return redirect('/surat/finance/dashboard'); //kurang dashboard
             }elseif ($user->isPCH()) {
-                return redirect('/dashboard/purchasing');
+                return redirect('/surat/purchasing/dashboard');
             } elseif ($user->isEks()) {
                 return redirect('/users');
             } elseif ($user->isCS()) {
@@ -58,5 +58,19 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect('/login')->with('message', 'Logout berhasil');
+    }
+
+    public function dashboardCEO()
+    {
+        // Ambil user yang sedang login
+        $user = Auth::user(); // Mengambil data pengguna yang sedang login
+        
+        // Ambil nama direktur dari data user
+        $directorName = $user->nama; // Asumsi nama kolom di tabel users1 adalah 'nama'
+
+        // Format waktu saat ini
+        $dateTime = now()->format('l, d M Y H:i');  // Menampilkan tanggal dan waktu
+        
+        return view('auth.dashboardCEO', compact('directorName', 'dateTime'));
     }
 }

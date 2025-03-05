@@ -25,7 +25,7 @@
             <label>Role</label>
             <select name="role" class="form-control" required>
                 <option value="superadmin" {{ $user->role == 'superadmin' ? 'selected' : '' }}>Superadmin</option>
-                <option value="direktur" {{ $user->role == 'superadmin' ? 'selected' : '' }}>Direktur</option>
+                <option value="CEO" {{ $user->role == 'superadmin' ? 'selected' : '' }}>CEO</option>
                 <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
                 <option value="marketing" {{ $user->role == 'marketing' ? 'selected' : '' }}>Marketing</option>
                 <option value="interior_consultan" {{ $user->role == 'interior_consultan' ? 'selected' : '' }}>Interior_Consultan</option>
