@@ -5,7 +5,7 @@
     <div class="row w-100" style="border-radius: 50px; overflow: hidden;">
         <!-- Left side: Login form -->
         <div class="col-md-6 p-5" style="background-color: #ffffff;">
-            <h3 class="text-center mb-4 text-primary">Login</h3>
+            <h3 class="text-center mb-5 text-danger" style="font-size: 3rem; margin-top: 20px;">Login</h3>
 
             @if (session('error'))
                 <div class="alert alert-danger mb-3">{{ session('error') }}</div>
@@ -15,25 +15,25 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" required autofocus>
+                    <label for="username" class="form-label" style="font-size: 1.2rem;">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required autofocus style="font-size: 1.1rem;">
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
+                    <label for="password" class="form-label" style="font-size: 1.2rem;">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required style="font-size: 1.1rem;">
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 mt-4">Login</button>
+                <button type="submit" class="btn btn-danger w-100 mt-4" style="font-size: 1.2rem;">Login</button>
             </form>
         </div>
 
         <!-- Right side: Custom Section -->
-        <div class="col-md-6 p-5 bg-primary text-white">
-            <h4 class="text-center">Welcome, User!</h4>
+        <div class="col-md-6 p-5 bg-danger text-white">
+            <h4 class="text-center" style="font-size: 2rem;">Welcome, Candratama Granites!</h4>
             <p class="text-center">Login to start using our services</p>
             <div class="text-center mt-4">
-                <img src="/path/to/your/logo.jpg" alt="Logo" class="img-fluid" style="max-width: 150px; margin-bottom: 20px;">
+                <img src="images/logo .png" alt="Logo" class="img-fluid" style="max-width: 300px; margin-bottom: 20px;">
             </div>
         </div>
     </div>
@@ -46,15 +46,15 @@
     .form-control {
         border-radius: 8px;
     }
-    .btn-primary {
-        background-color: #2575fc;
+    .btn-danger {
+        background-color: #ca3329;
         border: none;
     }
-    .btn-primary:hover {
-        background-color: #6a11cb;
+    .btn-danger:hover {
+        background-color: #9e2b24;
     }
-    .bg-primary {
-        background-color: #2575fc !important;
+    .bg-danger {
+        background-color: #ca3329 !important;
     }
 </style>
 @endsection
