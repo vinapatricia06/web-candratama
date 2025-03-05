@@ -7,21 +7,26 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
-    public function handle(Request $request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        // Pastikan user sudah login
         if (!Auth::check()) {
-            return redirect('/login')->with('error', 'Silakan login terlebih dahulu');
+            return redirect('/login'); // Redirect ke login jika belum login
         }
 
-        // Periksa apakah user memiliki role yang sesuai
-        if (Auth::user()->role !== $role) {
-            return redirect('/users')->with('error', 'Anda tidak memiliki akses ke halaman ini');
+        $user = Auth::user();
+
+        // Jika user adalah superadmin atau ceo, izinkan akses tanpa pengecekan lebih lanjut
+        if (in_array($user->role, ['superadmin', 'CEO'])) {
+            return $next($request);
         }
 
-        return $next($request);
+        // Cek apakah user memiliki salah satu role yang diizinkan
+        foreach ($roles as $role) {
+            if ($user->role === $role) {
+                return $next($request);
+            }
+        }
+
+        abort(403, 'Akses tidak diizinkan'); // Jika role tidak sesuai, munculkan error 403
     }
 }

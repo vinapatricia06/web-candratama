@@ -9,6 +9,7 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\SuratFinanceController;
 use App\Http\Controllers\SuratAdminController;
 use App\Http\Controllers\SuratWarehouseController;
+use App\Http\Controllers\SuratPurchasingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,23 +57,6 @@ Route::post('progress_projects/hapusBulan', [ProgressProjectController::class, '
 
 
 
-Route::middleware(['auth', 'role:marketing'])->group(function () {
-    Route::get('/dashboard/marketing', [SuratMarketingController::class, 'dashboard'])->name('dashboard.marketing');
-
-    Route::get('/surat-marketing/generate', [SuratMarketingController::class, 'index'])->name('surat.marketing.generate.form');
-    Route::post('/surat-marketing/generate', [SuratMarketingController::class, 'generate'])->name('surat.marketing.generate');
-    Route::get('/digital-marketing/list', [SuratMarketingController::class, 'list'])->name('surat.digital_marketing.list');
-    Route::put('/surat/marketing/updateStatusPengajuan/{id}', [SuratMarketingController::class, 'updateStatusPengajuan'])->name('surat.marketing.updateStatusPengajuan');
-    Route::get('/surat-marketing/download/{id}', [SuratMarketingController::class, 'downloadfile'])->name('surat.marketing.downloadfile');
-    Route::get('/surat-marketing/view/{id}', [SuratMarketingController::class, 'viewPDF'])->name('surat.marketing.viewPDF');
-    Route::get('/surat-marketing/{id}/edit', [SuratMarketingController::class, 'edit'])->name('surat.marketing.edit');
-    Route::put('/surat-marketing/{id}', [SuratMarketingController::class, 'update'])->name('surat.marketing.update');
-    Route::delete('/surat-marketing/{id}', [SuratMarketingController::class, 'destroy'])->name('surat.marketing.destroy');
-    Route::get('/surat/marketing/create', [SuratMarketingController::class, 'create'])->name('surat.marketing.create');
-});
-
-
-
 Route::get('/maintenances', [MaintenanceController::class, 'index'])->name('maintenances.index');
 Route::get('/maintenances/create', [MaintenanceController::class, 'create'])->name('maintenances.create');
 Route::post('/maintenances', [MaintenanceController::class, 'store'])->name('maintenances.store');
@@ -82,60 +66,71 @@ Route::delete('/maintenances/{maintenance}', [MaintenanceController::class, 'des
 Route::get('/maintenances/download', [MaintenanceController::class, 'downloadPdf'])->name('maintenances.downloadPdf');
 Route::post('maintenances/hapusBulan', [MaintenanceController::class, 'hapusBulan'])->name('maintenances.hapusBulan');
 
-
-
-Route::middleware(['auth', 'role:finance'])->group(function () {
+Route::middleware(['auth', 'role:marketing,admin,finance,warehouse,purchasing'])->group(function () {
+    Route::get('/digital-marketing/list', [SuratMarketingController::class, 'list'])->name('surat.digital_marketing.list');
+    Route::put('/surat/marketing/updateStatusPengajuan/{id}', [SuratMarketingController::class, 'updateStatusPengajuan'])->name('surat.marketing.updateStatusPengajuan');
+    Route::get('/surat-marketing/download/{id}', [SuratMarketingController::class, 'downloadfile'])->name('surat.marketing.downloadfile');
+    Route::get('/surat-marketing/view/{id}', [SuratMarketingController::class, 'viewPDF'])->name('surat.marketing.viewPDF');
+    
     Route::get('/surat/finance', [SuratFinanceController::class, 'index'])->name('surat.finance.index');
-    Route::get('/surat/finance/create', [SuratFinanceController::class, 'create'])->name('surat.finance.create');
-    Route::post('/surat/finance/generate', [SuratFinanceController::class, 'generate'])->name('surat.finance.generate');
     Route::get('/surat/finance/downloadfile/{id}', [SuratFinanceController::class, 'downloadfile'])->name('surat.finance.downloadfile');
     Route::get('/surat/finance/viewpdf/{id}', [SuratFinanceController::class, 'viewPDF'])->name('surat.finance.viewPDF');
-    Route::get('/surat/finance/edit/{id}', [SuratFinanceController::class, 'edit'])->name('surat.finance.edit');
-    Route::put('/surat/finance/update/{id}', [SuratFinanceController::class, 'update'])->name('surat.finance.update');
-    Route::delete('/surat/finance/{id}', [SuratFinanceController::class, 'destroy'])->name('surat.finance.destroy');
-    Route::get('/surat/finance/dashboard', [SuratFinanceController::class, 'dashboard'])->name('surat.finance.dashboard');
-    Route::put('/surat-marketing/{id}/update-status', [SuratFinanceController::class, 'updateStatusPengajuan'])->name('surat.finance.updateStatusPengajuan'); 
-});
-
-
-Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::put('/surat/finance/{id}/update-status', [SuratFinanceController::class, 'updateStatusPengajuan'])->name('surat.finance.updateStatusPengajuan'); 
+    
     Route::get('/surat/admin', [SuratAdminController::class, 'index'])->name('surat.admin.index');
-    Route::get('/surat/admin/create', [SuratAdminController::class, 'create'])->name('surat.admin.create');
-    Route::post('/surat/admin/generate', [SuratAdminController::class, 'generate'])->name('surat.admin.generate');
     Route::get('/surat/admin/downloadfile/{id}', [SuratAdminController::class, 'downloadfile'])->name('surat.admin.downloadfile');
     Route::get('/surat/admin/viewpdf/{id}', [SuratAdminController::class, 'viewPDF'])->name('surat.admin.viewPDF');
-    Route::get('/surat/admin/edit/{id}', [SuratAdminController::class, 'edit'])->name('surat.admin.edit');
-    Route::put('/surat/admin/update/{id}', [SuratAdminController::class, 'update'])->name('surat.admin.update');
-    Route::delete('/surat/admin/{id}', [SuratAdminController::class, 'destroy'])->name('surat.admin.destroy');
-    Route::get('/surat/admin/dashboard', [SuratAdminController::class, 'dashboard'])->name('surat.admin.dashboard');
     Route::put('/surat-admin/{id}/update-status', [SuratAdminController::class, 'updateStatusPengajuan'])->name('surat.admin.updateStatusPengajuan');
-});
 
-
-Route::middleware(['auth', 'role:warehouse'])->group(function () {
     Route::get('/surat-warehouse', [SuratWarehouseController::class, 'index'])->name('surat.warehouse.index');
-    Route::post('/surat-warehouse/generate', [SuratWarehouseController::class, 'generate'])->name('surat.warehouse.generate');
     Route::get('/surat-warehouse/download/{id}', [SuratWarehouseController::class, 'downloadfile'])->name('surat.warehouse.download');
     Route::put('/surat-warehouse/status/{id}', [SuratWarehouseController::class, 'updateStatusPengajuan'])->name('surat.warehouse.updateStatus');
     Route::get('/surat-warehouse/view/{id}', [SuratWarehouseController::class, 'viewPDF'])->name('surat.warehouse.view');
+    
+    Route::get('/surat/purchasing', [SuratPurchasingController::class, 'index'])->name('surat.purchasing.index');
+    Route::get('/surat/purchasing/download/{id}', [SuratPurchasingController::class, 'downloadfile'])->name('surat.purchasing.download');
+    Route::put('/surat/purchasing/update-status/{id}', [SuratPurchasingController::class, 'updateStatusPengajuan'])->name('surat.purchasing.updateStatus');
+    Route::get('/surat/purchasing/view/{id}', [SuratPurchasingController::class, 'viewPDF'])->name('surat.purchasing.view');
+    
+});
+
+Route::middleware(['auth', 'role:marketing'])->group(function () {
+    Route::get('/dashboard/marketing', [SuratMarketingController::class, 'dashboard'])->name('dashboard.marketing');
+    Route::get('/surat-marketing/generate', [SuratMarketingController::class, 'index'])->name('surat.marketing.generate.form');
+    Route::post('/surat-marketing/generate', [SuratMarketingController::class, 'generate'])->name('surat.marketing.generate');
+    Route::get('/surat-marketing/{id}/edit', [SuratMarketingController::class, 'edit'])->name('surat.marketing.edit');
+    Route::put('/surat-marketing/{id}', [SuratMarketingController::class, 'update'])->name('surat.marketing.update');
+    Route::get('/surat/marketing/create', [SuratMarketingController::class, 'create'])->name('surat.marketing.create');
+});
+
+Route::middleware(['auth', 'role:finance'])->group(function () {
+    Route::get('/surat/finance/create', [SuratFinanceController::class, 'create'])->name('surat.finance.create');
+    Route::post('/surat/finance/generate', [SuratFinanceController::class, 'generate'])->name('surat.finance.generate');
+    Route::get('/surat/finance/edit/{id}', [SuratFinanceController::class, 'edit'])->name('surat.finance.edit');
+    Route::put('/surat/finance/update/{id}', [SuratFinanceController::class, 'update'])->name('surat.finance.update');
+    Route::get('/surat/finance/dashboard', [SuratFinanceController::class, 'dashboard'])->name('surat.finance.dashboard');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/surat/admin/create', [SuratAdminController::class, 'create'])->name('surat.admin.create');
+    Route::post('/surat/admin/generate', [SuratAdminController::class, 'generate'])->name('surat.admin.generate');
+    Route::get('/surat/admin/edit/{id}', [SuratAdminController::class, 'edit'])->name('surat.admin.edit');
+    Route::put('/surat/admin/update/{id}', [SuratAdminController::class, 'update'])->name('surat.admin.update');
+    Route::get('/surat/admin/dashboard', [SuratAdminController::class, 'dashboard'])->name('surat.admin.dashboard');
+});
+
+Route::middleware(['auth', 'role:warehouse'])->group(function () {
+    Route::post('/surat-warehouse/generate', [SuratWarehouseController::class, 'generate'])->name('surat.warehouse.generate');
     Route::get('/surat-warehouse/edit/{id}', [SuratWarehouseController::class, 'edit'])->name('surat.warehouse.edit');
     Route::put('/surat-warehouse/update/{id}', [SuratWarehouseController::class, 'update'])->name('surat.warehouse.update');
-    Route::delete('/surat-warehouse/delete/{id}', [SuratWarehouseController::class, 'destroy'])->name('surat.warehouse.destroy');
     Route::get('/surat-warehouse/create', [SuratWarehouseController::class, 'create'])->name('surat.warehouse.create');
     Route::get('/surat/warehouse/dashboard', [SuratWarehouseController::class, 'dashboard'])->name('surat.warehouse.dashboard');
 });
 
-use App\Http\Controllers\SuratPurchasingController;
-
 Route::middleware(['auth', 'role:purchasing'])->group(function () {
-    Route::get('/surat/purchasing', [SuratPurchasingController::class, 'index'])->name('surat.purchasing.index');
     Route::post('/surat/purchasing/generate', [SuratPurchasingController::class, 'generate'])->name('surat.purchasing.generate');
-    Route::get('/surat/purchasing/download/{id}', [SuratPurchasingController::class, 'downloadfile'])->name('surat.purchasing.download');
-    Route::put('/surat/purchasing/update-status/{id}', [SuratPurchasingController::class, 'updateStatusPengajuan'])->name('surat.purchasing.updateStatus');
-    Route::get('/surat/purchasing/view/{id}', [SuratPurchasingController::class, 'viewPDF'])->name('surat.purchasing.view');
     Route::get('/surat/purchasing/edit/{id}', [SuratPurchasingController::class, 'edit'])->name('surat.purchasing.edit');
     Route::put('/surat/purchasing/update/{id}', [SuratPurchasingController::class, 'update'])->name('surat.purchasing.update');
-    Route::delete('/surat/purchasing/destroy/{id}', [SuratPurchasingController::class, 'destroy'])->name('surat.purchasing.destroy');
     Route::get('/surat/purchasing/create', [SuratPurchasingController::class, 'create'])->name('surat.purchasing.create');
     Route::get('/surat/purchasing/dashboard', [SuratPurchasingController::class, 'dashboard'])->name('surat.purchasing.dashboard');
 });

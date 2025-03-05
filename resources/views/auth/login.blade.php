@@ -1,7 +1,8 @@
 @extends('layouts.admin.app')
 
+@section('title', 'Login')
 @section('content')
-<div class="container d-flex justify-content-center align-items-center vh-100">
+<div class="container d-flex justify-content-center align-items-center vh-100%" style="margin-top: 50px;">
     <div class="row w-100" style="border-radius: 50px; overflow: hidden;">
         <!-- Left side: Login form -->
         <div class="col-md-6 p-5" style="background-color: #ffffff;">
@@ -54,7 +55,7 @@
         background-color: #9e2b24;
     }
     .bg-danger {
-        background-color: #ca3329 !important;
+        background-color: #a62624 !important;
     }
 </style>
 @endsection

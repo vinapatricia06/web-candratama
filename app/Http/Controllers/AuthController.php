@@ -46,7 +46,7 @@ class AuthController extends Controller
             } elseif ($user->isTeknisi()) {
                 return redirect('/users');
             } else {
-                return redirect('/users');
+                abort(403, 'Akses tidak diizinkan');
             }
         }
 
@@ -58,7 +58,9 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect('/login')->with('message', 'Logout berhasil');
-    }
+    } 
+
+    
 
     public function dashboardCEO()
     {
