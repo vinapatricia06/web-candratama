@@ -83,11 +83,14 @@
         @endif
 
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> b40642da1a6b8fe760f1c84494a58f4d5fd1d613
         <li class="nav-item">
             <a href="{{ route('omsets.index') }}" class="nav-link text-white {{ (Request::routeIs('omsets.index') ? 'active' : '') }}">
                 <i class="nav-icon fas fa-dollar-sign"></i>

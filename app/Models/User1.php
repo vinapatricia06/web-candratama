@@ -8,8 +8,8 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User1 extends Authenticatable
 {
-    use HasFactory, Notifiable;
-    use HasRoles;
+    use HasFactory, Notifiable, HasRoles; // Pastikan HasRoles sudah ada di sini
+
 
     protected $table = 'users1'; 
     protected $primaryKey = 'id_user'; 
