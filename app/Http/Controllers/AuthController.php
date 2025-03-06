@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User1;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Omset;
+
 
 class AuthController extends Controller
 {
@@ -66,13 +68,45 @@ class AuthController extends Controller
     {
         // Ambil user yang sedang login
         $user = Auth::user(); // Mengambil data pengguna yang sedang login
-        
+    
         // Ambil nama direktur dari data user
-        $directorName = $user->nama; // Asumsi nama kolom di tabel users1 adalah 'nama'
-
+        $directorName = $user->nama; // Asumsi nama kolom di tabel users adalah 'nama'
+    
         // Format waktu saat ini
         $dateTime = now()->format('l, d M Y H:i');  // Menampilkan tanggal dan waktu
-        
-        return view('auth.dashboardCEO', compact('directorName', 'dateTime'));
+    
+        // Mengambil data omset per tahun dan bulan dari model
+        $rekap = Omset::selectRaw('YEAR(tanggal) as tahun, MONTH(tanggal) as bulan, SUM(nominal) as total_omset')
+            ->groupBy('tahun', 'bulan')
+            ->orderByDesc('tahun')
+            ->orderBy('bulan')
+            ->get();
+    
+        // Menyusun data omset per tahun
+        $data = [];
+        $totals = [];
+        $labels = [];
+        $totalPerTahun = [];
+    
+        foreach ($rekap as $item) {
+            $tahun = $item->tahun;
+            $bulan = $item->bulan;
+    
+            if (!isset($data[$tahun])) {
+                $data[$tahun] = array_fill(1, 12, 0);
+                $totals[$tahun] = 0;
+            }
+    
+            $data[$tahun][$bulan] = $item->total_omset;
+            $totals[$tahun] += $item->total_omset;
+        }
+    
+        foreach ($totals as $tahun => $total) {
+            $labels[] = $tahun;
+            $totalPerTahun[] = $total;
+        }
+    
+        // Mengirimkan data ke view dashboard
+        return view('auth.dashboardCEO', compact('directorName', 'dateTime', 'data', 'labels', 'totalPerTahun'));
     }
-}
+}    

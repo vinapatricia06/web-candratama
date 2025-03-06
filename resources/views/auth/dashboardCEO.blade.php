@@ -1,45 +1,13 @@
-<!-- resources/views/dashboard/index.blade.php -->
-
 @extends('layouts.admin.app')
 
 @section('content')
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Direktur</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
-    <style>
-        .container { max-width: 1200px; margin-top: 30px; }
-        .card { margin-bottom: 20px; }
-        .navbar { background-color: #007bff; }
-        .navbar-brand { color: #fff; }
-        /* .sidebar { background-color: #f8f9fa; padding: 20px; }
-        .sidebar a { text-decoration: none; color: #000; padding: 10px 0; display: block; } */
-        .sidebar a:hover { background-color: #007bff; color: #fff; }
-        .main-content { padding: 20px; }
-        .welcome-text { font-size: 24px; font-weight: bold; }
-        .date-time { font-size: 16px; color: #888; }
-        .section-title { font-size: 20px; margin-top: 30px; font-weight: bold; }
-    </style>
-</head>
-<body>
-
-<div class="container">
+<div class="container-fluid"> <!-- Changed 'container' to 'container-fluid' for full width -->
     <div class="row">
         <!-- Sidebar -->
-        {{-- <div class="col-md-3 sidebar">
-            <h5>Menu</h5>
-            <a href="#">Beranda</a>
-            <a href="#">Keuangan</a>
-            <a href="#">Proyek</a>
-            <a href="#">Kinerja Tim</a>
-            <a href="#">Pengaturan</a>
-        </div> --}}
+        {{-- Your sidebar code here --}}
 
         <!-- Main Content -->
-        <div class="col-md-9 main-content">
+        <div class="col-12 main-content"> <!-- Changed 'col-md-9' to 'col-12' for full width -->
             <div class="card">
                 <div class="card-body">
                     <h3 class="welcome-text">Selamat Datang, {{ $directorName }}</h3>
@@ -47,44 +15,115 @@
                 </div>
             </div>
 
-            {{-- <div class="card">
+            <!-- Rekap Omset Section -->
+            <div class="card">
                 <div class="card-body">
-                    <h4 class="section-title">Informasi Terkini</h4>
-                    <ul>
-                        <li>Proyek A: Sedang Berjalan</li>
-                        <li>Proyek B: Selesai</li>
-                        <li>Proyek C: Belum Dimulai</li>
-                    </ul>
-                </div>
-            </div> --}}
+                    <h4 class="section-title">Rekap Omset Tahunan</h4>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>THN</th>
+                                    <th>JANUARI</th>
+                                    <th>FEBRUARI</th>
+                                    <th>MARET</th>
+                                    <th>APRIL</th>
+                                    <th>MEI</th>
+                                    <th>JUNI</th>
+                                    <th>JULI</th>
+                                    <th>AGUSTUS</th>
+                                    <th>SEPTEMBER</th>
+                                    <th>OKTOBER</th>
+                                    <th>NOVEMBER</th>
+                                    <th>DESEMBER</th>
+                                    <th>TOTAL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($data as $year => $months)
+                                    @php
+                                        $total = 0;
+                                        $maxOmset = max($months);
+                                        $minOmset = min($months);
+                                    @endphp
+                                    <tr>
+                                        <td>{{ $year }}</td>
+                                        @for ($month = 1; $month <= 12; $month++)
+                                            @php
+                                                $omset = $months[$month] ?? 0;
+                                                $total += $omset;
 
-            {{-- <div class="card">
+                                                $class = '';
+                                                if ($omset == $maxOmset) {
+                                                    $class = 'table-success';
+                                                } elseif ($omset == $minOmset) {
+                                                    $class = 'table-danger';
+                                                } else {
+                                                    $class = 'table-info';
+                                                }
+                                            @endphp
+                                            <td class="{{ $class }}">Rp {{ number_format($omset, 0, ',', '.') }}</td>
+                                        @endfor
+                                        <td><strong>Rp {{ number_format($total, 0, ',', '.') }}</strong></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grafik Omset Section -->
+            <div class="card">
                 <div class="card-body">
-                    <h4 class="section-title">Agenda Hari Ini</h4>
-                    <ul>
-                        <li>08:00 - Rapat Tim Proyek A</li>
-                        <li>12:00 - Makan Siang</li>
-                        <li>14:00 - Pembaruan Keuangan</li>
-                    </ul>
+                    <h2 class="text-center">Grafik Omset Tahunan</h2>
+                    <div class="chart-container" style="display: flex; justify-content: center; margin-top: 20px;">
+                        <canvas id="chartOmset" style="width: 80%; max-width: 1000px;"></canvas>
+                    </div>
                 </div>
-            </div> --}}
-
-            {{-- <div class="card">
-                <div class="card-body">
-                    <h4 class="section-title">Berita Perusahaan</h4>
-                    <ul>
-                        <li>Pengumuman: Perusahaan mendapat penghargaan</li>
-                        <li>Berita: Perubahan kebijakan internal</li>
-                        <li>Berita: Pembaruan sistem IT</li>
-                    </ul>
-                </div>
-            </div> --}}
-
+            </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var labels = @json($labels);
+    var totalPerTahun = @json($totalPerTahun);
+
+    var maxOmset = Math.max(...totalPerTahun);
+    var minOmset = Math.min(...totalPerTahun);
+
+    var backgroundColors = totalPerTahun.map(value => {
+        if (value === maxOmset) {
+            return 'rgba(0, 255, 0, 0.5)';
+        } else if (value === minOmset) {
+            return 'rgba(255, 0, 0, 0.5)';
+        } else {
+            return 'rgba(0, 153, 255, 0.5)';
+        }
+    });
+
+    var ctx = document.getElementById('chartOmset').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Total Omset',
+                data: totalPerTahun,
+                backgroundColor: backgroundColors,
+                borderColor: backgroundColors.map(color => color.replace('0.5', '1')),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>
+
 @endsection

@@ -67,9 +67,6 @@
         @endif
 
 
-
-
-
         <li class="nav-item">
             <a href="{{ route('omsets.index') }}" class="nav-link text-white {{ (Request::routeIs('omsets.index') ? 'active' : '') }}">
                 <i class="nav-icon fas fa-dollar-sign"></i>
