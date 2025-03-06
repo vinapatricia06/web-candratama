@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Dashboard Surat Admin')
+@section('title', 'Dashboard Surat Administrasi')
 @section('content')
 
     @if($suratKeAdmin > 0)
@@ -9,7 +9,7 @@
         </div>
     @endif
 
-    <h1>Rekap Surat Admin</h1>
+    <h1>Rekap Surat Administrasi</h1>
     <div class="row">
         <div class="col-md-6">
             <canvas id="statusChart"></canvas>

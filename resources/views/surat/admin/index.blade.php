@@ -3,7 +3,7 @@
 @section('title', 'Kelola Surat Admin')
 @section('content')
 
-    <h1>Daftar Surat Pengajuan Admin</h1>
+    <h1>Daftar Surat Pengajuan Administrasi</h1>
 
     @if (session('success'))
         <div class="alert alert-success">

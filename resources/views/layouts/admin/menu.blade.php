@@ -8,15 +8,39 @@
                     <p>Dashboard Marketing</p>
                 </a>
             </li>
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.digital_marketing.list') }}" class="nav-link text-white">Digital Marketing</a></li>
+                </ul>
+            </div>
+        </li>
         @endrole
 
         @role('admin')
             <li class="nav-item">
                 <a href="{{ route('surat.admin.dashboard') }}" class="nav-link text-white">
                     <i class="nav-icon fas fa-user-shield"></i>
-                    <p>Dashboard Admin</p>
+                    <p>Dashboard Administrasi</p>
                 </a>
             </li>
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
+                </ul>
+            </div>
+        </li>
         @endrole
 
         @role('finance')
@@ -26,6 +50,22 @@
                     <p>Dashboard Finance</p>
                 </a>
             </li>
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.digital_marketing.list') }}" class="nav-link text-white">Digital Marketing</a></li>
+                    <li><a href="{{ route('surat.finance.index') }}" class="nav-link text-white">Finance</a></li>
+                    <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
+                    <li><a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a></li>
+                    <li><a href="{{ route('surat.purchasing.index') }}" class="nav-link text-white">Purchasing</a></li>
+                </ul>
+            </div>
+        </li>
         @endrole
 
         @role('warehouse')
@@ -35,6 +75,18 @@
                     <p>Dashboard Warehouse</p>
                 </a>
             </li>
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a></li>
+                </ul>
+            </div>
+        </li>
         @endrole
 
         @role('purchasing')
@@ -44,6 +96,23 @@
                     <p>Dashboard Purchasing</p>
                 </a>
             </li>
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.digital_marketing.list') }}" class="nav-link text-white">Digital Marketing</a></li>
+                    <li><a href="{{ route('surat.finance.index') }}" class="nav-link text-white">Finance</a></li>
+                    <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
+                    <li><a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a></li>
+                    <li><a href="{{ route('surat.purchasing.index') }}" class="nav-link text-white">Purchasing</a></li>
+                </ul>
+            </div>
+        </li>
         @endrole
 
         @role('CEO')
@@ -59,6 +128,23 @@
                     <p>User</p>
                 </a>
             </li>
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.digital_marketing.list') }}" class="nav-link text-white">Digital Marketing</a></li>
+                    <li><a href="{{ route('surat.finance.index') }}" class="nav-link text-white">Finance</a></li>
+                    <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
+                    <li><a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a></li>
+                    <li><a href="{{ route('surat.purchasing.index') }}" class="nav-link text-white">Purchasing</a></li>
+                </ul>
+            </div>
+        </li>
         @endrole
 
         @role('superadmin')
@@ -68,19 +154,28 @@
                         <p>User</p>
                     </a>
             </li>
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.digital_marketing.list') }}" class="nav-link text-white">Digital Marketing</a></li>
+                    <li><a href="{{ route('surat.finance.index') }}" class="nav-link text-white">Finance</a></li>
+                    <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
+                    <li><a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a></li>
+                    <li><a href="{{ route('surat.purchasing.index') }}" class="nav-link text-white">Purchasing</a></li>
+                </ul>
+            </div>
+        </li>
 
         @endrole
 
 
-        <!-- menu user belum bisa  -->
-        @if(auth()->check() && auth()->user()->hasAnyRole(['superadmin', 'CEO']))
-            <li class="nav-item">
-                <a href="{{ route('users.index') }}" class="nav-link text-white">
-                    <i class="nav-icon fas fa-users"></i>
-                    <p>User</p>
-                </a>
-            </li>
-        @endif
+        
 
         <li class="nav-item">
             <a href="{{ route('omsets.index') }}" class="nav-link text-white {{ (Request::routeIs('omsets.index') ? 'active' : '') }}">
@@ -103,22 +198,7 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link text-white d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
-                <i class="nav-icon fas fa-envelope"></i>
-                <p>Surat</p>
-                <i class="fas fa-chevron-down"></i>
-            </a>
-            <div class="collapse" id="menuSurat">
-                <ul class="ps-4 list-unstyled">
-                    <li><a href="{{ route('surat.digital_marketing.list') }}" class="nav-link text-white">Digital Marketing</a></li>
-                    <li><a href="{{ route('surat.finance.index') }}" class="nav-link text-white">Finance</a></li>
-                    <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
-                    <li><a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a></li>
-                    <li><a href="{{ route('surat.purchasing.index') }}" class="nav-link text-white">Purchasing</a></li>
-                </ul>
-            </div>
-        </li>
+
     </ul>
 
     <!-- Tombol Logout di bawah tapi tidak terlalu mepet -->
