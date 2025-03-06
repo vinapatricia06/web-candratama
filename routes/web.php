@@ -147,7 +147,7 @@ Route::get('/login', function () {
 
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/dashboard/CEO', [AuthController::class, 'dashboardCEO'])->middleware('auth', 'role:CEO');
+Route::get('/dashboard/CEO', [AuthController::class, 'dashboardCEO'])->name('dashboard.ceo')->middleware('auth', 'role:CEO');
 
 
 // // Route berdasarkan role

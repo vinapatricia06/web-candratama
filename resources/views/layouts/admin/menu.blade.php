@@ -1,11 +1,74 @@
 <nav class="mt-2 d-flex flex-column" style="height: 100vh; position: relative;">
     <ul class="nav nav-pills nav-sidebar flex-column flex-grow-1" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-item">
-            <a href="{{ route('users.index') }}" class="nav-link text-white {{ (Request::routeIs('users.index') ? 'active' : '') }}">
-                <i class="nav-icon fas fa-users"></i>
-                <p>User</p>
-            </a>
-        </li>
+
+        @role('marketing')
+            <li class="nav-item">
+                <a href="{{ route('dashboard.marketing') }}" class="nav-link text-white">
+                    <i class="nav-icon fas fa-chart-line"></i>
+                    <p>Dashboard Marketing</p>
+                </a>
+            </li>
+        @endrole
+
+        @role('admin')
+            <li class="nav-item">
+                <a href="{{ route('surat.admin.dashboard') }}" class="nav-link text-white">
+                    <i class="nav-icon fas fa-user-shield"></i>
+                    <p>Dashboard Admin</p>
+                </a>
+            </li>
+        @endrole
+
+        @role('finance')
+            <li class="nav-item">
+                <a href="{{ route('surat.finance.dashboard') }}" class="nav-link text-white">
+                    <i class="nav-icon fas fa-coins"></i>
+                    <p>Dashboard Finance</p>
+                </a>
+            </li>
+        @endrole
+
+        @role('warehouse')
+            <li class="nav-item">
+                <a href="{{ route('surat.warehouse.dashboard') }}" class="nav-link text-white">
+                    <i class="nav-icon fas fa-warehouse"></i>
+                    <p>Dashboard Warehouse</p>
+                </a>
+            </li>
+        @endrole
+
+        @role('purchasing')
+            <li class="nav-item">
+                <a href="{{ route('surat.purchasing.dashboard') }}" class="nav-link text-white">
+                    <i class="nav-icon fas fa-shopping-cart"></i>
+                    <p>Dashboard Purchasing</p>
+                </a>
+            </li>
+        @endrole
+
+        @role('CEO')
+            <li class="nav-item">
+                <a href="{{ route('dashboard.ceo') }}" class="nav-link text-white">
+                    <i class="nav-icon fas fa-user-tie"></i>
+                    <p>Dashboard CEO</p>
+                </a>
+            </li>
+        @endrole
+
+
+        <!-- menu user belum bisa  -->
+        @if(auth()->check() && auth()->user()->hasAnyRole(['superadmin', 'CEO']))
+            <li class="nav-item">
+                <a href="{{ route('users.index') }}" class="nav-link text-white">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>User</p>
+                </a>
+            </li>
+        @endif
+
+
+
+
 
         <li class="nav-item">
             <a href="{{ route('omsets.index') }}" class="nav-link text-white {{ (Request::routeIs('omsets.index') ? 'active' : '') }}">
@@ -36,7 +99,6 @@
             </a>
             <div class="collapse" id="menuSurat">
                 <ul class="ps-4 list-unstyled">
-                    <li><a href="{{ route('dashboard.marketing') }}" class="nav-link text-white">Dashboard</a></li>
                     <li><a href="{{ route('surat.digital_marketing.list') }}" class="nav-link text-white">Digital Marketing</a></li>
                     <li><a href="{{ route('surat.finance.index') }}" class="nav-link text-white">Finance</a></li>
                     <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>

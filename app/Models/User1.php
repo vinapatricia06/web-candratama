@@ -4,10 +4,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User1 extends Authenticatable
 {
     use HasFactory, Notifiable;
+    use HasRoles;
 
     protected $table = 'users1'; 
     protected $primaryKey = 'id_user'; 
@@ -21,6 +23,11 @@ class User1 extends Authenticatable
     public function progressProjects()
     {
         return $this->hasMany(ProgressProject::class, 'teknisi_id', 'id_user');
+    }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
     }
 
     public function isSuperADM() { return $this->role === 'superadmin'; }
