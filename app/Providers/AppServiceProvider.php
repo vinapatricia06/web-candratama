@@ -20,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-       //
+        Blade::if('role', function ($role) {
+            return auth()->check() && auth()->user()->hasRole($role);
+        });
     }
 }
