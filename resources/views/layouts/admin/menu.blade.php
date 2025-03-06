@@ -53,6 +53,22 @@
                     <p>Dashboard CEO</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ route('users.index') }}" class="nav-link text-white">
+                    <i class="nav-icon fas fa-users"></i>
+                    <p>User</p>
+                </a>
+            </li>
+        @endrole
+
+        @role('superadmin')
+            <li class="nav-item">
+                    <a href="{{ route('users.index') }}" class="nav-link text-white">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>User</p>
+                    </a>
+            </li>
+
         @endrole
 
 
@@ -65,6 +81,8 @@
                 </a>
             </li>
         @endif
+
+
 
 
 
