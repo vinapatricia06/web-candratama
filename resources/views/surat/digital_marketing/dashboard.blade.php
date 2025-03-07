@@ -10,6 +10,18 @@
         </div>
     @endif
 
+    @if(session('statusUpdated'))
+        <div class="alert alert-success d-flex justify-content-between align-items-center">
+            <span>{{ session('statusUpdated') }}</span>
+            <form action="{{ route('notif.clear') }}" method="POST" style="margin-left: 10px;">
+                @csrf
+                <button type="submit" class="btn-close"></button>
+            </form>
+        </div>
+    @endif
+
+
+
     <h1>Rekap Surat Marketing</h1>
     <div class="row">
         <div class="col-md-6">

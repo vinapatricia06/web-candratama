@@ -80,8 +80,16 @@ class SuratWarehouseController extends Controller
         ]);
 
         $surat = SuratWarehouse::findOrFail($id);
+        $oldStatus = $surat->status_pengajuan;
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
+
+        $nomorSurat = $surat->formatted_nomor_surat; // Ambil nomor surat dari accessor
+
+        // Cek apakah status berubah menjadi ACC atau Tolak
+        if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
+            session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
+        }
 
         return redirect()->route('surat.warehouse.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }

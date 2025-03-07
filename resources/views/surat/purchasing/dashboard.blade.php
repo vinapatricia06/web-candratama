@@ -3,9 +3,32 @@
 @section('title', 'Dashboard Surat Purchasing')
 @section('content')
 
-    @if ($suratKePCH > 0)
+    {{-- Notifikasi surat masuk ke PCH --}}
+    @if(session('suratDM') || session('suratADM') || session('suratWRH'))
         <div class="alert alert-warning">
-            Ada {{ $suratKePCH }} surat yang masuk ke Purchasing dengan status Pending.
+            <strong>Notifikasi!</strong> Ada surat masuk ke <strong>Purchasing</strong> untuk segera ditindak lanjuti :
+            <ul>
+                @if(session('suratDM'))
+                    <li>Dari <strong>Marketing</strong>: {{ session('suratDM') }} surat</li>
+                @endif
+                @if(session('suratADM'))
+                    <li>Dari <strong>Admin</strong>: {{ session('suratADM') }} surat</li>
+                @endif
+                @if(session('suratWRH'))
+                    <li>Dari <strong>Warehouse</strong>: {{ session('suratWRH') }} surat</li>
+                @endif
+            </ul>
+        </div>
+    @endif
+
+    {{-- Notifikasi status surat yang telah diperbarui --}}
+    @if(session('statusUpdated'))
+        <div class="alert alert-success d-flex justify-content-between align-items-center">
+            <span>{{ session('statusUpdated') }}</span>
+            <form action="{{ route('notif.clear') }}" method="POST" style="margin-left: 10px;">
+                @csrf
+                <button type="submit" class="btn-close"></button>
+            </form>
         </div>
     @endif
 
@@ -53,8 +76,8 @@
             audio.play();
         }
 
-        // Cek apakah ada notifikasi
-        @if (session('suratKePurchasing') > 0)
+        // Cek apakah ada notifikasi surat masuk ke Purchasing
+        @if(session('suratDM') || session('suratADM') || session('suratWRH'))
             playNotificationSound();
         @endif
     </script>

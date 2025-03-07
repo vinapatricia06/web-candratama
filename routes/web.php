@@ -150,6 +150,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/dashboard/CEO', [AuthController::class, 'dashboardCEO'])->name('dashboard.ceo')->middleware('auth', 'role:CEO');
 
 
+Route::post('/notif-clear', function () {
+    session()->forget('statusUpdated');
+    return back();
+})->name('notif.clear');
+
+
 // // Route berdasarkan role
 // Route::middleware(['auth', 'role:superadmin'])->group(function () {
 //     Route::get('/superadmin/dashboard', [AdminController::class, 'index'])->name('superadmin.dashboard');

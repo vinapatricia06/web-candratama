@@ -92,6 +92,7 @@ class SuratMarketingController extends Controller
     }
 
 
+
     public function updateStatusPengajuan(Request $request, $id)
     {
         $request->validate([
@@ -99,17 +100,27 @@ class SuratMarketingController extends Controller
         ]);
 
         $surat = SuratMarketing::findOrFail($id);
+        $oldStatus = $surat->status_pengajuan;
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
-        // Cek apakah status surat ditujukan untuk DM
-        if ($surat->divisi_tujuan == 'DM' && $surat->status_pengajuan != 'Pending') {
-            // Hilangkan notifikasi setelah surat diubah statusnya
-            session()->forget('suratKeDM'); // Menghapus notifikasi dari sesi
+        $nomorSurat = $surat->formatted_nomor_surat; // Ambil nomor surat dari accessor
+
+        // Cek apakah status berubah menjadi ACC atau Tolak
+        if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
+            session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
         }
 
-        return redirect()->route('surat.digital_marketing.list')->with('success', 'Status pengajuan berhasil diperbarui.');
+        // Hapus notifikasi jika surat tujuan ke DM telah diubah statusnya
+        if ($surat->divisi_tujuan == 'DM' && $surat->status_pengajuan != 'Pending') {
+            session()->forget('suratKeDM');
+        }
+
+
+        return redirect()->route('surat.marketing.list')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
+
+
 
 
     public function viewPDF($id)

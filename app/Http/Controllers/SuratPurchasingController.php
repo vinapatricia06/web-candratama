@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\SuratAdmin;
+use App\Models\SuratMarketing;
 use Illuminate\Http\Request;
 use App\Models\SuratPurchasing;
+use App\Models\SuratWarehouse;
 use Illuminate\Support\Facades\Storage;
 
 class SuratPurchasingController extends Controller
@@ -80,11 +83,31 @@ class SuratPurchasingController extends Controller
         ]);
 
         $surat = SuratPurchasing::findOrFail($id);
+        $oldStatus = $surat->status_pengajuan;
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
-        return redirect()->route('surat.purchasing.index')->with('success', 'Status pengajuan berhasil diperbarui.');
+        $nomorSurat = $surat->formatted_nomor_surat; // Ambil nomor surat dari accessor
+
+        // Cek apakah status berubah menjadi ACC atau Tolak
+        if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
+            session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
+        }
+
+        // Hapus notifikasi jika surat tujuan ke DM telah diubah statusnya
+        if ($surat->divisi_tujuan == 'pch' && $surat->status_pengajuan != 'Pending') {
+            session()->forget('suratDM');
+        }
+        if ($surat->divisi_tujuan == 'pch' && $surat->status_pengajuan != 'Pending') {
+            session()->forget('suratADM');
+        }
+        if ($surat->divisi_tujuan == 'pch' && $surat->status_pengajuan != 'Pending') {
+            session()->forget('suratWRH');
+        }
+
+        return redirect()->route('surat.puschasing.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
+
 
     public function viewPDF($id)
     {
@@ -152,13 +175,32 @@ class SuratPurchasingController extends Controller
 
         $divisi_pembuat = SuratPurchasing::distinct()->pluck('divisi_pembuat');
 
-        // Menghitung surat yang divisi tujuannya ke Finance
-        $suratKePCH = SuratPurchasing::where('divisi_tujuan', 'WRH')->where('status_pengajuan', 'Pending')->count();
+        // Menghitung surat yang divisi tujuannya 
+        $suratDM = SuratMarketing::where('divisi_tujuan', 'PCH')->where('status_pengajuan', 'Pending')->count();
 
-        // Menyimpan informasi surat ke Finance di sesi jika ada
-        if ($suratKePCH > 0) {
-            session(['suratKePCH' => $suratKePCH]);
+        // Menyimpan informasi surat di sesi jika ada
+        if ($suratDM > 0) {
+            session(['suratDM' => $suratDM]);
         }
+
+        // Menghitung surat yang divisi tujuannya ke Finance
+        $suratADM = SuratAdmin::where('divisi_tujuan', 'PCH')->where('status_pengajuan', 'Pending')->count();
+
+        // Menyimpan informasi surat di sesi jika ada
+        if ($suratADM > 0) {
+            session(['suratADM' => $suratADM]);
+        }
+
+        // Menghitung surat yang divisi tujuannya 
+        $suratWRH = SuratWarehouse::where('divisi_tujuan', 'PCH')->where('status_pengajuan', 'Pending')->count();
+
+        // Menyimpan informasi surat di sesi jika ada
+        if ($suratWRH > 0) {
+            session(['suratWRH' => $suratWRH]);
+        }
+        
+
+        
 
         $monthlyCounts = SuratPurchasing::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
             ->groupBy('month')
@@ -171,7 +213,9 @@ class SuratPurchasingController extends Controller
             'tolak' => $tolak,
             'months' => $monthlyCounts->keys(),
             'monthlyCounts' => $monthlyCounts->values(),
-            'suratKePCH' => $suratKePCH,
+            'suratDM' => $suratDM,
+            'suratADM' => $suratADM,
+            'suratWRH' => $suratWRH,
             'divisi_pembuat' => $divisi_pembuat // Pastikan variabel ini dikirimkan ke view
         ]);
     }

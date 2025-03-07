@@ -177,11 +177,6 @@ class SuratFinanceController extends Controller
         }
         
 
-        $suratFinances = SuratFinance::orderBy('created_at', 'desc')
-            ->whereIn('status_pengajuan', ['Pending', 'ACC', 'Tolak'])
-            ->get();
-
-
         $monthlyCounts = SuratFinance::selectRaw("YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count")
             ->groupBy('year', 'month')
             ->orderByRaw('year ASC, month ASC')
