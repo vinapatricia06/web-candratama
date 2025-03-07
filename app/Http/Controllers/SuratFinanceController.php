@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SuratMarketing;
 use App\Models\SuratFinance;
+use App\Models\SuratWarehouse;
+use App\Models\SuratPurchasing;
+use App\Models\SuratAdmin;
 use Illuminate\Support\Facades\Storage;
 
 class SuratFinanceController extends Controller
@@ -165,7 +169,6 @@ class SuratFinanceController extends Controller
         $acc = SuratFinance::where('status_pengajuan', 'ACC')->count();
         $tolak = SuratFinance::where('status_pengajuan', 'Tolak')->count();
 
-
         $divisi_pembuat = SuratFinance::distinct()->pluck('divisi_pembuat');
 
         // Menghitung surat yang divisi tujuannya ke Finance
@@ -175,15 +178,33 @@ class SuratFinanceController extends Controller
         if ($suratKeFinance > 0) {
             session(['suratKeFinance' => $suratKeFinance]);
         }
+
+        // Menghitung surat dari divisi Marketing, Admin, Warehouse, Purchasing yang ditujukan ke Finance
+        $suratMarketing = SuratMarketing::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
+        $suratAdmin = SuratAdmin::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
+        $suratWarehouse = SuratWarehouse::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
+        $suratPurchasing = SuratPurchasing::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
+
+        // Menyimpan informasi surat dari divisi lain ke Finance jika ada
+        if ($suratMarketing > 0) {
+            session(['suratMarketing' => $suratMarketing]);
+        }
+        if ($suratAdmin > 0) {
+            session(['suratAdmin' => $suratAdmin]);
+        }
+        if ($suratWarehouse > 0) {
+            session(['suratWarehouse' => $suratWarehouse]);
+        }
+        if ($suratPurchasing > 0) {
+            session(['suratPurchasing' => $suratPurchasing]);
+        }
         
 
         $monthlyCounts = SuratFinance::selectRaw("YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count")
             ->groupBy('year', 'month')
             ->orderByRaw('year ASC, month ASC')
             ->get();
-        
-      
-        
+
         return view('surat.finance.dashboard', [
             'pending' => $pending,
             'acc' => $acc,
@@ -191,7 +212,12 @@ class SuratFinanceController extends Controller
             'months' => $monthlyCounts->pluck('month')->toArray(),
             'monthlyCounts' => $monthlyCounts->pluck('count')->toArray(),
             'suratKeFinance' => $suratKeFinance,
+            'suratMarketing' => $suratMarketing,
+            'suratAdmin' => $suratAdmin,
+            'suratWarehouse' => $suratWarehouse,
+            'suratPurchasing' => $suratPurchasing,
             'divisi_pembuat' => $divisi_pembuat
         ]);
     }
+
 }

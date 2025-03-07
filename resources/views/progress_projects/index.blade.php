@@ -46,56 +46,59 @@
         <div class="d-flex justify-content-end mb-3">
             <a href="{{ route('progress_projects.downloadPdf') }}" class="btn btn-success">Download PDF</a>
         </div>
-        <!-- Tabel untuk menampilkan progress project -->
-        <table class="table table-bordered" style="font-size: 18px; width: 100%; table-layout: fixed;">
-            <thead class="table-light">
-                <tr>
-                    <th>No</th>
-                    <th>Teknisi</th>
-                    <th>Klien</th>
-                    <th>Alamat</th>
-                    <th>Project</th>
-                    <th>Tanggal Setting</th>
-                    <th>Dokumentasi</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($projects as $key => $project)
+
+        <!-- Tabel untuk menampilkan progress project dengan responsif -->
+        <div class="table-responsive" style="max-width: 100%; overflow-x: auto;">
+            <table class="table table-bordered" style="font-size: 18px; width: 100%; table-layout: auto;">
+                <thead class="table-light">
                     <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $project->teknisi->nama ?? 'Tidak Ada' }}</td>
-                        <td>{{ $project->klien }}</td>
-                        <td>{{ $project->alamat }}</td>
-                        <td>{{ $project->project }}</td>
-                        <td>{{ $project->tanggal_setting }}</td>
-                        <td>
-                            @if ($project->dokumentasi)
-                                <!-- Menambahkan tautan untuk melihat gambar lebih besar -->
-                                <a href="#" data-toggle="modal" data-target="#imageModal"
-                                    onclick="showImage('{{ asset($project->dokumentasi) }}')">
-                                    <img src="{{ asset($project->dokumentasi) }}" alt="Dokumentasi" width="120">
-                                </a>
-                            @else
-                                Tidak ada gambar
-                            @endif
-                        </td>
-                        <td>{{ $project->status }}</td>
-                        <td>
-                            <a href="{{ route('progress_projects.edit', $project->id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('progress_projects.destroy', $project->id) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                            </form>
-                        </td>
+                        <th>No</th>
+                        <th>Teknisi</th>
+                        <th>Klien</th>
+                        <th>Alamat</th>
+                        <th>Project</th>
+                        <th>Tanggal Setting</th>
+                        <th>Dokumentasi</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($projects as $key => $project)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $project->teknisi->nama ?? 'Tidak Ada' }}</td>
+                            <td>{{ $project->klien }}</td>
+                            <td>{{ $project->alamat }}</td>
+                            <td>{{ $project->project }}</td>
+                            <td>{{ $project->tanggal_setting }}</td>
+                            <td>
+                                @if ($project->dokumentasi)
+                                    <!-- Menambahkan tautan untuk melihat gambar lebih besar -->
+                                    <a href="#" data-toggle="modal" data-target="#imageModal"
+                                        onclick="showImage('{{ asset($project->dokumentasi) }}')">
+                                        <img src="{{ asset($project->dokumentasi) }}" alt="Dokumentasi" width="120">
+                                    </a>
+                                @else
+                                    Tidak ada gambar
+                                @endif
+                            </td>
+                            <td>{{ $project->status }}</td>
+                            <td>
+                                <a href="{{ route('progress_projects.edit', $project->id) }}" class="btn btn-warning">Edit</a>
+                                <form action="{{ route('progress_projects.destroy', $project->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"
+                                        onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         <!-- Modal untuk menampilkan gambar besar -->
         <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"

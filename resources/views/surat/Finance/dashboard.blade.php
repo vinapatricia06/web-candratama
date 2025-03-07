@@ -3,12 +3,27 @@
 @section('title', 'Dashboard Surat Finance')
 @section('content')
 
-    @if($suratKeFinance > 0)
+    {{-- Notifikasi surat masuk ke PCH --}}
+    @if(session('suratMarketing') || session('suratAdmin') || session('suratWarehouse') || session('suratPurchasing'))
         <div class="alert alert-warning">
-            Ada {{ $suratKeFinance }} surat yang masuk dari Finance dengan status Pending.
+            <strong>Notifikasi!</strong> Ada surat masuk ke <strong>Finance</strong> untuk segera ditindak lanjuti :
+            <ul>
+                @if(session('suratMarketing'))
+                    <li>Dari <strong>Marketing</strong>: {{ session('suratMarketing') }} surat</li>
+                @endif
+                @if(session('suratAdmin'))
+                    <li>Dari <strong>Admin</strong>: {{ session('suratAdmin') }} surat</li>
+                @endif
+                @if(session('suratWarehouse'))
+                    <li>Dari <strong>Warehouse</strong>: {{ session('suratWarehouse') }} surat</li>
+                @endif
+                @if(session('suratPurchasing'))
+                    <li>Dari <strong>Purchasing</strong>: {{ session('suratPurchasing') }} surat</li>
+                @endif
+
+            </ul>
         </div>
     @endif
-
     <h1>Rekap Surat Finance</h1>
     <div class="row">
         <div class="col-md-6">
@@ -55,7 +70,7 @@
         }
 
         // Cek apakah ada notifikasi
-        @if(session('suratKeFinance') > 0)
+        @if(session('suratKeFinance') > 0 || session('suratMarketing') > 0 || session('suratAdmin') > 0 || session('suratWarehouse') > 0 || session('suratPurchasing') > 0)
             playNotificationSound(); // Memainkan suara jika ada notifikasi
         @endif
 

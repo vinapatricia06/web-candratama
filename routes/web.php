@@ -156,28 +156,7 @@ Route::post('/notif-clear', function () {
 })->name('notif.clear');
 
 
-// // Route berdasarkan role
-// Route::middleware(['auth', 'role:superadmin'])->group(function () {
-//     Route::get('/superadmin/dashboard', [AdminController::class, 'index'])->name('superadmin.dashboard');
-// });
 
-// Route::middleware(['auth', 'role:admin'])->group(function () {
-//     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-// });
+use App\Http\Controllers\SuratEkspedisiController;
 
-// Route::middleware(['auth', 'role:direktur'])->group(function () {
-//     Route::get('/direktur/dashboard', [DirekturController::class, 'index'])->name('direktur.dashboard');
-// });
-
-// Route::middleware(['auth', 'role:marketing'])->group(function () {
-//     Route::get('/marketing/dashboard', [MarketingController::class, 'index'])->name('marketing.dashboard');
-// });
-
-// Route::middleware(['auth', 'role:teknisi'])->group(function () {
-//     Route::get('/teknisi/dashboard', [TeknisiController::class, 'index'])->name('teknisi.dashboard');
-// });
-
-// // Route umum untuk semua user
-// Route::middleware('auth')->get('/home', function () {
-//     return view('home');
-// })->name('home');
+Route::resource('surat_ekspedisi', SuratEkspedisiController::class);

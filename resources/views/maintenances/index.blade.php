@@ -44,55 +44,58 @@
         <div class="d-flex justify-content-end mb-3">
             <a href="{{ route('maintenances.downloadPdf') }}" class="btn btn-success">Download PDF</a>
         </div>
-        <!-- Tabel untuk menampilkan maintenance project -->
-        <table class="table table-bordered" style="font-size: 16px; width: 100%; table-layout: auto;">
-            <thead class="table-light">
-                <tr>
-                    <th>No</th>
-                    <th>Klien</th>
-                    <th>Alamat</th>
-                    <th>Project</th>
-                    <th>Tanggal Setting</th>
-                    <th>Tanggal Serah Terima</th>
-                    <th>Maintenance</th>
-                    <th>Dokumentasi</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($maintenances as $key => $maintenance)
+
+        <!-- Tabel untuk menampilkan maintenance project dengan responsif -->
+        <div class="table-responsive" style="overflow-x: auto;">
+            <table class="table table-bordered" style="font-size: 16px; width: 100%; table-layout: auto;">
+                <thead class="table-light">
                     <tr>
-                        <td>{{ $key + 1 }}</td>
-                        <td>{{ $maintenance->nama_klien }}</td>
-                        <td>{{ $maintenance->alamat }}</td>
-                        <td>{{ $maintenance->project }}</td>
-                        <td>{{ $maintenance->tanggal_setting }}</td>
-                        <td>{{ $maintenance->tanggal_serah_terima }}</td>
-                        <td>{{ $maintenance->maintenance ?? 'Tidak Ada' }}</td>
-                        <td>
-                            @if ($maintenance->dokumentasi)
-                                <!-- Menambahkan tautan untuk melihat gambar lebih besar -->
-                                <a href="#" data-toggle="modal" data-target="#imageModal" onclick="showImage('{{ asset($maintenance->dokumentasi) }}')">
-                                    <img src="{{ asset($maintenance->dokumentasi) }}" alt="Dokumentasi" width="120">
-                                </a>
-                            @else
-                                Tidak ada gambar
-                            @endif
-                        </td>
-                        <td>{{ $maintenance->status }}</td>
-                        <td>
-                            <a href="{{ route('maintenances.edit', $maintenance->id) }}" class="btn btn-warning">Edit</a>
-                            <form action="{{ route('maintenances.destroy', $maintenance->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                            </form>
-                        </td>
+                        <th>No</th>
+                        <th>Klien</th>
+                        <th>Alamat</th>
+                        <th>Project</th>
+                        <th>Tanggal Setting</th>
+                        <th>Tanggal Serah Terima</th>
+                        <th>Maintenance</th>
+                        <th>Dokumentasi</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($maintenances as $key => $maintenance)
+                        <tr>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $maintenance->nama_klien }}</td>
+                            <td>{{ $maintenance->alamat }}</td>
+                            <td>{{ $maintenance->project }}</td>
+                            <td>{{ $maintenance->tanggal_setting }}</td>
+                            <td>{{ $maintenance->tanggal_serah_terima }}</td>
+                            <td>{{ $maintenance->maintenance ?? 'Tidak Ada' }}</td>
+                            <td>
+                                @if ($maintenance->dokumentasi)
+                                    <!-- Menambahkan tautan untuk melihat gambar lebih besar -->
+                                    <a href="#" data-toggle="modal" data-target="#imageModal" onclick="showImage('{{ asset($maintenance->dokumentasi) }}')">
+                                        <img src="{{ asset($maintenance->dokumentasi) }}" alt="Dokumentasi" width="120">
+                                    </a>
+                                @else
+                                    Tidak ada gambar
+                                @endif
+                            </td>
+                            <td>{{ $maintenance->status }}</td>
+                            <td>
+                                <a href="{{ route('maintenances.edit', $maintenance->id) }}" class="btn btn-warning">Edit</a>
+                                <form action="{{ route('maintenances.destroy', $maintenance->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Modal untuk menampilkan gambar besar -->
