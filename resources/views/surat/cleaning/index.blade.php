@@ -1,0 +1,72 @@
+@extends('layouts.admin.app')
+
+@section('title', 'Kelola Surat Cleaning Services')
+
+@section('content')
+
+    <h1>Daftar Surat Pengajuan Cleaning Services</h1>
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div style="margin-bottom: 20px;">
+        <a href="{{ route('surat.cleaning.create') }}" class="btn btn-primary">Tambah Surat</a>
+    </div>
+
+    <div class="table-responsive">
+        <table border="1" cellpadding="10" class="table table-bordered" style="width: 100%; margin: 0 auto; border-collapse: collapse; text-align: center;">
+            <thead>
+                <tr style="background-color: #f0f0f0;">
+                    <th>No</th>
+                    <th>Nama</th>
+                    <th>Divisi</th>
+                    <th>Keperluan</th>
+                    <th>File Surat</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($surats as $index => $surat)
+                    <tr style="background-color: {{ $index % 2 == 0 ? '#ffffff' : '#f9f9f9' }};">
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $surat->nama }}</td>
+                        <td>{{ $surat->divisi }}</td>
+                        <td>{{ $surat->keperluan }}</td>
+                        <td>
+                            @if ($surat->file_path)
+                                <a href="{{ route('surat.cleaning.download', $surat->id) }}" class="btn btn-success">Download File</a>
+                            @else
+                                Tidak Ada File
+                            @endif
+                        </td>
+
+                        <td>
+                            <form action="{{ route('surat.cleaning.updateStatus', $surat->id) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <select name="status_pengajuan" class="form-select">
+                                    <option value="Pending" {{ $surat->status_pengajuan == 'Pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="ACC" {{ $surat->status_pengajuan == 'ACC' ? 'selected' : '' }}>ACC</option>
+                                    <option value="Tolak" {{ $surat->status_pengajuan == 'Tolak' ? 'selected' : '' }}>Tolak</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary mt-2">Update</button>
+                            </form>
+                        </td>
+
+                        <td>
+                            @if ($surat->file_path)
+                                <a href="{{ route('surat.cleaning.view', $surat->id) }}" class="btn btn-primary">View File</a>
+                            @endif
+                            <a href="{{ route('surat.cleaning.edit', $surat->id) }}" class="btn btn-warning">Edit</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
+@endsection

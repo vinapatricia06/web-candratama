@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\SuratEkspedisi;
+use Illuminate\Support\Facades\Auth; 
+use Illuminate\Support\Facades\Storage;
 
 class SuratEkspedisiController extends Controller
 {
@@ -18,7 +21,7 @@ class SuratEkspedisiController extends Controller
     public function create()
     {
         $divisi = Auth::user()->role;  // Mengambil divisi dari role user yang login
-        $nama = Auth::user()->name;    // Mengambil nama dari user yang login
+        $nama = Auth::user()->nama;    // Mengambil nama dari user yang login
         return view('surat.ekspedisi.create', compact('nama', 'divisi'));
     }
 
@@ -36,7 +39,7 @@ class SuratEkspedisiController extends Controller
         }
 
         SuratEkspedisi::create([
-            'nama' => Auth::user()->name,
+            'nama' => Auth::user()->nama,
             'divisi' => Auth::user()->role,
             'keperluan' => $request->keperluan,
             'file_path' => $filePath,
@@ -98,10 +101,33 @@ class SuratEkspedisiController extends Controller
             'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
         ]);
 
-        $surat = SuratFinance::findOrFail($id);
+        $surat = SuratEkspedisi::findOrFail($id);
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
-        return redirect()->route('surat.finance.index')->with('success', 'Status pengajuan berhasil diperbarui.');
+        return redirect()->route('surat.ekspedisi.index')->with('success', 'Status pengajuan berhasil diperbarui.');
+    }
+
+    public function downloadfile($id)
+    {
+        $surat = SuratEkspedisi::findOrFail($id);
+        $filePath = public_path('storage/' . $surat->file_path);
+        if (file_exists($filePath)) {
+            $fileName = "SuratEkspedisi_{$surat->id}_{$surat->jenis_surat}.pdf";
+            return response()->download($filePath, $fileName);
+        } else {
+            return redirect()->back()->withErrors('File tidak ditemukan.');
+        }
+    }
+
+    public function viewPDF($id)
+    {
+        $suratEkspedisi = SuratEkspedisi::find($id);
+
+        if (!$suratEkspedisi || !Storage::disk('public')->exists($suratEkspedisi->file_path)) {
+            return redirect()->route('surat.ekspedisi.index')->withErrors('File tidak ditemukan.');
+        }
+
+        return view('surat.ekspedisi.pdf', compact('suratEkspedisi'));
     }
 }

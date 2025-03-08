@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SuratEkspedisi extends Model
+class SuratCleaning extends Model
 {
     use HasFactory;
-    protected $table = 'surat_ekspedisi';
+    // Specify the table name (optional if it's following Laravel's naming convention)
+    protected $table = 'surat_cleanings';
+
+    // Define the attributes that can be mass-assigned
     protected $fillable = [
         'nama',
         'divisi',

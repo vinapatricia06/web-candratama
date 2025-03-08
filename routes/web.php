@@ -159,4 +159,38 @@ Route::post('/notif-clear', function () {
 
 use App\Http\Controllers\SuratEkspedisiController;
 
-Route::resource('surat_ekspedisi', SuratEkspedisiController::class);
+// Menampilkan daftar surat ekspedisi
+Route::get('/surat-ekspedisi', [SuratEkspedisiController::class, 'index'])->name('surat.ekspedisi.index');
+    
+// Menampilkan form untuk membuat surat ekspedisi baru
+Route::get('/surat-ekspedisi/create', [SuratEkspedisiController::class, 'create'])->name('surat.ekspedisi.create');
+
+// Menyimpan surat ekspedisi baru
+Route::post('/surat-ekspedisi', [SuratEkspedisiController::class, 'store'])->name('surat.ekspedisi.store');
+
+// Menampilkan form untuk mengedit surat ekspedisi
+Route::get('/surat-ekspedisi/{id}/edit', [SuratEkspedisiController::class, 'edit'])->name('surat.ekspedisi.edit');
+
+// Memperbarui surat ekspedisi
+Route::put('/surat-ekspedisi/{id}', [SuratEkspedisiController::class, 'update'])->name('surat.ekspedisi.update');
+
+// Menghapus surat ekspedisi
+Route::delete('/surat-ekspedisi/{id}', [SuratEkspedisiController::class, 'destroy'])->name('surat.ekspedisi.destroy');
+
+// Mengupdate status pengajuan surat ekspedisi
+Route::put('/surat-ekspedisi/{id}/status', [SuratEkspedisiController::class, 'updateStatusPengajuan'])->name('surat.ekspedisi.updateStatus');
+Route::get('/surat/ekspesidi/download/{id}', [SuratEkspedisiController::class, 'downloadfile'])->name('surat.ekspedisi.download');
+Route::get('/surat/ekspedisi/view/{id}', [SuratEkspedisiController::class, 'viewPDF'])->name('surat.ekspedisi.view');
+    
+
+use App\Http\Controllers\SuratCleaningController;
+
+Route::get('surat/cleaning', [SuratCleaningController::class, 'index'])->name('surat.cleaning.index'); // To show all surat cleaning
+Route::get('surat/cleaning/create', [SuratCleaningController::class, 'create'])->name('surat.cleaning.create'); // To show the create form
+Route::post('surat/cleaning', [SuratCleaningController::class, 'store'])->name('surat.cleaning.store'); // To handle the form submission (store)
+Route::get('surat/cleaning/{id}/edit', [SuratCleaningController::class, 'edit'])->name('surat.cleaning.edit'); // To show the edit form
+Route::put('surat/cleaning/{id}', [SuratCleaningController::class, 'update'])->name('surat.cleaning.update'); // To handle the form submission (update)
+Route::delete('surat/cleaning/{id}', [SuratCleaningController::class, 'destroy'])->name('surat.cleaning.destroy'); // To delete the surat
+Route::put('surat/cleaning/{id}/updateStatus', [SuratCleaningController::class, 'updateStatus'])->name('surat.cleaning.updateStatus'); // To update status
+Route::get('surat/cleaning/{id}/download', [SuratCleaningController::class, 'download'])->name('surat.cleaning.download'); // To download the file
+Route::get('surat/cleaning/{id}/view', [SuratCleaningController::class, 'viewPDF'])->name('surat.cleaning.view'); // To view the file

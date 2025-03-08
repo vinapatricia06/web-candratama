@@ -175,7 +175,7 @@
         @endrole
 
 
-        
+
 
         <li class="nav-item">
             <a href="{{ route('omsets.index') }}" class="nav-link text-white {{ (Request::routeIs('omsets.index') ? 'active' : '') }}">
@@ -195,6 +195,20 @@
             <a href="{{ route('maintenances.index') }}" class="nav-link text-white {{ (Request::routeIs('maintenances.index') ? 'active' : '') }}">
                 <i class="nav-icon fas fa-cogs"></i>
                 <p>Maintenance</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('surat.ekspedisi.index') }}" class="nav-link text-white {{ (Request::routeIs('maintenances.index') ? 'active' : '') }}">
+                <i class="nav-icon fas fa-cogs"></i>
+                <p>Ekspedisi</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('surat.cleaning.index') }}" class="nav-link text-white {{ (Request::routeIs('maintenances.index') ? 'active' : '') }}">
+                <i class="nav-icon fas fa-cogs"></i>
+                <p>Cleaning</p>
             </a>
         </li>
 

@@ -1,11 +1,11 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Kelola Surat Ekspedisi')
+@section('title', 'Form Surat Cleaning Services')
 @section('content')
 
-    <h1 class="mb-4">Form Surat Ekspedisi Baru</h1>
+    <h1 class="mb-4">Form Surat Cleaning Services Baru</h1>
 
-    <form action="{{ route('surat.ekspedisi.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('surat.cleaning.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <!-- Nama -->
@@ -26,9 +26,9 @@
             <textarea name="keperluan" class="form-control" required rows="4"></textarea>
         </div>
 
-        <!-- File Surat Ekspedisi -->
+        <!-- File Surat Cleaning -->
         <div class="mb-3">
-            <label for="file_surat" class="form-label">File Surat Ekspedisi (PDF)</label>
+            <label for="file_surat" class="form-label">File Surat Cleaning (PDF)</label>
             <input type="file" name="file_surat" class="form-control" accept="application/pdf">
         </div>
 
