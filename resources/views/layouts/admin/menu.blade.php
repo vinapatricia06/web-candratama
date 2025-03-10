@@ -38,6 +38,9 @@
             <div class="collapse" id="menuSurat">
                 <ul class="ps-4 list-unstyled">
                     <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
+                    <li><a href="{{ route('surat.interior_consultan.index') }}" class="nav-link text-white">Interior_Consultan</a></li>
+                    <li><a href="{{ route('surat.ekspedisi.index') }}" class="nav-link text-white">Ekspedisi</a></li>
+                    <li><a href="{{ route('surat.cleaning.index') }}" class="nav-link text-white">Cleaing_Services</a></li>
                 </ul>
             </div>
         </li>
@@ -63,6 +66,7 @@
                     <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
                     <li><a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a></li>
                     <li><a href="{{ route('surat.purchasing.index') }}" class="nav-link text-white">Purchasing</a></li>
+
                 </ul>
             </div>
         </li>
@@ -142,6 +146,9 @@
                     <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
                     <li><a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a></li>
                     <li><a href="{{ route('surat.purchasing.index') }}" class="nav-link text-white">Purchasing</a></li>
+                    <li><a href="{{ route('surat.interior_consultan.index') }}" class="nav-link text-white">Interior_Consultan</a></li>
+                    <li><a href="{{ route('surat.ekspedisi.index') }}" class="nav-link text-white">Ekspedisi</a></li>
+                    <li><a href="{{ route('surat.cleaning.index') }}" class="nav-link text-white">Cleaing_Services</a></li>
                 </ul>
             </div>
         </li>
@@ -168,6 +175,9 @@
                     <li><a href="{{ route('surat.admin.index') }}" class="nav-link text-white">Administrasi</a></li>
                     <li><a href="{{ route('surat.warehouse.index') }}" class="nav-link text-white">Warehouse</a></li>
                     <li><a href="{{ route('surat.purchasing.index') }}" class="nav-link text-white">Purchasing</a></li>
+                    <li><a href="{{ route('surat.interior_consultan.index') }}" class="nav-link text-white">Interior_Consultan</a></li>
+                    <li><a href="{{ route('surat.ekspedisi.index') }}" class="nav-link text-white">Ekspedisi</a></li>
+                    <li><a href="{{ route('surat.cleaning.index') }}" class="nav-link text-white">Cleaing_Services</a></li>
                 </ul>
             </div>
         </li>
@@ -198,20 +208,7 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="{{ route('surat.ekspedisi.index') }}" class="nav-link text-white {{ (Request::routeIs('maintenances.index') ? 'active' : '') }}">
-                <i class="nav-icon fas fa-cogs"></i>
-                <p>Ekspedisi</p>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a href="{{ route('surat.cleaning.index') }}" class="nav-link text-white {{ (Request::routeIs('maintenances.index') ? 'active' : '') }}">
-                <i class="nav-icon fas fa-cogs"></i>
-                <p>Cleaning</p>
-            </a>
-        </li>
-
+ 
 
     </ul>
 

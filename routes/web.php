@@ -194,3 +194,32 @@ Route::delete('surat/cleaning/{id}', [SuratCleaningController::class, 'destroy']
 Route::put('surat/cleaning/{id}/updateStatus', [SuratCleaningController::class, 'updateStatus'])->name('surat.cleaning.updateStatus'); // To update status
 Route::get('surat/cleaning/{id}/download', [SuratCleaningController::class, 'download'])->name('surat.cleaning.download'); // To download the file
 Route::get('surat/cleaning/{id}/view', [SuratCleaningController::class, 'viewPDF'])->name('surat.cleaning.view'); // To view the file
+
+use App\Http\Controllers\SuratInteriorConsultanController;
+
+// Menampilkan data surat
+Route::get('surat/interior_consultan', [SuratInteriorConsultanController::class, 'index'])->name('surat.interior_consultan.index');
+
+// Form untuk membuat surat baru
+Route::get('surat/interior_consultan/create', [SuratInteriorConsultanController::class, 'create'])->name('surat.interior_consultan.create');
+
+// Menyimpan surat baru
+Route::post('surat/interior_consultan', [SuratInteriorConsultanController::class, 'store'])->name('surat.interior_consultan.store');
+
+// Form untuk mengedit surat
+Route::get('surat/interior_consultan/{id}/edit', [SuratInteriorConsultanController::class, 'edit'])->name('surat.interior_consultan.edit');
+
+// Update surat
+Route::put('surat/interior_consultan/{id}', [SuratInteriorConsultanController::class, 'update'])->name('surat.interior_consultan.update');
+
+// Menghapus surat
+Route::delete('surat/interior_consultan/{id}', [SuratInteriorConsultanController::class, 'destroy'])->name('surat.interior_consultan.destroy');
+
+// Mengubah status pengajuan
+Route::put('surat/interior_consultan/{id}/status', [SuratInteriorConsultanController::class, 'updateStatusPengajuan'])->name('surat.interior_consultan.updateStatusPengajuan');
+
+// Mendownload file surat
+Route::get('surat/interior_consultan/{id}/download', [SuratInteriorConsultanController::class, 'downloadfile'])->name('surat.interior_consultan.downloadfile');
+
+// Melihat file PDF surat
+Route::get('surat/interior_consultan/{id}/view', [SuratInteriorConsultanController::class, 'viewPDF'])->name('surat.interior_consultan.viewPDF');

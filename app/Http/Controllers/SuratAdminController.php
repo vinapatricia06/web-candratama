@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SuratAdmin;
+use App\Models\SuratCleaning;
+use App\Models\SuratInteriorConsultan;
+use App\Models\SuratEkspedisi;
 use Illuminate\Support\Facades\Storage;
 
 class SuratAdminController extends Controller
@@ -89,10 +92,16 @@ class SuratAdminController extends Controller
         // Cek apakah status berubah menjadi ACC atau Tolak
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
             session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
+
+            // Clear the session reminder for new letters
+            session()->forget('suratEkspedisi');
+            session()->forget('suratCleaning');
+            session()->forget('suratInteriorConsultan');
         }
 
         return redirect()->route('surat.admin.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
+
 
     public function viewPDF($id)
     {
@@ -160,12 +169,20 @@ class SuratAdminController extends Controller
 
         $divisi_pembuat = SuratAdmin::distinct()->pluck('divisi_pembuat');
 
-        // Menghitung surat yang divisi tujuannya ke Finance
-        $suratKeAdmin = SuratAdmin::where('divisi_tujuan', 'ADM')->where('status_pengajuan', 'Pending')->count();
+        // Menambahkan cek surat ekspedisi baru
+        $suratEksp = SuratEkspedisi::where('created_at', '>', now()->subMinutes(5))->count(); // Mengambil surat ekspedisi yang baru dibuat dalam 5 menit terakhir
+        $suratIC = SuratCleaning::where('created_at', '>', now()->subMinutes(5))->count(); // Mengambil surat ekspedisi yang baru dibuat dalam 5 menit terakhir
+        $suratCS = SuratInteriorConsultan::where('created_at', '>', now()->subMinutes(5))->count(); // Mengambil surat ekspedisi yang baru dibuat dalam 5 menit terakhir
 
-        // Menyimpan informasi surat ke Finance di sesi jika ada
-        if ($suratKeAdmin > 0) {
-            session(['suratKeFinance' => $suratKeAdmin]);
+        // Menyimpan ke session jika ada surat baru
+        if ($suratEksp > 0) {
+            session(['suratEkspedisi' => $suratEksp]);
+        }
+        if ($suratIC > 0) {
+            session(['suratCleaning' => $suratIC]);
+        }
+        if ($suratCS > 0) {
+            session(['suratInteriorConsultan' => $suratCS]);
         }
 
         $monthlyCounts = SuratAdmin::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
@@ -179,9 +196,12 @@ class SuratAdminController extends Controller
             'tolak' => $tolak,
             'months' => $monthlyCounts->keys(),
             'monthlyCounts' => $monthlyCounts->values(),
-            'suratKeAdmin' => $suratKeAdmin,
-            'divisi_pembuat' => $divisi_pembuat // Pastikan variabel ini dikirimkan ke view
+            'divisi_pembuat' => $divisi_pembuat, 
+            'suratEksp' => $suratEksp, 
+            'suratCS' => $suratCS, 
+            'suratIC' => $suratIC
         ]);
     }
+
 
 }

@@ -3,9 +3,21 @@
 @section('title', 'Dashboard Surat Administrasi')
 @section('content')
 
-    @if($suratKeAdmin > 0)
+    {{-- Notifikasi surat masuk ke Admin --}}
+    @if(session('suratEkspedisi') || session('suratCleaning') || session('suratInteriorConsultan'))
         <div class="alert alert-warning">
-            Ada {{ $suratKeAdmin }} surat yang masuk ke Admin dengan status Pending.
+            <strong>Notifikasi!</strong> Ada surat masuk ke <strong>Admin</strong> untuk segera ditindak lanjuti :
+            <ul>
+                @if(session('suratEkspedisi'))
+                    <li>Dari <strong>Ekspedisi</strong>: {{ session('suratEkspedisi') }} surat</li>
+                @endif
+                @if(session('suratCleaning'))
+                    <li>Dari <strong>Cleaning</strong>: {{ session('suratCleaning') }} surat</li>
+                @endif
+                @if(session('suratInteriorConsultan'))
+                    <li>Dari <strong>Interior Consultant</strong>: {{ session('suratInteriorConsultan') }} surat</li>
+                @endif
+            </ul>
         </div>
     @endif
 
@@ -64,7 +76,7 @@
         }
 
         // Cek apakah ada notifikasi
-        @if(session('suratKeAdmin') > 0)
+        @if(session('suratEkspedisi') > 0 || session('suratCleaning') > 0 || session('suratInteriorConsultan') > 0)
             playNotificationSound();
         @endif
 
