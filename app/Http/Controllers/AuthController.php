@@ -34,7 +34,7 @@ class AuthController extends Controller
             } elseif ($user->isDM()) {
                 return redirect('/dashboard/marketing'); //sudah
             } elseif ($user->isIC()) {
-                return redirect('/users');
+                return redirect('/surat/interior_consultan');
             } elseif ($user->isWRH()) {
                 return redirect('/surat/warehouse/dashboard'); 
             } elseif ($user->isFNC()) {
@@ -42,9 +42,9 @@ class AuthController extends Controller
             }elseif ($user->isPCH()) {
                 return redirect('/surat/purchasing/dashboard');
             } elseif ($user->isEks()) {
-                return redirect('/users');
+                return redirect('/surat-ekspedisi');
             } elseif ($user->isCS()) {
-                return redirect('/users');
+                return redirect('/surat/cleaning');
             } elseif ($user->isTeknisi()) {
                 return redirect('/users');
             } else {

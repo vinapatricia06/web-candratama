@@ -3,19 +3,20 @@
 @section('title', 'Kelola Surat Ekspedisi')
 @section('content')
 
-    <h1>Daftar Surat Ekspedisi</h1>
+<h1>Daftar Surat Ekspedisi</h1>
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <div style="margin-bottom: 20px;">
-        <a href="{{ route('surat.ekspedisi.create') }}" class="btn btn-primary">Tambah Surat</a>
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
     </div>
+@endif
 
-    <table border="1" cellpadding="10" style="width: 100%; margin: 0 auto; border-collapse: collapse; text-align: center;">
+<div style="margin-bottom: 20px;">
+    <a href="{{ route('surat.ekspedisi.create') }}" class="btn btn-primary">Tambah Surat</a>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-bordered" cellpadding="10" style="width: 100%; margin: 0 auto; border-collapse: collapse; text-align: center;">
         <thead>
             <tr style="background-color: #f0f0f0;">
                 <th>No</th>
@@ -56,17 +57,15 @@
                     </td>
 
                     <td>
-
                         @if ($surat->file_path)
                             <a href="{{ route('surat.ekspedisi.view', $surat->id) }}" class="btn btn-primary">View File</a>
                         @endif
                         <a href="{{ route('surat.ekspedisi.edit', $surat->id) }}" class="btn btn-warning">Edit</a>
-
-                    
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+</div>
 
 @endsection

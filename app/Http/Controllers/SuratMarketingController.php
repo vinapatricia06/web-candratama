@@ -117,7 +117,7 @@ class SuratMarketingController extends Controller
         }
 
 
-        return redirect()->route('surat.marketing.list')->with('success', 'Status pengajuan berhasil diperbarui.');
+        return redirect()->route('surat.digital_marketing.list')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
 
 

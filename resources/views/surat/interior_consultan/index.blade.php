@@ -3,19 +3,20 @@
 @section('title', 'Kelola Surat Interior Consultant')
 @section('content')
 
-    <h1>Daftar Surat Interior Consultant</h1>
+<h1>Daftar Surat Interior Consultant</h1>
 
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <div style="margin-bottom: 20px;">
-        <a href="{{ route('surat.interior_consultan.create') }}" class="btn btn-primary">Tambah Surat</a>
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
     </div>
+@endif
 
-    <table border="1" cellpadding="10" style="width: 100%; margin: 0 auto; border-collapse: collapse; text-align: center;">
+<div style="margin-bottom: 20px;">
+    <a href="{{ route('surat.interior_consultan.create') }}" class="btn btn-primary">Tambah Surat</a>
+</div>
+
+<div class="table-responsive">
+    <table border="1" cellpadding="10" class="table table-bordered" style="width: 100%; margin: 0 auto; border-collapse: collapse; text-align: center;">
         <thead>
             <tr style="background-color: #f0f0f0;">
                 <th>No</th>
@@ -70,5 +71,6 @@
             @endforeach
         </tbody>
     </table>
+</div>
 
 @endsection

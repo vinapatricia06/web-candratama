@@ -1,6 +1,51 @@
 <nav class="mt-2 d-flex flex-column" style="height: 100vh; position: relative;">
     <ul class="nav nav-pills nav-sidebar flex-column flex-grow-1" data-widget="treeview" role="menu" data-accordion="false">
 
+        @role('cleaning_services')
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.cleaning.index') }}" class="nav-link text-white">Cleaning-Services</a></li>
+                </ul>
+            </div>
+        </li>
+        @endrole
+
+        @role('Ekspedisi')
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.ekspedisi.index') }}" class="nav-link text-white">Cleaning-Services</a></li>
+                </ul>
+            </div>
+        </li>
+        @endrole
+
+        @role('interior_consultan')
+            <li class="nav-item">
+            <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
+                <i class="nav-icon fas fa-envelope"></i>
+                <p class="ms-2 mb-0">Surat</p>
+                <i class="fas fa-chevron-down ms-auto"></i>
+            </a>
+            <div class="collapse" id="menuSurat">
+                <ul class="ps-4 list-unstyled">
+                    <li><a href="{{ route('surat.interior_consultan.index') }}" class="nav-link text-white">Cleaning-Services</a></li>
+                </ul>
+            </div>
+        </li>
+        @endrole
+
         @role('marketing')
             <li class="nav-item">
                 <a href="{{ route('dashboard.marketing') }}" class="nav-link text-white">
@@ -185,32 +230,30 @@
         @endrole
 
 
-
-
+        
+        @if(auth()->check() && !auth()->user()->hasRole('Ekspedisi') && !auth()->user()->hasRole('cleaning_services'))
         <li class="nav-item">
             <a href="{{ route('omsets.index') }}" class="nav-link text-white {{ (Request::routeIs('omsets.index') ? 'active' : '') }}">
                 <i class="nav-icon fas fa-dollar-sign"></i>
                 <p>Omset</p>
             </a>
         </li>
-
+    
         <li class="nav-item">
-            <a href="{{ route('progress_projects.index') }}" class="nav-link text-white">
+            <a href="{{ route('progress_projects.index') }}" class="nav-link text-white {{ (Request::routeIs('progress_projects.index') ? 'active' : '') }}">
                 <i class="nav-icon fas fa-tasks"></i>
                 <p>Progress Project</p>
             </a>
         </li>
-
+    
         <li class="nav-item">
             <a href="{{ route('maintenances.index') }}" class="nav-link text-white {{ (Request::routeIs('maintenances.index') ? 'active' : '') }}">
                 <i class="nav-icon fas fa-cogs"></i>
                 <p>Maintenance</p>
             </a>
         </li>
-
- 
-
-    </ul>
+    @endif
+    
 
     <!-- Tombol Logout di bawah tapi tidak terlalu mepet -->
     <form method="POST" action="{{ route('logout') }}" class="text-center mt-auto mb-3" style="position: absolute; bottom: 200px; width: 100%;">
