@@ -96,8 +96,29 @@ class SuratInteriorConsultanController extends Controller
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
-        return redirect()->route('surat.interior_consultan.index')->with('success', 'Status pengajuan berhasil diperbarui.');
+        // Menambahkan pemberitahuan untuk status yang diupdate
+        $statusMessage = $this->getStatusMessage($request->status_pengajuan);
+
+        // Simpan pemberitahuan ke dalam session
+        session(['status_message' => $statusMessage]);
+
+        return redirect()->route('surat.interior_consultan.index');
     }
+
+    private function getStatusMessage($status)
+    {
+        switch ($status) {
+            case 'ACC':
+                return 'Surat telah disetujui.';
+            case 'Tolak':
+                return 'Surat telah ditolak.';
+            case 'Pending':
+            default:
+                return 'Status pengajuan kembali ke Pending.';
+        }
+    }
+
+
 
     public function downloadfile($id)
     {

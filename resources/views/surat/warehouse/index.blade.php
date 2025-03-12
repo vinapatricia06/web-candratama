@@ -12,12 +12,12 @@
         </div>
     @endif
 
-    <!-- Notifikasi Surat untuk Warehouse -->
+    {{-- <!-- Notifikasi Surat untuk Warehouse -->
     @if (session('suratKeWarehouse') > 0)
         <div class="alert alert-warning" id="notification-alert">
             Ada {{ session('suratKeWarehouse') }} surat yang masuk untuk divisi Warehouse dengan status Pending.
         </div>
-    @endif
+    @endif --}}
 
     @if(session('statusUpdated'))
         <div class="alert alert-success d-flex justify-content-between align-items-center">

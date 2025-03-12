@@ -58,7 +58,7 @@ class SuratAdminController extends Controller
 
             session(['nomorSurat' => $nomorSurat]);
 
-            return redirect()->route('surat.admin.index')->with('success', 'Nomor surat berhasil di-generate!');
+            return redirect()->route('surat.admin.index')->with('success', 'Surat berhasil di tambahkan !');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Terjadi kesalahan: ' . $e->getMessage());
         }
@@ -82,6 +82,7 @@ class SuratAdminController extends Controller
             'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
         ]);
 
+        // Gunakan model SuratAdmin jika itu yang Anda ingin update
         $surat = SuratAdmin::findOrFail($id);
         $oldStatus = $surat->status_pengajuan;
         $surat->status_pengajuan = $request->status_pengajuan;
@@ -92,15 +93,19 @@ class SuratAdminController extends Controller
         // Cek apakah status berubah menjadi ACC atau Tolak
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
             session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
+        }
 
-            // Clear the session reminder for new letters
-            session()->forget('suratEkspedisi');
-            session()->forget('suratCleaning');
+        // Menghitung jumlah surat pending yang tersisa
+        $pendingSuratCount = SuratAdmin::where('status_pengajuan', 'Pending')->count();
+
+        // Jika tidak ada surat Pending lagi, hapus pemberitahuan yang tersimpan di session
+        if ($pendingSuratCount == 0) {
             session()->forget('suratInteriorConsultan');
         }
 
         return redirect()->route('surat.admin.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
+
 
 
     public function viewPDF($id)
@@ -179,7 +184,7 @@ class SuratAdminController extends Controller
             session(['suratEkspedisi' => $suratEksp]);
         }
         if ($suratIC > 0) {
-            session(['suratCleaning' => $suratIC]);
+            session(['suratCleaning Services' => $suratIC]);
         }
         if ($suratCS > 0) {
             session(['suratInteriorConsultan' => $suratCS]);

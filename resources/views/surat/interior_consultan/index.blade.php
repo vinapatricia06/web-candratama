@@ -4,12 +4,24 @@
 @section('content')
 
 <h1>Daftar Surat Interior Consultant</h1>
-
-@if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
+@if(session('status_message'))
+    <div id="alertMessage" class="alert alert-info alert-dismissible fade show" role="alert">
+        {{ session('status_message') }}
+        <button id="closeAlert" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
+
+    <script>
+        // Menangani penutupan pemberitahuan
+        document.getElementById('closeAlert').addEventListener('click', function() {
+            document.getElementById('alertMessage').style.display = 'none';
+            // Menghapus pemberitahuan dari session setelah ditutup
+            fetch('/clear-notification', {method: 'POST'});
+        });
+    </script>
 @endif
+
 
 <div style="margin-bottom: 20px;">
     <a href="{{ route('surat.interior_consultan.create') }}" class="btn btn-primary">Tambah Surat</a>
@@ -61,16 +73,12 @@
                             <a href="{{ route('surat.interior_consultan.viewPDF', $surat->id) }}" class="btn btn-primary">View File</a>
                         @endif
                         <a href="{{ route('surat.interior_consultan.edit', $surat->id) }}" class="btn btn-warning">Edit</a>
-                        <form action="{{ route('surat.interior_consultan.destroy', $surat->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </form>
-                    </td>
+                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+
 
 @endsection

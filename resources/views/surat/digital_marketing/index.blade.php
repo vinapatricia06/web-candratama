@@ -12,13 +12,7 @@
         </div>
     @endif
 
-    <!-- Notifikasi Surat untuk DM -->
-    @if (session('suratKeDM') > 0)
-        <div class="alert alert-warning" id="notification-alert">
-            Ada {{ session('suratKeDM') }} surat yang masuk untuk divisi DM dengan status Pending.
-        </div>
-    @endif
-
+   
     @if(session('statusUpdated'))
         <div class="alert alert-success d-flex justify-content-between align-items-center">
             <span>{{ session('statusUpdated') }}</span>
@@ -28,6 +22,7 @@
             </form>
         </div>
     @endif
+
 
     <div style="margin-bottom: 20px;">
         <a href="{{ route('surat.marketing.create') }}" class="btn btn-primary">Tambah Surat</a>

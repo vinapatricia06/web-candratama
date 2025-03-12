@@ -55,7 +55,7 @@ class SuratWarehouseController extends Controller
 
             session(['nomorSurat' => $nomorSurat]);
 
-            return redirect()->route('surat.warehouse.index')->with('success', 'Nomor surat berhasil di-generate!');
+            return redirect()->route('surat.warehouse.index')->with('success', 'Surat berhasil di tambahkan !');
         } catch (\Exception $e) {
             return redirect()->back()->withErrors('Terjadi kesalahan: ' . $e->getMessage());
         }

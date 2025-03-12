@@ -16,7 +16,7 @@
         </li>
         @endrole
 
-        @role('Ekspedisi')
+        @role('ekspedisi')
             <li class="nav-item">
             <a class="nav-link text-white d-flex justify-content-start align-items-center" data-bs-toggle="collapse" href="#menuSurat" role="button" aria-expanded="false" aria-controls="menuSurat">
                 <i class="nav-icon fas fa-envelope"></i>
@@ -25,7 +25,7 @@
             </a>
             <div class="collapse" id="menuSurat">
                 <ul class="ps-4 list-unstyled">
-                    <li><a href="{{ route('surat.ekspedisi.index') }}" class="nav-link text-white">Cleaning-Services</a></li>
+                    <li><a href="{{ route('surat.ekspedisi.index') }}" class="nav-link text-white">Ekspedisi</a></li>
                 </ul>
             </div>
         </li>
@@ -40,7 +40,7 @@
             </a>
             <div class="collapse" id="menuSurat">
                 <ul class="ps-4 list-unstyled">
-                    <li><a href="{{ route('surat.interior_consultan.index') }}" class="nav-link text-white">Cleaning-Services</a></li>
+                    <li><a href="{{ route('surat.interior_consultan.index') }}" class="nav-link text-white">Interior_consultan</a></li>
                 </ul>
             </div>
         </li>
@@ -88,6 +88,19 @@
                     <li><a href="{{ route('surat.cleaning.index') }}" class="nav-link text-white">Cleaing_Services</a></li>
                 </ul>
             </div>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('progress_projects.index') }}" class="nav-link text-white {{ (Request::routeIs('progress_projects.index') ? 'active' : '') }}">
+                <i class="nav-icon fas fa-tasks"></i>
+                <p>Progress Project</p>
+            </a>
+        </li>
+    
+        <li class="nav-item">
+            <a href="{{ route('maintenances.index') }}" class="nav-link text-white {{ (Request::routeIs('maintenances.index') ? 'active' : '') }}">
+                <i class="nav-icon fas fa-cogs"></i>
+                <p>Maintenance</p>
+            </a>
         </li>
         @endrole
 
@@ -230,30 +243,29 @@
         @endrole
 
 
-        
-        @if(auth()->check() && !auth()->user()->hasRole('Ekspedisi') && !auth()->user()->hasRole('cleaning_services'))
-        <li class="nav-item">
-            <a href="{{ route('omsets.index') }}" class="nav-link text-white {{ (Request::routeIs('omsets.index') ? 'active' : '') }}">
-                <i class="nav-icon fas fa-dollar-sign"></i>
-                <p>Omset</p>
-            </a>
-        </li>
-    
-        <li class="nav-item">
-            <a href="{{ route('progress_projects.index') }}" class="nav-link text-white {{ (Request::routeIs('progress_projects.index') ? 'active' : '') }}">
-                <i class="nav-icon fas fa-tasks"></i>
-                <p>Progress Project</p>
-            </a>
-        </li>
-    
-        <li class="nav-item">
-            <a href="{{ route('maintenances.index') }}" class="nav-link text-white {{ (Request::routeIs('maintenances.index') ? 'active' : '') }}">
-                <i class="nav-icon fas fa-cogs"></i>
-                <p>Maintenance</p>
-            </a>
-        </li>
-    @endif
-    
+        @if(auth()->check() && !auth()->user()->hasRole('ekspedisi') && !auth()->user()->hasRole('cleaning_services') && !auth()->user()->hasRole('admin'))
+            <li class="nav-item">
+                <a href="{{ route('omsets.index') }}" class="nav-link text-white {{ (Request::routeIs('omsets.index') ? 'active' : '') }}">
+                    <i class="nav-icon fas fa-dollar-sign"></i>
+                    <p>Omset</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('progress_projects.index') }}" class="nav-link text-white {{ (Request::routeIs('progress_projects.index') ? 'active' : '') }}">
+                    <i class="nav-icon fas fa-tasks"></i>
+                    <p>Progress Project</p>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ route('maintenances.index') }}" class="nav-link text-white {{ (Request::routeIs('maintenances.index') ? 'active' : '') }}">
+                    <i class="nav-icon fas fa-cogs"></i>
+                    <p>Maintenance</p>
+                </a>
+            </li>
+        @endif
+
 
     <!-- Tombol Logout di bawah tapi tidak terlalu mepet -->
     <form method="POST" action="{{ route('logout') }}" class="text-center mt-auto mb-3" style="position: absolute; bottom: 200px; width: 100%;">

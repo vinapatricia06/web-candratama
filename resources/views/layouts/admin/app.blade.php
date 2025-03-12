@@ -4,13 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Candramata | @yield('title')</title>
+    <title>Candratama | @yield('title')</title>
 
-    <link
-      rel="stylesheet"
-      href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.css"
-    />
-    
+    <link rel="stylesheet" href="../../plugins/datatables-bs4/css/dataTables.bootstrap4.css" />
+
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -42,20 +39,16 @@
     <!--Favicon-->
     {{-- <link rel="icon" href="{{ asset('favicon/favicon.ico') }}" type="image/x-icon"> --}}
     <link rel="icon" href="{{ asset('logo.png') }}" type="image/x-icon">
-    <link rel="apple-touch-icon-precomposed" sizes="57x57"
-        href="{{ asset('favicon/apple-touch-icon-57x57.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="{{ asset('favicon/apple-touch-icon-57x57.png') }}" />
     <link rel="apple-touch-icon-precomposed" sizes="114x114"
         href="{{ asset('favicon/apple-touch-icon-114x114.png') }}" />
-    <link rel="apple-touch-icon-precomposed" sizes="72x72"
-        href="{{ asset('favicon/apple-touch-icon-72x72.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ asset('favicon/apple-touch-icon-72x72.png') }}" />
     <link rel="apple-touch-icon-precomposed" sizes="144x144"
         href="{{ asset('favicon/apple-touch-icon-144x144.png') }}" />
-    <link rel="apple-touch-icon-precomposed" sizes="60x60"
-        href="{{ asset('favicon/apple-touch-icon-60x60.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="{{ asset('favicon/apple-touch-icon-60x60.png') }}" />
     <link rel="apple-touch-icon-precomposed" sizes="120x120"
         href="{{ asset('favicon/apple-touch-icon-120x120.png') }}" />
-    <link rel="apple-touch-icon-precomposed" sizes="76x76"
-        href="{{ asset('favicon/apple-touch-icon-76x76.png') }}" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="{{ asset('favicon/apple-touch-icon-76x76.png') }}" />
     <link rel="apple-touch-icon-precomposed" sizes="152x152"
         href="{{ asset('favicon/apple-touch-icon-152x152.png') }}" />
     <link rel="icon" type="image/png" href="{{ asset('favicon/favicon-196x196.png') }}" sizes="196x196" />
@@ -84,16 +77,16 @@
                 </li>
                 <li style="margin-bottom: -20px; margin-left:20px">
                     <h4 class="text-white fw-bold">
-                        CANDRAMATA GRANITES
+                        CANDRATAMA GRANITES
                     </h4>
-                </li>                
+                </li>
             </ul>
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <div class="user-panel d-flex">
-                        
+
                     </div>
                 </li>
             </ul>
@@ -103,13 +96,14 @@
         <aside class="main-sidebar elevation-4" style="background:#ca3329">
             <!-- Brand Logo -->
             <a href="#" class="brand-link text-center">
-                <img src="{{ asset('images/logo .png') }}" alt="Logo" style="width: 70%; height: auto; margin-right: 10px;">
+                <img src="{{ asset('images/logo .png') }}" alt="Logo"
+                    style="width: 70%; height: auto; margin-right: 10px;">
 
                 <div style="color: #ffffff; font-family: 'Roboto', sans-serif">
                     {{-- <div class="fw-bold" style="font-size: 20px">CANDRAMATA</div> --}}
                 </div>
             </a>
-            
+
             <!-- Sidebar -->
             <div class="sidebar">
                 @include('layouts.admin.menu')
@@ -150,7 +144,7 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer fixed-bottom">
             <strong>Copyright &copy; 2025.</strong>
-            CANDRAMATA GRANITES
+            CANDRATAMA GRANITES
         </footer>
     </div>
     <!-- ./wrapper -->

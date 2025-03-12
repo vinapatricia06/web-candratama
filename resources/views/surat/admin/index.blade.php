@@ -6,6 +6,12 @@
 
     <h1>Daftar Surat Pengajuan Administrasi</h1>
 
+    @if (session('suratInteriorConsultan') > 0)
+        <div class="alert alert-warning" id="notification-alert">
+            Ada {{ session('suratInteriorConsultan') }} surat yang masuk untuk divisi Interior Consultant dengan status Pending.
+        </div>
+    @endif
+
     @if (session('success'))
         <div class="alert alert-success">
             {{ session('success') }}

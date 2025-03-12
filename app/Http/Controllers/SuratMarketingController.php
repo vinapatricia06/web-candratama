@@ -57,7 +57,7 @@ class SuratMarketingController extends Controller
             session(['nomorSurat' => $nomorSurat]);
 
             return redirect()->route('surat.digital_marketing.list')->with([
-                'success' => 'Nomor surat berhasil di-generate!',
+                'success' => 'Surat berhasil Tambahkan!',
                 'id_suratMarketing' => $suratMarketing->id,
             ]);
         } catch (\Exception $e) {
@@ -108,6 +108,7 @@ class SuratMarketingController extends Controller
 
         // Cek apakah status berubah menjadi ACC atau Tolak
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
+            // Simpan pemberitahuan bahwa status surat telah berubah
             session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
         }
 
@@ -116,6 +117,10 @@ class SuratMarketingController extends Controller
             session()->forget('suratKeDM');
         }
 
+        // Hapus pemberitahuan terkait status yang telah di-update
+        if ($oldStatus != 'Pending' && in_array($oldStatus, ['ACC', 'Tolak'])) {
+            session()->forget('statusUpdated'); // Menghapus session statusUpdated setelah status diupdate
+        }
 
         return redirect()->route('surat.digital_marketing.list')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
