@@ -99,11 +99,41 @@ class SuratFinanceController extends Controller
         ]);
 
         $surat = SuratFinance::findOrFail($id);
+        $oldStatus = $surat->status_pengajuan;
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
+        $nomorSurat = $surat->formatted_nomor_surat; // Ambil nomor surat dari accessor
+
+        // Cek apakah status berubah menjadi ACC atau Tolak
+        if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
+            session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
+        }
+
+        // Hapus notifikasi jika surat tujuan ke Finance telah diubah statusnya
+        if ($surat->divisi_tujuan == 'FNC' && $surat->status_pengajuan != 'Pending') {
+            session()->forget('suratKeFinance');
+        }
+        if ($surat->divisi_tujuan == 'FNC' && $surat->status_pengajuan != 'Pending') {
+            session()->forget('suratMarketing');
+        }
+        if ($surat->divisi_tujuan == 'FNC' && $surat->status_pengajuan != 'Pending') {
+            session()->forget('suratAdmin');
+        }
+        if ($surat->divisi_tujuan == 'FNC' && $surat->status_pengajuan != 'Pending') {
+            session()->forget('suratWarehouse');
+        }
+        if ($surat->divisi_tujuan == 'FNC' && $surat->status_pengajuan != 'Pending') {
+            session()->forget('suratPurchasing');
+        }
+
+        // Hapus semua session notifikasi setelah status diperbarui
+        session()->forget(['suratKeFinance', 'suratMarketing', 'suratAdmin', 'suratWarehouse', 'suratPurchasing']);
+        session()->flash('statusUpdated', 'Status surat berhasil diperbarui.');
+
         return redirect()->route('surat.finance.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
+
 
     public function viewPDF($id)
     {
@@ -171,21 +201,19 @@ class SuratFinanceController extends Controller
 
         $divisi_pembuat = SuratFinance::distinct()->pluck('divisi_pembuat');
 
-        // Menghitung surat yang divisi tujuannya ke Finance
+        // Menghitung surat yang divisi tujuannya ke Finance dan masih Pending
         $suratKeFinance = SuratFinance::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
-
-        // Menyimpan informasi surat ke Finance di sesi jika ada
-        if ($suratKeFinance > 0) {
-            session(['suratKeFinance' => $suratKeFinance]);
-        }
-
-        // Menghitung surat dari divisi Marketing, Admin, Warehouse, Purchasing yang ditujukan ke Finance
         $suratMarketing = SuratMarketing::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
         $suratAdmin = SuratAdmin::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
         $suratWarehouse = SuratWarehouse::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
         $suratPurchasing = SuratPurchasing::where('divisi_tujuan', 'FNC')->where('status_pengajuan', 'Pending')->count();
 
-        // Menyimpan informasi surat dari divisi lain ke Finance jika ada
+        // **Perubahan**: Hanya menyimpan notifikasi jika masih ada surat yang pending
+        session()->forget(['suratKeFinance', 'suratMarketing', 'suratAdmin', 'suratWarehouse', 'suratPurchasing']);
+
+        if ($suratKeFinance > 0) {
+            session(['suratKeFinance' => $suratKeFinance]);
+        }
         if ($suratMarketing > 0) {
             session(['suratMarketing' => $suratMarketing]);
         }
@@ -198,7 +226,6 @@ class SuratFinanceController extends Controller
         if ($suratPurchasing > 0) {
             session(['suratPurchasing' => $suratPurchasing]);
         }
-        
 
         $monthlyCounts = SuratFinance::selectRaw("YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count")
             ->groupBy('year', 'month')

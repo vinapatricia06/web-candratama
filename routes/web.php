@@ -201,8 +201,13 @@ Route::get('surat/interior_consultan/{id}/download', [SuratInteriorConsultanCont
 Route::get('surat/interior_consultan/{id}/view', [SuratInteriorConsultanController::class, 'viewPDF'])->name('surat.interior_consultan.viewPDF');
 
 // routes/web.php
-Route::post('/notif/clear', function () {
+Route::post('/notif/cleardm', function () {
     session()->forget('statusUpdated');
     session()->forget('suratKeDM');
-    return redirect()->route('surat.digital_marketing.list');
-})->name('notif.clear');
+    return redirect()->route('surat.digital_marketing.dashboard');
+})->name('notif.cleardm');
+
+Route::post('/notif-clear', function () {
+    session()->forget('statusUpdatedAdmin'); // Hapus hanya session untuk Admin
+    return redirect()->back();
+})->name('notif.clearadm');

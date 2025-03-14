@@ -105,6 +105,11 @@ class SuratPurchasingController extends Controller
             session()->forget('suratWRH');
         }
 
+        
+        // Hapus session notifikasi setelah status diperbarui
+        session()->forget(['suratDM', 'suratADM', 'suratWRH']);
+        session()->flash('statusUpdated', 'Status surat berhasil diperbarui.');
+
         return redirect()->route('surat.puschasing.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
 
@@ -173,35 +178,12 @@ class SuratPurchasingController extends Controller
         $acc = SuratPurchasing::where('status_pengajuan', 'ACC')->count();
         $tolak = SuratPurchasing::where('status_pengajuan', 'Tolak')->count();
 
-        $divisi_pembuat = SuratPurchasing::distinct()->pluck('divisi_pembuat');
-
-        // Menghitung surat yang divisi tujuannya 
+        // Menghitung surat masuk ke Purchasing dengan status "Pending"
         $suratDM = SuratMarketing::where('divisi_tujuan', 'PCH')->where('status_pengajuan', 'Pending')->count();
-
-        // Menyimpan informasi surat di sesi jika ada
-        if ($suratDM > 0) {
-            session(['suratDM' => $suratDM]);
-        }
-
-        // Menghitung surat yang divisi tujuannya ke Finance
         $suratADM = SuratAdmin::where('divisi_tujuan', 'PCH')->where('status_pengajuan', 'Pending')->count();
-
-        // Menyimpan informasi surat di sesi jika ada
-        if ($suratADM > 0) {
-            session(['suratADM' => $suratADM]);
-        }
-
-        // Menghitung surat yang divisi tujuannya 
         $suratWRH = SuratWarehouse::where('divisi_tujuan', 'PCH')->where('status_pengajuan', 'Pending')->count();
 
-        // Menyimpan informasi surat di sesi jika ada
-        if ($suratWRH > 0) {
-            session(['suratWRH' => $suratWRH]);
-        }
-        
-
-        
-
+        // Menghitung jumlah surat per bulan untuk chart
         $monthlyCounts = SuratPurchasing::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
             ->groupBy('month')
             ->orderBy('month', 'asc')
@@ -216,7 +198,6 @@ class SuratPurchasingController extends Controller
             'suratDM' => $suratDM,
             'suratADM' => $suratADM,
             'suratWRH' => $suratWRH,
-            'divisi_pembuat' => $divisi_pembuat // Pastikan variabel ini dikirimkan ke view
         ]);
     }
 

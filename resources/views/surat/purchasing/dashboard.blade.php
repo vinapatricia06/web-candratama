@@ -1,21 +1,22 @@
 @extends('layouts.admin.app')
 
 @section('title', 'Dashboard Surat Purchasing')
+
 @section('content')
 
     {{-- Notifikasi surat masuk ke PCH --}}
-    @if(session('suratDM') || session('suratADM') || session('suratWRH'))
+    @if($suratDM > 0 || $suratADM > 0 || $suratWRH > 0)
         <div class="alert alert-warning">
-            <strong>Notifikasi!</strong> Ada surat masuk ke <strong>Purchasing</strong> untuk segera ditindak lanjuti :
+            <strong>Notifikasi!</strong> Ada surat masuk ke <strong>Purchasing</strong> untuk segera ditindaklanjuti:
             <ul>
-                @if(session('suratDM'))
-                    <li>Dari <strong>Marketing</strong>: {{ session('suratDM') }} surat</li>
+                @if($suratDM > 0)
+                    <li>Dari <strong>Marketing</strong>: {{ $suratDM }} surat</li>
                 @endif
-                @if(session('suratADM'))
-                    <li>Dari <strong>Admin</strong>: {{ session('suratADM') }} surat</li>
+                @if($suratADM > 0)
+                    <li>Dari <strong>Admin</strong>: {{ $suratADM }} surat</li>
                 @endif
-                @if(session('suratWRH'))
-                    <li>Dari <strong>Warehouse</strong>: {{ session('suratWRH') }} surat</li>
+                @if($suratWRH > 0)
+                    <li>Dari <strong>Warehouse</strong>: {{ $suratWRH }} surat</li>
                 @endif
             </ul>
         </div>
@@ -77,8 +78,9 @@
         }
 
         // Cek apakah ada notifikasi surat masuk ke Purchasing
-        @if(session('suratDM') || session('suratADM') || session('suratWRH'))
+        @if($suratDM > 0 || $suratADM > 0 || $suratWRH > 0)
             playNotificationSound();
         @endif
     </script>
+
 @endsection

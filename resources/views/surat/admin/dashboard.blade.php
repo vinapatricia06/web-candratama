@@ -2,11 +2,10 @@
 
 @section('title', 'Dashboard Surat Administrasi')
 @section('content')
-
     {{-- Notifikasi surat masuk ke Admin --}}
     @if(session('suratEkspedisi') || session('suratCleaning') || session('suratInteriorConsultan'))
         <div class="alert alert-warning">
-            <strong>Notifikasi!</strong> Ada surat masuk ke <strong>Admin</strong> untuk segera ditindak lanjuti :
+            <strong>Notifikasi!</strong> Ada surat masuk ke <strong>Admin</strong> untuk segera ditindaklanjuti:
             <ul>
                 @if(session('suratEkspedisi'))
                     <li>Dari <strong>Ekspedisi</strong>: {{ session('suratEkspedisi') }} surat</li>
@@ -21,15 +20,16 @@
         </div>
     @endif
 
-    @if(session('statusUpdated'))
+    @if(session('statusUpdatedAdmin'))
         <div class="alert alert-success d-flex justify-content-between align-items-center">
-            <span>{{ session('statusUpdated') }}</span>
-            <form action="{{ route('notif.clear') }}" method="POST" style="margin-left: 10px;">
+            <span>{{ session('statusUpdatedAdmin') }}</span>
+            <form action="{{ route('notif.clearadm') }}" method="POST" style="margin-left: 10px;">
                 @csrf
                 <button type="submit" class="btn-close"></button>
             </form>
         </div>
     @endif
+
 
     <h1>Rekap Surat Administrasi</h1>
     <div class="row">

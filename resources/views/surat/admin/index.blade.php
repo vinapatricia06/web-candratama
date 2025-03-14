@@ -25,15 +25,16 @@
         </div>
     @endif
 
-    @if(session('statusUpdated'))
+    @if(session('statusUpdatedAdmin'))
         <div class="alert alert-success d-flex justify-content-between align-items-center">
-            <span>{{ session('statusUpdated') }}</span>
-            <form action="{{ route('notif.clear') }}" method="POST" style="margin-left: 10px;">
+            <span>{{ session('statusUpdatedAdmin') }}</span>
+            <form action="{{ route('notif.clearadm') }}" method="POST" style="margin-left: 10px;">
                 @csrf
                 <button type="submit" class="btn-close"></button>
             </form>
         </div>
     @endif
+
 
     <div style="margin-bottom: 20px;">
         <a href="{{ route('surat.admin.create') }}" class="btn btn-primary">Tambah Surat</a>

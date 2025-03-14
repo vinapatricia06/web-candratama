@@ -82,26 +82,27 @@ class SuratAdminController extends Controller
             'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
         ]);
 
-        // Gunakan model SuratAdmin jika itu yang Anda ingin update
         $surat = SuratAdmin::findOrFail($id);
         $oldStatus = $surat->status_pengajuan;
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
-        $nomorSurat = $surat->formatted_nomor_surat; // Ambil nomor surat dari accessor
+        $nomorSurat = $surat->formatted_nomor_surat;
 
-        // Cek apakah status berubah menjadi ACC atau Tolak
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
-            session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
+            session(['statusUpdatedAdmin' => "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}"]);
         }
+        
 
-        // Menghitung jumlah surat pending yang tersisa
-        $pendingSuratCount = SuratAdmin::where('status_pengajuan', 'Pending')->count();
+        // Cek ulang jumlah surat Pending di kategori terkait
+        $pendingEkspedisi = SuratEkspedisi::where('status_pengajuan', 'Pending')->count();
+        $pendingCleaning = SuratCleaning::where('status_pengajuan', 'Pending')->count();
+        $pendingInterior = SuratInteriorConsultan::where('status_pengajuan', 'Pending')->count();
 
-        // Jika tidak ada surat Pending lagi, hapus pemberitahuan yang tersimpan di session
-        if ($pendingSuratCount == 0) {
-            session()->forget('suratInteriorConsultan');
-        }
+        // Hapus notifikasi hanya jika kategori tersebut tidak memiliki surat Pending lagi
+        if ($pendingEkspedisi == 0) session()->forget('suratEkspedisi');
+        if ($pendingCleaning == 0) session()->forget('suratCleaning');
+        if ($pendingInterior == 0) session()->forget('suratInteriorConsultan');
 
         return redirect()->route('surat.admin.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
@@ -174,21 +175,17 @@ class SuratAdminController extends Controller
 
         $divisi_pembuat = SuratAdmin::distinct()->pluck('divisi_pembuat');
 
-        // Menambahkan cek surat ekspedisi baru
-        $suratEksp = SuratEkspedisi::where('created_at', '>', now()->subMinutes(5))->count(); // Mengambil surat ekspedisi yang baru dibuat dalam 5 menit terakhir
-        $suratIC = SuratCleaning::where('created_at', '>', now()->subMinutes(5))->count(); // Mengambil surat ekspedisi yang baru dibuat dalam 5 menit terakhir
-        $suratCS = SuratInteriorConsultan::where('created_at', '>', now()->subMinutes(5))->count(); // Mengambil surat ekspedisi yang baru dibuat dalam 5 menit terakhir
+        
 
-        // Menyimpan ke session jika ada surat baru
-        if ($suratEksp > 0) {
-            session(['suratEkspedisi' => $suratEksp]);
-        }
-        if ($suratIC > 0) {
-            session(['suratCleaning Services' => $suratIC]);
-        }
-        if ($suratCS > 0) {
-            session(['suratInteriorConsultan' => $suratCS]);
-        }
+        // Cek jumlah surat yang masih Pending, bukan hanya yang baru dibuat
+        $suratEksp = SuratEkspedisi::where('status_pengajuan', 'Pending')->count();
+        $suratIC = SuratCleaning::where('status_pengajuan', 'Pending')->count();
+        $suratCS = SuratInteriorConsultan::where('status_pengajuan', 'Pending')->count();
+
+        // Simpan ke session jika masih ada surat Pending
+        session(['suratEkspedisi' => $suratEksp > 0 ? $suratEksp : null]);
+        session(['suratCleaning' => $suratIC > 0 ? $suratIC : null]);
+        session(['suratInteriorConsultan' => $suratCS > 0 ? $suratCS : null]);
 
         $monthlyCounts = SuratAdmin::selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, COUNT(*) as count")
             ->groupBy('month')
@@ -201,9 +198,9 @@ class SuratAdminController extends Controller
             'tolak' => $tolak,
             'months' => $monthlyCounts->keys(),
             'monthlyCounts' => $monthlyCounts->values(),
-            'divisi_pembuat' => $divisi_pembuat, 
-            'suratEksp' => $suratEksp, 
-            'suratCS' => $suratCS, 
+            'divisi_pembuat' => $divisi_pembuat,
+            'suratEksp' => $suratEksp,
+            'suratCS' => $suratCS,
             'suratIC' => $suratIC
         ]);
     }
