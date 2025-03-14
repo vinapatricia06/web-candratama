@@ -56,22 +56,22 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/progress_projects/{progressProject}/edit', [ProgressProjectController::class, 'edit'])->name('progress_projects.edit');
     Route::put('/progress_projects/{progressProject}', [ProgressProjectController::class, 'update'])->name('progress_projects.update');
     Route::delete('/progress_projects/{progressProject}', [ProgressProjectController::class, 'destroy'])->name('progress_projects.destroy');
-    Route::get('/progress-projects/download', [ProgressProjectController::class, 'downloadPdf'])->name('progress_projects.downloadPdf');
     Route::post('progress_projects/hapusBulan', [ProgressProjectController::class, 'hapusBulan'])->name('progress_projects.hapusBulan');
 });
     Route::get('/progress_projects', [ProgressProjectController::class, 'index'])->name('progress_projects.index');
-
+    Route::get('/progress-projects/download', [ProgressProjectController::class, 'downloadPdf'])->name('progress_projects.downloadPdf');
+    
 Route::middleware(['auth', 'role:admin,marketing'])->group(function () {
     Route::get('/maintenances/create', [MaintenanceController::class, 'create'])->name('maintenances.create');
     Route::post('/maintenances', [MaintenanceController::class, 'store'])->name('maintenances.store');
     Route::get('/maintenances/{maintenance}/edit', [MaintenanceController::class, 'edit'])->name('maintenances.edit');
     Route::put('/maintenances/{maintenance}', [MaintenanceController::class, 'update'])->name('maintenances.update');
     Route::delete('/maintenances/{maintenance}', [MaintenanceController::class, 'destroy'])->name('maintenances.destroy');
-    Route::get('/maintenances/download', [MaintenanceController::class, 'downloadPdf'])->name('maintenances.downloadPdf');
     Route::post('maintenances/hapusBulan', [MaintenanceController::class, 'hapusBulan'])->name('maintenances.hapusBulan');
 });
 Route::get('/maintenances', [MaintenanceController::class, 'index'])->name('maintenances.index');
-
+Route::get('/maintenances/download', [MaintenanceController::class, 'downloadPdf'])->name('maintenances.downloadPdf');
+    
 Route::middleware(['auth', 'role:marketing,admin,finance,warehouse,purchasing,interior_consultan'])->group(function () {
     Route::get('/digital-marketing/list', [SuratMarketingController::class, 'list'])->name('surat.digital_marketing.list');
     Route::put('/surat/marketing/updateStatusPengajuan/{id}', [SuratMarketingController::class, 'updateStatusPengajuan'])->name('surat.marketing.updateStatusPengajuan');
