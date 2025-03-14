@@ -89,6 +89,10 @@ class SuratAdminController extends Controller
 
         $nomorSurat = $surat->formatted_nomor_surat;
 
+        if (auth()->user()->role === 'admin') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
+
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
             session(['statusUpdatedAdmin' => "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}"]);
         }
@@ -204,6 +208,19 @@ class SuratAdminController extends Controller
             'suratIC' => $suratIC
         ]);
     }
+
+    public function destroyMultiple(Request $request)
+    {
+        $ids = $request->input('selected_surat');
+
+        if ($ids) {
+            SuratAdmin::whereIn('id', $ids)->delete();
+            return redirect()->route('surat.admin.index')->with('success', 'Surat yang dipilih berhasil dihapus.');
+        } else {
+            return redirect()->route('surat.admin.index')->with('error', 'Tidak ada surat yang dipilih.');
+        }
+    }
+
 
 
 }

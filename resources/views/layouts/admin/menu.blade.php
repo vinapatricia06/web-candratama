@@ -181,7 +181,7 @@
             <li class="nav-item">
                 <a href="{{ route('dashboard.ceo') }}" class="nav-link text-white">
                     <i class="nav-icon fas fa-user-tie"></i>
-                    <p>Dashboard CEO</p>
+                    <p>Dashboard Direktur</p>
                 </a>
             </li>
             <li class="nav-item">

@@ -82,6 +82,9 @@ class SuratInteriorConsultanController extends Controller
             Storage::delete('public/' . $surat->file_path);
         }
         $surat->delete();
+        if (auth()->user()->role === 'interior_consultan') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
 
         return redirect()->route('surat.interior_consultan.index')->with('success', 'Surat konsultasi interior berhasil dihapus');
     }

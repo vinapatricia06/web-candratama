@@ -106,6 +106,10 @@ class SuratMarketingController extends Controller
 
         $nomorSurat = $surat->formatted_nomor_surat; // Ambil nomor surat dari accessor
 
+        if (auth()->user()->role === 'marketing') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
+        
         // Cek apakah status berubah menjadi ACC atau Tolak
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
             // Simpan pemberitahuan bahwa status surat telah berubah

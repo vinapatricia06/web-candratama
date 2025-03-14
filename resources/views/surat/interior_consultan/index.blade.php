@@ -73,7 +73,14 @@
                             <a href="{{ route('surat.interior_consultan.viewPDF', $surat->id) }}" class="btn btn-primary">View File</a>
                         @endif
                         <a href="{{ route('surat.interior_consultan.edit', $surat->id) }}" class="btn btn-warning">Edit</a>
-                     </td>
+                        @if (Auth::user()->role == 'superadmin')
+                            <form action="{{ route('surat.interior_consultan.destroy', $surat->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus surat ini?');">Hapus</button>
+                            </form>
+                        @endif 
+                    </td>
                 </tr>
             @endforeach
         </tbody>

@@ -204,10 +204,23 @@ Route::get('surat/interior_consultan/{id}/view', [SuratInteriorConsultanControll
 Route::post('/notif/cleardm', function () {
     session()->forget('statusUpdated');
     session()->forget('suratKeDM');
-    return redirect()->route('surat.digital_marketing.dashboard');
+    return redirect()->route('dashboard.marketing');
 })->name('notif.cleardm');
 
 Route::post('/notif-clear', function () {
     session()->forget('statusUpdatedAdmin'); // Hapus hanya session untuk Admin
     return redirect()->back();
 })->name('notif.clearadm');
+
+
+Route::delete('/surat-admin/{id}', [SuratAdminController::class, 'destroy'])->name('surat.admin.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
+Route::delete('/surat-cleaning/{id}', [SuratCleaningController::class, 'destroy'])->name('surat.cleaning.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
+Route::delete('/surat-marketing/{id}', [SuratMarketingController::class, 'destroy'])->name('surat.marketing.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
+Route::delete('/surat-ekspedisi/{id}', [SuratEkspedisiController::class, 'destroy'])->name('surat.ekspedisi.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
+Route::delete('/surat-finance/{id}', [SuratFinanceController::class, 'destroy'])->name('surat.finance.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
+Route::delete('/surat-interior_consultan/{id}', [SuratInteriorConsultanController::class, 'destroy'])->name('surat.interior_consultan.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
+Route::delete('/surat-purchasing/{id}', [SuratPurchasingController::class, 'destroy'])->name('surat.purchasing.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
+Route::delete('/surat-warehouse/{id}', [SuratWarehouseController::class, 'destroy'])->name('surat.warehouse.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
+
+
+Route::delete('/surat-admin/destroy-multiple', [SuratAdminController::class, 'destroyMultiple'])->name('surat.admin.destroyMultiple');

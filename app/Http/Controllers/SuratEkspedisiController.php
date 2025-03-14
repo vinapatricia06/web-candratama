@@ -104,6 +104,9 @@ class SuratEkspedisiController extends Controller
         $surat = SuratEkspedisi::findOrFail($id);
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
+        if (auth()->user()->role === 'ekspedisi') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
 
         return redirect()->route('surat.ekspedisi.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }

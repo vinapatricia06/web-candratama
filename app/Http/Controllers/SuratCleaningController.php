@@ -123,6 +123,9 @@ class SuratCleaningController extends Controller
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
+        if (auth()->user()->role === 'cleaning_services') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
         // Redirect back with a success message
         return redirect()->route('surat.cleaning.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
