@@ -51,6 +51,14 @@
                 <label>Status</label>
                 <input type="text" name="status" class="form-control" value="{{ $progress_project->status }}" required>
             </div>
+            <div class="form-group">
+                <label for="serah_terima">Serah Terima</label>
+                <select name="serah_terima" id="serah_terima" class="form-control">
+                    <option value="selesai" {{ old('serah_terima', $project->serah_terima ?? '') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                    <option value="belum" {{ old('serah_terima', $project->serah_terima ?? '') == 'belum' ? 'selected' : '' }}>Belum</option>
+                </select>
+            </div>
+            
             <a href="{{ route('progress_projects.index') }}" class="btn btn-danger mr-2">Kembali</a>
             <button type="submit" class="btn btn-success">Update</button>
         </form>

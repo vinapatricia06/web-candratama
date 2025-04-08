@@ -10,7 +10,7 @@
             <button><a href="{{ route('omsets.rekap') }}" class="btn btn-primary">Rekap Omset</a></button>
         </div>
 
-        <!-- Form untuk pencarian dengan bulan -->
+        <!-- Form untuk pencarian dengan bulan dan tahun -->
         <form action="{{ route('omsets.index') }}" method="GET" class="mb-3">
             <div class="input-group" style="max-width: 400px;">
                 <input type="text" name="search" class="form-control" placeholder="Cari klien..."
@@ -23,9 +23,14 @@
                         </option>
                     @endforeach
                 </select>
+
+                <!-- Mengubah input tipe number menjadi input tipe text untuk mengetikkan tahun tanpa batasan -->
+                <input type="text" name="tahun" class="form-control" placeholder="Tahun"
+                    value="{{ request()->get('tahun') }}" id="tahun">
                 <button type="submit" class="btn btn-primary">Cari</button>
             </div>
         </form>
+
 
         <!-- Tombol untuk download Excel -->
         <a href="{{ route('omsets.export') }}" class="btn btn-success mb-3">Download Excel</a>
@@ -37,7 +42,7 @@
             <table class="table table-bordered" style="font-size: 18px; width: 100%; table-layout: auto;">
                 <thead class="table-light">
                     <tr>
-                        <th style="font-size: 20px;">ID</th>
+                        <th style="font-size: 20px;">No</th>
                         <th style="font-size: 20px;">Tanggal</th>
                         <th style="font-size: 20px;">No Induk</th> <!-- Kolom untuk No Induk -->
                         <th style="font-size: 20px;">Nama Klien</th>
@@ -53,7 +58,7 @@
                         <tr>
                             <td style="font-size: 18px;">{{ $omset->id_omset }}</td>
                             <td style="font-size: 18px;">{{ $omset->tanggal }}</td>
-                            <td style="font-size: 18px;">{{ $omset->no_induk }}</td> <!-- Tampilkan No Induk -->
+                            <td style="font-size: 18px;">{{ $omset->no_induk }}</td>
                             <td style="font-size: 18px;">{{ $omset->nama_klien }}</td>
                             <td style="font-size: 18px;">{{ $omset->alamat }}</td>
                             <td style="font-size: 18px;">{{ $omset->project }}</td>
@@ -61,7 +66,8 @@
                             <td style="font-size: 18px;">Rp {{ number_format($omset->nominal, 2, ',', '.') }}</td>
                             <td>
                                 <a href="{{ route('omsets.edit', $omset->id_omset) }}" class="btn btn-warning">Edit</a>
-                                <form action="{{ route('omsets.destroy', $omset->id_omset) }}" method="POST" class="d-inline">
+                                <form action="{{ route('omsets.destroy', $omset->id_omset) }}" method="POST"
+                                    class="d-inline">
                                     @csrf @method('DELETE')
                                     <button type="submit" class="btn btn-danger"
                                         onclick="return confirm('Yakin hapus?')">Hapus</button>

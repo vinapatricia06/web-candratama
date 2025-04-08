@@ -29,13 +29,13 @@
 
         <!-- File Surat Interior Consultant -->
         <div class="mb-3">
-            <label for="file_surat" class="form-label">File Surat Ekspedisi (PDF)</label>
+            <label for="file_surat" class="form-label">File Surat Ekspedisi (PDF, Image)</label>
             @if($surat->file_path)
                 <div>
                     <a href="{{ asset('storage/' . $surat->file_path) }}" target="_blank">Lihat File Lama</a>
                 </div>
             @endif
-            <input type="file" name="file_surat" class="form-control" accept="application/pdf">
+            <input type="file" name="file_surat" class="form-control" accept="application/pdf, image/*">
             <small class="form-text text-muted">Kosongkan jika tidak ingin mengubah file surat.</small>
         </div>
         

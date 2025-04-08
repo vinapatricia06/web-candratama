@@ -60,6 +60,7 @@
                         <th>Tanggal Setting</th>
                         <th>Dokumentasi</th>
                         <th>Status</th>
+                        <th>Serah Terima</th> <!-- Kolom baru untuk Serah Terima -->
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -84,6 +85,7 @@
                                 @endif
                             </td>
                             <td>{{ $project->status }}</td>
+                            <td>{{ $project->serah_terima }}</td> <!-- Menampilkan Serah Terima -->
                             <td>
                                 <a href="{{ route('progress_projects.edit', $project->id) }}" class="btn btn-warning">Edit</a>
                                 <form action="{{ route('progress_projects.destroy', $project->id) }}" method="POST"

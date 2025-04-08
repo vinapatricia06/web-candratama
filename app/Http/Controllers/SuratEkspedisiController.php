@@ -28,27 +28,40 @@ class SuratEkspedisiController extends Controller
     // Menyimpan data surat
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
             'keperluan' => 'required',
-            'file_surat' => 'nullable|file|mimes:pdf|max:2048',
+            'file_surat' => 'nullable|file|mimes:pdf,jpg,png,jpeg,gif|max:2048', // Validasi PDF dan gambar
         ]);
 
+        // Variabel untuk menyimpan path file
         $filePath = null;
+
+        // Proses upload file jika ada
         if ($request->hasFile('file_surat')) {
-            $filePath = $request->file('file_surat')->store('surat_ekspedisi_files', 'public');
+            $file = $request->file('file_surat');
+            $fileName = time() . '_' . $file->getClientOriginalName(); // Menggunakan nama file unik
+            $filePath = $file->storeAs('surat_cleaning_files', $fileName, 'public');
         }
 
-        SuratEkspedisi::create([
-            'nama' => Auth::user()->nama,
-            'divisi' => Auth::user()->role,
-            'keperluan' => $request->keperluan,
-            'file_path' => $filePath,
-            'status_pengajuan' => 'Pending',
-        ]);
+        try {
+            // Membuat record SuratCleaning baru
+            SuratEkspedisi::create([
+                'nama' => Auth::user()->nama,
+                'divisi' => Auth::user()->role,
+                'keperluan' => $request->keperluan,
+                'file_path' => $filePath,
+                'status_pengajuan' => 'Pending', // Status awal
+            ]);
 
-        return redirect()->route('surat.ekspedisi.index')->with('success', 'Surat ekspedisi berhasil dibuat');
+            // Redirect dengan pesan sukses
+            return redirect()->route('surat.ekspedisi.index')->with('success', 'Surat cleaning berhasil dibuat');
+        } catch (\Exception $e) {
+            // Redirect kembali jika ada kesalahan
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
-
+    
     // Form untuk mengedit surat
     public function edit($id)
     {
@@ -61,7 +74,7 @@ class SuratEkspedisiController extends Controller
     {
         $request->validate([
             'keperluan' => 'required',
-            'file_surat' => 'nullable|file|mimes:pdf|max:2048',
+            'file_surat' => 'nullable|file|mimes:pdf,jpg,png,jpeg,gif|max:2048',
         ]);
 
         $surat = SuratEkspedisi::findOrFail($id);
@@ -113,12 +126,22 @@ class SuratEkspedisiController extends Controller
 
     public function downloadfile($id)
     {
+        // Temukan SuratCleaning berdasarkan ID
         $surat = SuratEkspedisi::findOrFail($id);
         $filePath = public_path('storage/' . $surat->file_path);
+
+        // Cek apakah file ada di server
         if (file_exists($filePath)) {
-            $fileName = "SuratEkspedisi_{$surat->id}_{$surat->jenis_surat}.pdf";
+            // Mengambil ekstensi file
+            $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+            // Menentukan nama file yang akan diunduh sesuai dengan ekstensi
+            $fileName = "SuratEkspedisi_{$surat->id}." . $extension;
+
+            // Mengirimkan file untuk diunduh
             return response()->download($filePath, $fileName);
         } else {
+            // Jika file tidak ditemukan
             return redirect()->back()->withErrors('File tidak ditemukan.');
         }
     }

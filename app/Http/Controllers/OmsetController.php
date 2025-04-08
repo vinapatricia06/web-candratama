@@ -15,15 +15,23 @@ class OmsetController extends Controller
     {
         $search = $request->get('search');
         $bulan = $request->get('bulan');
+        $tahun = $request->get('tahun'); // Ambil nilai tahun dari parameter request
 
         $query = Omset::query();
 
+        // Filter berdasarkan search (nama klien)
         if ($search) {
             $query->where('nama_klien', 'like', '%' . $search . '%');
         }
 
+        // Filter berdasarkan bulan
         if ($bulan) {
             $query->whereMonth('tanggal', $bulan);
+        }
+
+        // Filter berdasarkan tahun
+        if ($tahun) {
+            $query->whereYear('tanggal', $tahun);
         }
 
         $omsets = $query->orderBy('id_omset', 'asc')->get();
@@ -72,10 +80,10 @@ class OmsetController extends Controller
             'sumber_lead' => 'required|string|max:255', // Validasi sumber_lead
             'nominal' => 'required|numeric', // Validasi untuk nominal sebagai angka
         ]);
-        
+
         // Menyimpan data omset termasuk nominal yang sudah divalidasi
         Omset::create($request->all());
-        
+
         return redirect()->route('omsets.index')->with('success', 'Data omset berhasil diperbarui!');
     }
 
@@ -129,15 +137,23 @@ class OmsetController extends Controller
     {
         $search = $request->get('search');
         $bulan = $request->get('bulan');
+        $tahun = $request->get('tahun'); // Ambil nilai tahun dari parameter request
 
         $query = Omset::query();
 
+        // Filter berdasarkan search (nama klien)
         if ($search) {
             $query->where('nama_klien', 'like', '%' . $search . '%');
         }
 
+        // Filter berdasarkan bulan
         if ($bulan) {
             $query->whereMonth('tanggal', $bulan);
+        }
+
+        // Filter berdasarkan tahun
+        if ($tahun) {
+            $query->whereYear('tanggal', $tahun);
         }
 
         $omsets = $query->get();
@@ -210,7 +226,7 @@ class OmsetController extends Controller
                     'backgroundColor' => 'rgba(0, 153, 255, 0.5)',
                     'borderColor' => 'rgba(0, 153, 255, 1)',
                     'borderWidth' => 1
-                ]]
+                ]],
             ],
             'options' => ['responsive' => true]
         ];

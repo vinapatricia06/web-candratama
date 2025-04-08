@@ -1,10 +1,10 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Grafik Omset Tahunan')
+@section('title', 'Rekap Omset Tahunan')
 
 @section('content')
 <div class="container-fluid" style="padding-left: 20px; padding-right: 20px;">
-    <h1 class="text-center mb-4">Grafik Omset Tahunan</h1>
+    <h1 class="text-center mb-4">Tabel Omset Tahunan</h1>
     <div class="d-flex justify-content-between mb-3">
         <a href="{{ route('omset.download-pdf') }}" class="btn btn-danger" id="downloadPdfBtn">Download PDF</a>
         <a href="{{ route('omsets.index') }}" class="btn btn-primary">Kembali</a>

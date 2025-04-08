@@ -38,6 +38,7 @@ class ProgressProjectController extends Controller
             'tanggal_setting' => 'required|date',
             'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'status' => 'required|string|max:255',
+            'serah_terima' => 'required|in:selesai,belum', 
         ]);
 
         $data = $request->except(['dokumentasi']);
@@ -70,6 +71,7 @@ class ProgressProjectController extends Controller
             'tanggal_setting' => 'required|date',
             'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'status' => 'required|string|max:255',
+            'serah_terima' => 'required|in:selesai,belum',
         ]);
     
         $progress_project = ProgressProject::findOrFail($id);

@@ -23,27 +23,40 @@ class SuratInteriorConsultanController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
             'keperluan' => 'required',
-            'file_surat' => 'nullable|file|mimes:pdf|max:2048',
+            'file_surat' => 'nullable|file|mimes:pdf,jpg,png,jpeg,gif|max:2048', // Validasi PDF dan gambar
         ]);
 
+        // Variabel untuk menyimpan path file
         $filePath = null;
+
+        // Proses upload file jika ada
         if ($request->hasFile('file_surat')) {
-            $filePath = $request->file('file_surat')->store('surat_konsultasi_interior_files', 'public');
+            $file = $request->file('file_surat');
+            $fileName = time() . '_' . $file->getClientOriginalName(); // Menggunakan nama file unik
+            $filePath = $file->storeAs('surat_cleaning_files', $fileName, 'public');
         }
 
-        SuratInteriorConsultan::create([
-            'nama' => Auth::user()->nama,
-            'divisi' => Auth::user()->role,
-            'keperluan' => $request->keperluan,
-            'file_path' => $filePath,
-            'status_pengajuan' => 'Pending',
-        ]);
+        try {
+            // Membuat record SuratCleaning baru
+            SuratInteriorConsultan::create([
+                'nama' => Auth::user()->nama,
+                'divisi' => Auth::user()->role,
+                'keperluan' => $request->keperluan,
+                'file_path' => $filePath,
+                'status_pengajuan' => 'Pending', // Status awal
+            ]);
 
-        return redirect()->route('surat.interior_consultan.index')->with('success', 'Surat konsultasi interior berhasil dibuat');
+            // Redirect dengan pesan sukses
+            return redirect()->route('surat.interior_consultan.index')->with('success', 'Surat cleaning berhasil dibuat');
+        } catch (\Exception $e) {
+            // Redirect kembali jika ada kesalahan
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
-
+    
     public function edit($id)
     {
         $surat = SuratInteriorConsultan::findOrFail($id);
@@ -54,7 +67,7 @@ class SuratInteriorConsultanController extends Controller
     {
         $request->validate([
             'keperluan' => 'required',
-            'file_surat' => 'nullable|file|mimes:pdf|max:2048',
+            'file_surat' => 'nullable|file|mimes:pdf,jpg,png,jpeg,gif|max:2048',
         ]);
 
         $surat = SuratInteriorConsultan::findOrFail($id);
@@ -125,12 +138,22 @@ class SuratInteriorConsultanController extends Controller
 
     public function downloadfile($id)
     {
+        // Temukan SuratCleaning berdasarkan ID
         $surat = SuratInteriorConsultan::findOrFail($id);
         $filePath = public_path('storage/' . $surat->file_path);
+
+        // Cek apakah file ada di server
         if (file_exists($filePath)) {
-            $fileName = "SuratKonsultasiInterior_{$surat->id}.pdf";
+            // Mengambil ekstensi file
+            $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+            // Menentukan nama file yang akan diunduh sesuai dengan ekstensi
+            $fileName = "Suratinterior_consultan_{$surat->id}." . $extension;
+
+            // Mengirimkan file untuk diunduh
             return response()->download($filePath, $fileName);
         } else {
+            // Jika file tidak ditemukan
             return redirect()->back()->withErrors('File tidak ditemukan.');
         }
     }

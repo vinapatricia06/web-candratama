@@ -222,4 +222,23 @@ class SuratMarketingController extends Controller
         ]);
     }
 
+
+    public function bulkDestroy(Request $request)
+    {
+        dd($request->surat_ids);
+        // Validasi
+        $this->validate($request, [
+            'surat_ids' => 'required|array|min:1',  // Pastikan surat_ids adalah array dan minimal ada 1 ID
+            'surat_ids.*' => 'exists:surat_marketings,id', // Pastikan ID surat yang dipilih ada di database
+        ]);
+
+        // Hapus surat yang dipilih
+        SuratMarketing::whereIn('id', $request->surat_ids)->delete();
+
+        // Redirect dengan pesan sukses
+        return redirect()->route('surat.marketing.index')->with('success', 'Surat-surat yang dipilih berhasil dihapus.');
+    }
+
+
+
 }

@@ -29,8 +29,8 @@
 
         <!-- File Surat Ekspedisi -->
         <div class="mb-3">
-            <label for="file_surat" class="form-label">File Surat Ekspedisi (PDF)</label>
-            <input type="file" name="file_surat" class="form-control" accept="application/pdf">
+            <label for="file_surat" class="form-label">File Surat Ekspedisi (PDF,Image)</label>
+            <input type="file" name="file_surat" class="form-control" accept="application/pdf, image/*">
             @if($surat->file_path)
                 <small class="form-text text-muted">Current File: <a href="{{ asset('storage/' . $surat->file_path) }}" target="_blank">View File</a></small>
             @endif

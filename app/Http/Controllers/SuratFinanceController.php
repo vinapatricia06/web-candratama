@@ -21,6 +21,15 @@ class SuratFinanceController extends Controller
         return view('surat.finance.index', compact('nomorSurat', 'suratFinances'));
     }
 
+    public function pending()
+    {
+        // Pastikan hanya mengambil surat dengan status 'Pending'
+        $suratFinances = SuratFinance::where('status_pengajuan', 'Pending')->get();
+
+        // Pass the filtered data to the view
+        return view('auth.indexDir', compact('suratFinances'));
+    }
+
     public function generate(Request $request)
     {
         $request->validate([
@@ -134,7 +143,7 @@ class SuratFinanceController extends Controller
         session()->forget(['suratKeFinance', 'suratMarketing', 'suratAdmin', 'suratWarehouse', 'suratPurchasing']);
         session()->flash('statusUpdated', 'Status surat berhasil diperbarui.');
 
-        return redirect()->route('surat.finance.index')->with('success', 'Status pengajuan berhasil diperbarui.');
+        return redirect()->route('surat.finance.pending')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
 
 

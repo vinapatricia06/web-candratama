@@ -10,7 +10,7 @@ class ProgressProject extends Model {
 
     protected $fillable = [
         'teknisi_id', 'klien', 'alamat', 'project', 
-        'tanggal_setting', 'dokumentasi', 'status'
+        'tanggal_setting', 'dokumentasi', 'status', 'serah_terima' // Tambahkan serah_terima di sini
     ];
 
     public function teknisi()

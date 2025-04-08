@@ -28,31 +28,40 @@ class SuratCleaningController extends Controller
     // Menyimpan data surat
     public function store(Request $request)
     {
-        // Validate the incoming request
+        // Validasi input
         $request->validate([
             'keperluan' => 'required',
-            'file_surat' => 'nullable|file|mimes:pdf|max:2048',
+            'file_surat' => 'nullable|file|mimes:pdf,jpg,png,jpeg,gif|max:2048', // Validasi PDF dan gambar
         ]);
 
-        // Handle file upload
+        // Variabel untuk menyimpan path file
         $filePath = null;
+
+        // Proses upload file jika ada
         if ($request->hasFile('file_surat')) {
-            $filePath = $request->file('file_surat')->store('surat_cleaning_files', 'public');
+            $file = $request->file('file_surat');
+            $fileName = time() . '_' . $file->getClientOriginalName(); // Menggunakan nama file unik
+            $filePath = $file->storeAs('surat_cleaning_files', $fileName, 'public');
         }
 
-        // Create a new SuratCleaning record
-        SuratCleaning::create([
-            'nama' => Auth::user()->nama,
-            'divisi' => Auth::user()->role,
-            'keperluan' => $request->keperluan,
-            'file_path' => $filePath,
-            'status_pengajuan' => 'Pending',
-        ]);
+        try {
+            // Membuat record SuratCleaning baru
+            SuratCleaning::create([
+                'nama' => Auth::user()->nama,
+                'divisi' => Auth::user()->role,
+                'keperluan' => $request->keperluan,
+                'file_path' => $filePath,
+                'status_pengajuan' => 'Pending', // Status awal
+            ]);
 
-        // Redirect to index page with success message
-        return redirect()->route('surat.cleaning.index')->with('success', 'Surat cleaning berhasil dibuat');
+            // Redirect dengan pesan sukses
+            return redirect()->route('surat.cleaning.index')->with('success', 'Surat cleaning berhasil dibuat');
+        } catch (\Exception $e) {
+            // Redirect kembali jika ada kesalahan
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
-
+    
     // Form untuk mengedit surat
     public function edit($id)
     {
@@ -67,7 +76,7 @@ class SuratCleaningController extends Controller
         // Validate the incoming request
         $request->validate([
             'keperluan' => 'required',
-            'file_surat' => 'nullable|file|mimes:pdf|max:2048',
+            'file_surat' => 'nullable|file|mimes:pdf,jpg,png,jpeg,gif|max:2048',
         ]);
 
         // Find the SuratCleaning record by its ID
@@ -133,17 +142,26 @@ class SuratCleaningController extends Controller
     // Download file surat
     public function download($id)
     {
-        // Find the SuratCleaning by its ID
+        // Temukan SuratCleaning berdasarkan ID
         $surat = SuratCleaning::findOrFail($id);
         $filePath = public_path('storage/' . $surat->file_path);
 
-        // Check if the file exists and return the file for download
+        // Cek apakah file ada di server
         if (file_exists($filePath)) {
-            return response()->download($filePath, "SuratCleaning_{$surat->id}.pdf");
+            // Mengambil ekstensi file
+            $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+
+            // Menentukan nama file yang akan diunduh sesuai dengan ekstensi
+            $fileName = "SuratCleaning_{$surat->id}." . $extension;
+
+            // Mengirimkan file untuk diunduh
+            return response()->download($filePath, $fileName);
         } else {
+            // Jika file tidak ditemukan
             return redirect()->back()->withErrors('File tidak ditemukan.');
         }
     }
+
 
     // View file surat (PDF)
     public function viewPDF($id)

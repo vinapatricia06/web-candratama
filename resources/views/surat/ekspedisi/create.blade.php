@@ -28,8 +28,8 @@
 
         <!-- File Surat Ekspedisi -->
         <div class="mb-3">
-            <label for="file_surat" class="form-label">File Surat Ekspedisi (PDF)</label>
-            <input type="file" name="file_surat" class="form-control" accept="application/pdf">
+            <label for="file_surat" class="form-label">File Surat Cleaning (PDF, Image)</label>
+            <input type="file" name="file_surat" class="form-control" accept="application/pdf, image/*">
         </div>
 
         <button type="submit" class="btn btn-primary">Simpan</button>

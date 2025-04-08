@@ -1,4 +1,4 @@
-@extends('layouts.admin.app')
+@extends('layouts.admin.app') 
 
 @section('title', 'Tambah Progress Project')
 
@@ -39,6 +39,13 @@
             <div class="mb-3">
                 <label>Status</label>
                 <input type="text" name="status" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label>Serah Terima</label>
+                <select name="serah_terima" class="form-control" required>
+                    <option value="belum" selected>Belum</option>
+                    <option value="selesai">Selesai</option>
+                </select>
             </div>
             <a href="{{ route('progress_projects.index') }}" class="btn btn-danger mr-2">Kembali</a>
             <button type="submit" class="btn btn-success">Simpan</button>
