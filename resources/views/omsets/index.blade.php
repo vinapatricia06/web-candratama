@@ -13,10 +13,12 @@
         <!-- Form untuk pencarian dengan bulan dan tahun -->
         <form action="{{ route('omsets.index') }}" method="GET" class="mb-3">
             <div class="input-group" style="max-width: 400px;">
-                <input type="text" name="search" class="form-control" placeholder="Cari klien..."
+                <input type="text" name="search" class="form-control" placeholder="Klien..."
                     value="{{ request()->get('search') }}">
+                <input type="text" name="no_induk" class="form-control" placeholder="No Induk"
+                    value="{{ request()->get('no_induk') }}">
                 <select name="bulan" class="form-control">
-                    <option value="">Pilih Bulan</option>
+                    <option value="">Bulan</option>
                     @foreach (range(1, 12) as $bulan)
                         <option value="{{ $bulan }}" {{ request()->get('bulan') == $bulan ? 'selected' : '' }}>
                             {{ \Carbon\Carbon::create()->month($bulan)->format('F') }}
@@ -31,7 +33,6 @@
             </div>
         </form>
 
-
         <!-- Tombol untuk download Excel -->
         <a href="{{ route('omsets.export') }}" class="btn btn-success mb-3">Download Excel</a>
 
@@ -45,7 +46,7 @@
                         <th style="font-size: 20px;">No</th>
                         <th style="font-size: 20px;">Tanggal</th>
                         <th style="font-size: 20px;">No Induk</th> <!-- Kolom untuk No Induk -->
-                        <th style="font-size: 20px;">Nama Klien</th>
+                        <th style="font-size: 20px;">Klien</th>
                         <th style="font-size: 20px;">Alamat</th>
                         <th style="font-size: 20px;">Project</th>
                         <th style="font-size: 20px;">Sumber Lead</th>

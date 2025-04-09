@@ -52,6 +52,7 @@
                     <tr>
                         <th>No</th>
                         <th>Klien</th>
+                        <th>No Induk</th>
                         <th>Alamat</th>
                         <th>Project</th>
                         <th>Tanggal Setting</th>
@@ -67,6 +68,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $maintenance->nama_klien }}</td>
+                            <td>{{ $maintenance->no_induk }}</td>
                             <td>{{ $maintenance->alamat }}</td>
                             <td>{{ $maintenance->project }}</td>
                             <td>{{ $maintenance->tanggal_setting }}</td>

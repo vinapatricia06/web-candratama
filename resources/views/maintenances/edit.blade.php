@@ -13,7 +13,10 @@
                 <label>Nama Klien</label>
                 <input type="text" name="nama_klien" class="form-control" value="{{ $maintenance->nama_klien }}" required>
             </div>
-
+            <div class="mb-3">
+                <label>No Induk</label>
+                <input type="text" name="no_induk" class="form-control" value="{{ $maintenance->no_induk }}" required>
+            </div>
             <div class="mb-3">
                 <label>Alamat</label>
                 <textarea name="alamat" class="form-control" required>{{ $maintenance->alamat }}</textarea>

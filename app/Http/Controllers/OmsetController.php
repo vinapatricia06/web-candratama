@@ -24,6 +24,10 @@ class OmsetController extends Controller
             $query->where('nama_klien', 'like', '%' . $search . '%');
         }
 
+        if ($request->has('no_induk') && $request->get('no_induk') != '') {
+            $query->where('no_induk', 'like', '%' . $request->get('no_induk') . '%');
+        }
+    
         // Filter berdasarkan bulan
         if ($bulan) {
             $query->whereMonth('tanggal', $bulan);

@@ -12,6 +12,7 @@ class Maintenance extends Model
     // Menambahkan properti fillable
     protected $fillable = [
         'nama_klien',
+        'no_induk',
         'alamat',
         'project',
         'tanggal_setting',
