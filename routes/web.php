@@ -210,10 +210,31 @@ Route::post('/notif/cleardm', function () {
     return redirect()->route('dashboard.marketing');
 })->name('notif.cleardm');
 
+Route::post('/notif/clearwrh', function () {
+    session()->forget('statusUpdatedwrh');
+    session()->forget('suratKeWarehouse');
+    return redirect()->route('dashboard.warehouse');
+})->name('notif.clearwrh');
+
+Route::post('/notif/clearpch', function () {
+    session()->forget('statusUpdatedpch');
+    session()->forget('suratDM');
+    session()->forget('suratWRH');
+    session()->forget('suratADM');
+    return redirect()->route('surat.purchasing.dashboard');
+})->name('notif.clearpch');
+
 Route::post('/notif-clear', function () {
     session()->forget('statusUpdatedAdmin'); // Hapus hanya session untuk Admin
     return redirect()->back();
 })->name('notif.clearadm');
+
+Route::post('/notif-clear', function () {
+    session()->forget('statusUpdatedpch'); // Hapus hanya session untuk Admin
+    return redirect()->back();
+})->name('notif.clearpch');
+
+
 
 
 Route::delete('/surat-admin/{id}', [SuratAdminController::class, 'destroy'])->name('surat.admin.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
@@ -226,9 +247,4 @@ Route::delete('/surat-purchasing/{id}', [SuratPurchasingController::class, 'dest
 Route::delete('/surat-warehouse/{id}', [SuratWarehouseController::class, 'destroy'])->name('surat.warehouse.destroy')->middleware('auth'); // Pastikan hanya user yang sudah login bisa mengakses
 
 
-Route::delete('/surat-admin/destroy-multiple', [SuratAdminController::class, 'destroyMultiple'])->name('surat.admin.destroyMultiple');
-
-
 Route::get('/surat/finance/pending', [SuratFinanceController::class, 'pending'])->name('surat.finance.pending');
-
-Route::delete('/surat/marketing/bulk-destroy', [SuratMarketingController::class, 'bulkDestroy'])->name('surat.marketing.bulkDestroy');

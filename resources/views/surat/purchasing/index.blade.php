@@ -19,10 +19,10 @@
         </div>
     @endif
 
-    @if(session('statusUpdated'))
+    @if(session('statusUpdatedpch'))
         <div class="alert alert-success d-flex justify-content-between align-items-center">
-            <span>{{ session('statusUpdated') }}</span>
-            <form action="{{ route('notif.clear') }}" method="POST" style="margin-left: 10px;">
+            <span>{{ session('statusUpdatedpch') }}</span>
+            <form action="{{ route('notif.clearpch') }}" method="POST" style="margin-left: 10px;">
                 @csrf
                 <button type="submit" class="btn-close"></button>
             </form>

@@ -75,6 +75,10 @@ class SuratWarehouseController extends Controller
 
     public function updateStatusPengajuan(Request $request, $id)
     {
+        if (auth()->user()->role === 'warehouse') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
+        
         $request->validate([
             'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
         ]);
@@ -86,12 +90,10 @@ class SuratWarehouseController extends Controller
 
         $nomorSurat = $surat->formatted_nomor_surat; // Ambil nomor surat dari accessor
 
-        if (auth()->user()->role === 'warehouse') {
-            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
-        }
+        
         // Cek apakah status berubah menjadi ACC atau Tolak
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
-            session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
+            session()->put('statusUpdatedwrh', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
         }
 
         return redirect()->route('surat.warehouse.index')->with('success', 'Status pengajuan berhasil diperbarui.');

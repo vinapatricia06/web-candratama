@@ -78,23 +78,30 @@ class SuratPurchasingController extends Controller
 
     public function updateStatusPengajuan(Request $request, $id)
     {
+        // Cek apakah pengguna memiliki role 'purchasing'
+        if (auth()->user()->role === 'purchasing') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
+
+        // Validasi status pengajuan
         $request->validate([
             'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
         ]);
 
+        // Temukan surat berdasarkan ID
         $surat = SuratPurchasing::findOrFail($id);
         $oldStatus = $surat->status_pengajuan;
+
+        // Simpan status baru
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
-        $nomorSurat = $surat->formatted_nomor_surat; // Ambil nomor surat dari accessor
+        // Ambil nomor surat dari accessor
+        $nomorSurat = $surat->formatted_nomor_surat;
 
-        if (auth()->user()->role === 'purchasing') {
-            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
-        }
         // Cek apakah status berubah menjadi ACC atau Tolak
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
-            session()->put('statusUpdated', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
+            session()->put('statusUpdatedpch', "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}");
         }
 
         // Hapus notifikasi jika surat tujuan ke DM telah diubah statusnya
@@ -108,14 +115,12 @@ class SuratPurchasingController extends Controller
             session()->forget('suratWRH');
         }
 
-        
         // Hapus session notifikasi setelah status diperbarui
         session()->forget(['suratDM', 'suratADM', 'suratWRH']);
-        session()->flash('statusUpdated', 'Status surat berhasil diperbarui.');
 
-        return redirect()->route('surat.puschasing.index')->with('success', 'Status pengajuan berhasil diperbarui.');
+        // Kembali ke halaman daftar surat
+        return redirect()->route('surat.purchasing.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
-
 
     public function viewPDF($id)
     {

@@ -95,21 +95,27 @@ class SuratMarketingController extends Controller
 
     public function updateStatusPengajuan(Request $request, $id)
     {
+        // Validasi input
         $request->validate([
             'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
         ]);
 
-        $surat = SuratMarketing::findOrFail($id);
-        $oldStatus = $surat->status_pengajuan;
-        $surat->status_pengajuan = $request->status_pengajuan;
-        $surat->save();
-
-        $nomorSurat = $surat->formatted_nomor_surat; // Ambil nomor surat dari accessor
-
+        // Cek apakah yang mengupdate adalah marketing
         if (auth()->user()->role === 'marketing') {
             return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
         }
+
+        // Temukan surat berdasarkan ID
+        $surat = SuratMarketing::findOrFail($id);
+        $oldStatus = $surat->status_pengajuan;
         
+        // Update status pengajuan
+        $surat->status_pengajuan = $request->status_pengajuan;
+        $surat->save();
+
+        // Ambil nomor surat dari accessor
+        $nomorSurat = $surat->formatted_nomor_surat;
+
         // Cek apakah status berubah menjadi ACC atau Tolak
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
             // Simpan pemberitahuan bahwa status surat telah berubah
@@ -128,7 +134,6 @@ class SuratMarketingController extends Controller
 
         return redirect()->route('surat.digital_marketing.list')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
-
 
 
 

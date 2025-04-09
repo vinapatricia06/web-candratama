@@ -26,9 +26,9 @@
         <a href="{{ route('surat.marketing.create') }}" class="btn btn-primary">Tambah Surat</a>
     </div>
 
-    <form action="{{ route('surat.marketing.bulkDestroy') }}" method="POST" id="bulkDeleteForm">
+    
         @csrf
-        @method('DELETE') <!-- Pastikan menggunakan DELETE method di sini -->
+       
         <div class="mb-3">
             <input type="checkbox" id="selectAll" /> Select All
             <button type="submit" class="btn btn-danger">Hapus Terpilih</button>
@@ -95,7 +95,6 @@
                 </tbody>
             </table>
         </div>
-    </form>
     
     
 

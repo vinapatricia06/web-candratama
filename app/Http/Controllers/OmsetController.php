@@ -82,7 +82,8 @@ class OmsetController extends Controller
         ]);
 
         // Menyimpan data omset termasuk nominal yang sudah divalidasi
-        Omset::create($request->all());
+        $omset->update($request->all());
+
 
         return redirect()->route('omsets.index')->with('success', 'Data omset berhasil diperbarui!');
     }
