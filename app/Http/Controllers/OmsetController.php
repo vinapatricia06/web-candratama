@@ -53,7 +53,7 @@ class OmsetController extends Controller
         // Validasi input untuk memastikan nominal adalah angka yang valid dan no_induk diisi
         $request->validate([
             'tanggal' => 'required|date',
-            'no_induk' => 'required|integer',  // Validasi untuk no induk sebagai angka
+            'no_induk' => 'required|integer|unique:omsets,no_induk',
             'nama_klien' => 'required|string|max:255',
             'alamat' => 'required|string',
             'project' => 'required|string|max:255',
@@ -77,7 +77,7 @@ class OmsetController extends Controller
         // Validasi input untuk memastikan nominal adalah angka yang valid dan no_induk diisi
         $request->validate([
             'tanggal' => 'required|date',
-            'no_induk' => 'required|integer',  // Validasi untuk no induk sebagai angka
+            'no_induk' => 'required|integer|unique:omsets,no_induk',  // Validasi untuk no induk sebagai angka
             'nama_klien' => 'required|string|max:255',
             'alamat' => 'required|string',
             'project' => 'required|string|max:255',

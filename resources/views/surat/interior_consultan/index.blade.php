@@ -16,11 +16,18 @@
         // Menangani penutupan pemberitahuan
         document.getElementById('closeAlert').addEventListener('click', function() {
             document.getElementById('alertMessage').style.display = 'none';
+            
             // Menghapus pemberitahuan dari session setelah ditutup
-            fetch('/clear-notification', {method: 'POST'});
+            fetch('/clear-notification', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
         });
     </script>
 @endif
+
 
 
 <div style="margin-bottom: 20px;">

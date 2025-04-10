@@ -224,6 +224,30 @@ Route::post('/notif/clearpch', function () {
     return redirect()->route('surat.purchasing.dashboard');
 })->name('notif.clearpch');
 
+Route::post('/notif/clearpch', function () {
+    session()->forget('statusUpdatedAdmin');
+    return redirect()->route('surat.admin.dashboard');
+})->name('notif.clearadm');
+
+
+Route::post('/clear-notification', function () {
+    session()->forget('status_messageCS');
+    \Log::info('status_messageCS telah dihapus', ['session' => session()->all()]);
+    return response()->json(['status' => 'success']);
+});
+
+
+Route::post('/clear-notification', function () {
+    session()->forget('status_message');
+    return response()->json(['status' => 'success']);
+});
+
+Route::post('/clear-notification', function () {
+    session()->forget('status_messageEKP');
+    return response()->json(['status' => 'success']);
+});
+
+
 Route::post('/notif-clear', function () {
     session()->forget('statusUpdatedAdmin'); // Hapus hanya session untuk Admin
     return redirect()->back();

@@ -110,18 +110,43 @@ class SuratEkspedisiController extends Controller
 
     public function updateStatusPengajuan(Request $request, $id)
     {
-        $request->validate([
-            'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
-        ]);
-
-        $surat = SuratEkspedisi::findOrFail($id);
-        $surat->status_pengajuan = $request->status_pengajuan;
-        $surat->save();
+        // Pastikan pengguna yang memiliki role 'ekspedisi' tidak bisa mengubah status
         if (auth()->user()->role === 'ekspedisi') {
             return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
         }
 
+        // Validasi status pengajuan
+        $request->validate([
+            'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
+        ]);
+
+        // Temukan SuratEkspedisi berdasarkan ID dan update statusnya
+        $surat = SuratEkspedisi::findOrFail($id);
+        $surat->status_pengajuan = $request->status_pengajuan;
+        $surat->save();
+
+        // Menambahkan pemberitahuan untuk status yang diupdate
+        $statusMessageEKP = $this->getStatusMessageEKP($request->status_pengajuan);
+
+        // Menyimpan pesan notifikasi hanya untuk satu kali request
+        session()->put('status_messageEKP', $statusMessageEKP);
+
+        // Redirect kembali dengan pesan sukses
         return redirect()->route('surat.ekspedisi.index')->with('success', 'Status pengajuan berhasil diperbarui.');
+    }
+
+
+    private function getStatusMessageEKP($status)
+    {
+        switch ($status) {
+            case 'ACC':
+                return 'Surat telah disetujui.';
+            case 'Tolak':
+                return 'Surat telah ditolak.';
+            case 'Pending':
+            default:
+                return 'Status pengajuan kembali ke Pending.';
+        }
     }
 
     public function downloadfile($id)

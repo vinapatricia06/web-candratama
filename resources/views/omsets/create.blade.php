@@ -5,17 +5,29 @@
 @section('content')
 <div class="container">
     <h2>Tambah Omset</h2>
+    
+    <!-- Menampilkan pesan error jika ada -->
+    @if ($errors->has('no_induk'))
+        <script>
+            alert('No Induk sudah terdaftar, harap gunakan yang berbeda.');
+        </script>
+    @endif
+
     <form action="{{ route('omsets.store') }}" method="POST">
         @csrf
         <div class="mb-3">
             <label>Tanggal</label>
             <input type="date" name="tanggal" class="form-control" required>
         </div>
+        
         <div class="form-group">
             <label for="no_induk">No Induk</label>
             <input type="number" class="form-control" name="no_induk" id="no_induk" required>
+            @error('no_induk')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
         </div>
-             
+        
         <div class="mb-3">
             <label>Nama Klien</label>
             <input type="text" name="nama_klien" class="form-control" required>
@@ -30,7 +42,7 @@
         </div>
         <div class="form-group">
             <label for="sumber_lead">Sumber Lead</label>
-            <input type="text" name="sumber_lead" id="sumber_lead" class="form-control" value="{{ old('sumber_lead', $omset->sumber_lead ?? '') }}">
+            <input type="text" name="sumber_lead" id="sumber_lead" class="form-control" value="{{ old('sumber_lead') }}">
         </div>
         <div class="form-group">
             <label for="nominal">Nominal</label>

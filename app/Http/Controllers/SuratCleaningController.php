@@ -122,22 +122,44 @@ class SuratCleaningController extends Controller
     // Update status pengajuan
     public function updateStatus(Request $request, $id)
     {
-        // Validate the status
+        if (auth()->user()->role === 'cleaning_services') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
+
+        // Validasi status pengajuan
         $request->validate([
             'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
         ]);
 
-        // Find the SuratCleaning by its ID and update the status
+        // Temukan SuratCleaning berdasarkan ID dan update statusnya
         $surat = SuratCleaning::findOrFail($id);
         $surat->status_pengajuan = $request->status_pengajuan;
         $surat->save();
 
-        if (auth()->user()->role === 'cleaning_services') {
-            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
-        }
-        // Redirect back with a success message
+        // Menambahkan pemberitahuan untuk status yang diupdate
+        $statusMessageCS = $this->getStatusMessageCS($request->status_pengajuan); // Pastikan fungsi ini ada
+
+        // Menyimpan pesan notifikasi ke dalam session
+        session()->put('status_messageCS', $statusMessageCS);
+
+        // Redirect kembali dengan pesan sukses
         return redirect()->route('surat.cleaning.index')->with('success', 'Status pengajuan berhasil diperbarui.');
     }
+
+
+    private function getStatusMessageCS($status)
+    {
+        switch ($status) {
+            case 'ACC':
+                return 'Surat telah disetujui.';
+            case 'Tolak':
+                return 'Surat telah ditolak.';
+            case 'Pending':
+            default:
+                return 'Status pengajuan kembali ke Pending.';
+        }
+    }
+
 
     // Download file surat
     public function download($id)

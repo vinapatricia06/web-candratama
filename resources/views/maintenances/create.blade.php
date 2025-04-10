@@ -5,16 +5,29 @@
 @section('content')
     <div class="container">
         <h2>Tambah Maintenance Project</h2>
+
+        <!-- Menampilkan pop-up jika ada error untuk no_induk -->
+        @if ($errors->has('no_induk'))
+            <script>
+                alert('No Induk sudah terdaftar, harap gunakan yang berbeda.');
+            </script>
+        @endif
+
         <form action="{{ route('maintenances.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label>Nama Klien</label>
                 <input type="text" name="nama_klien" class="form-control" required>
             </div>
+            
             <div class="mb-3">
                 <label>No Induk</label>
                 <input type="text" name="no_induk" class="form-control" required>
+                @error('no_induk')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
+
             <div class="mb-3">
                 <label>Alamat</label>
                 <textarea name="alamat" class="form-control" required></textarea>

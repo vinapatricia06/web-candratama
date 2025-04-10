@@ -78,6 +78,10 @@ class SuratAdminController extends Controller
 
     public function updateStatusPengajuan(Request $request, $id)
     {
+        if (auth()->user()->role === 'admin') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
+
         $request->validate([
             'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
         ]);
@@ -89,13 +93,11 @@ class SuratAdminController extends Controller
 
         $nomorSurat = $surat->formatted_nomor_surat;
 
-        if (auth()->user()->role === 'admin') {
-            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
-        }
 
         if (in_array($surat->status_pengajuan, ['ACC', 'Tolak']) && $oldStatus !== $surat->status_pengajuan) {
             session(['statusUpdatedAdmin' => "Surat dengan Nomor {$nomorSurat} telah di {$surat->status_pengajuan}"]);
         }
+        
         
 
         // Cek ulang jumlah surat Pending di kategori terkait

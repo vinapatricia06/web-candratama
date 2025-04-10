@@ -5,6 +5,31 @@
 
 <h1>Daftar Surat Ekspedisi</h1>
 
+@if(session('status_messageEKP'))
+    <div id="alertMessage" class="alert alert-info alert-dismissible fade show" role="alert">
+        {{ session('status_messageEKP') }}
+        <button id="closeAlert" type="button" class="close" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <script>
+        // Menangani penutupan pemberitahuan
+        document.getElementById('closeAlert').addEventListener('click', function() {
+            document.getElementById('alertMessage').style.display = 'none';
+            
+            // Menghapus pemberitahuan dari session setelah ditutup
+            fetch('/clear-notification', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+        });
+    </script>
+@endif
+
+
 @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}

@@ -104,6 +104,9 @@ class SuratInteriorConsultanController extends Controller
 
     public function updateStatusPengajuan(Request $request, $id)
     {
+        if (auth()->user()->role === 'interior_consultan') {
+            return abort(403, 'Anda tidak diizinkan untuk mengubah status pengajuan ini.');
+        }
         $request->validate([
             'status_pengajuan' => 'required|in:Pending,ACC,Tolak',
         ]);
@@ -115,8 +118,8 @@ class SuratInteriorConsultanController extends Controller
         // Menambahkan pemberitahuan untuk status yang diupdate
         $statusMessage = $this->getStatusMessage($request->status_pengajuan);
 
-        // Simpan pemberitahuan ke dalam session
-        session(['status_message' => $statusMessage]);
+        // Menyimpan pesan notifikasi hanya untuk satu kali request
+        session()->put('status_message', $statusMessage);
 
         return redirect()->route('surat.interior_consultan.index');
     }
