@@ -232,7 +232,6 @@ Route::post('/notif/clearpch', function () {
 
 Route::post('/clear-notification', function () {
     session()->forget('status_messageCS');
-    \Log::info('status_messageCS telah dihapus', ['session' => session()->all()]);
     return response()->json(['status' => 'success']);
 });
 
