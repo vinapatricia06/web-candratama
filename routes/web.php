@@ -271,3 +271,26 @@ Route::delete('/surat-warehouse/{id}', [SuratWarehouseController::class, 'destro
 
 
 Route::get('/surat/finance/pending', [SuratFinanceController::class, 'pending'])->name('surat.finance.pending');
+
+
+
+Route::get('surat-marketing/filter-by-year', [SuratMarketingController::class, 'filterByYear'])->name('surat.marketing.filterByYear');
+Route::post('surat-marketing/delete-by-year', [SuratMarketingController::class, 'deleteByYear'])->name('surat.marketing.deleteByYear');
+
+Route::get('surat-admin/filter-by-year', [SuratAdminController::class, 'filterByYear'])->name('surat.admin.filterByYear');
+Route::post('surat-admin/delete-by-year', [SuratAdminController::class, 'deleteByYear'])->name('surat.admin.deleteByYear');
+
+Route::get('surat-finance/filter-by-year', [SuratFinanceController::class, 'filterByYear'])->name('surat.finance.filterByYear');
+Route::post('surat-finance/delete-by-year', [SuratFinanceController::class, 'deleteByYear'])->name('surat.finance.deleteByYear');
+
+Route::get('surat-warehouse/filter-by-year', [SuratWarehouseController::class, 'filterByYear'])->name('surat.warehouse.filterByYear');
+Route::post('surat-warehouse/delete-by-year', [SuratWarehouseController::class, 'deleteByYear'])->name('surat.warehouse.deleteByYear');
+
+Route::get('surat-purchasing/filter-by-year', [SuratPurchasingController::class, 'filterByYear'])->name('surat.purchasing.filterByYear');
+Route::post('surat-purchasing/delete-by-year', [SuratPurchasingController::class, 'deleteByYear'])->name('surat.purchasing.deleteByYear');
+
+Route::delete('/surat/interior_consultan/destroy-all', [SuratInteriorConsultanController::class, 'destroyAll'])->name('surat.interior_consultan.destroyAll');
+
+Route::delete('/surat/ekspedisi/destroy-all', [SuratEkspedisiController::class, 'destroyAll'])->name('surat.ekspedisi.destroyAll');
+
+Route::delete('/surat/cleaning/destroy-all', [SuratCleaningController::class, 'destroyAll'])->name('surat.cleaning.destroyAll');

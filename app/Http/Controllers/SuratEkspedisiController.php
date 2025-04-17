@@ -55,7 +55,7 @@ class SuratEkspedisiController extends Controller
             ]);
 
             // Redirect dengan pesan sukses
-            return redirect()->route('surat.ekspedisi.index')->with('success', 'Surat cleaning berhasil dibuat');
+            return redirect()->route('surat.ekspedisi.index')->with('success', 'Surat Ekspedisi berhasil dibuat');
         } catch (\Exception $e) {
             // Redirect kembali jika ada kesalahan
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
@@ -180,5 +180,11 @@ class SuratEkspedisiController extends Controller
         }
 
         return view('surat.ekspedisi.pdf', compact('suratEkspedisi'));
+    }
+
+    public function destroyAll()
+    {
+        SuratEkspedisi::truncate(); // atau ->delete() jika ingin soft delete
+        return redirect()->route('surat.ekspedisi.index')->with('status_message', 'Semua surat berhasil dihapus.');
     }
 }

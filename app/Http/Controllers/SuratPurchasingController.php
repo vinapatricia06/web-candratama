@@ -16,8 +16,12 @@ class SuratPurchasingController extends Controller
     {
         $nomorSurat = null;
         $suratPurchasing = SuratPurchasing::orderBy('created_at', 'desc')->get();
+        $years = SuratPurchasing::selectRaw('YEAR(created_at) as year')
+        ->distinct()
+        ->orderByDesc('year')
+        ->pluck('year');
         
-        return view('surat.purchasing.index', compact('nomorSurat', 'suratPurchasing'));
+        return view('surat.purchasing.index', compact('nomorSurat', 'suratPurchasing', 'years'));
     }
 
     public function generate(Request $request)
@@ -208,5 +212,48 @@ class SuratPurchasingController extends Controller
             'suratWRH' => $suratWRH,
         ]);
     }
+
+    public function filterByYear(Request $request)
+    {
+        // Ambil tahun yang dipilih dari parameter query string (URL)
+        $year = $request->input('year');
+        
+        // Ambil data SuratMarketing berdasarkan tahun yang dipilih
+        $suratPurchasing = SuratPurchasing::when($year, function ($query, $year) {
+            return $query->whereYear('created_at', $year);
+        })->get();
+
+        // Ambil daftar tahun yang tersedia (distinct) dari data SuratMarketing
+        $years = SuratPurchasing::selectRaw('YEAR(created_at) as year')
+                            ->distinct()
+                            ->orderByDesc('year')
+                            ->pluck('year');
+
+        // Kirim data surat dan daftar tahun ke view
+        return view('surat.purchasing.index', compact('suratPurchasing', 'years'));
+    }
+
+    
+
+    public function deleteByYear(Request $request)
+    {
+        $year = $request->input('year');
+
+        if (!$year || !is_numeric($year)) {
+            return redirect()->back()->with('error', 'Tahun tidak valid!');
+        }
+
+        $count = SuratPurchasing::whereYear('created_at', $year)->count();
+
+        if ($count === 0) {
+            return redirect()->back()->with('error', 'Tidak ada data untuk tahun ' . $year);
+        }
+
+        SuratPurchasing::whereYear('created_at', $year)->delete();
+
+        return redirect()->route('surat.purchasing.index')->with('success', 'Data untuk tahun ' . $year . ' telah dihapus');
+    }
+
+
 
 }

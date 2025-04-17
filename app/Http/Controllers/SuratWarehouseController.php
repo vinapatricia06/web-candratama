@@ -12,9 +12,14 @@ class SuratWarehouseController extends Controller
     public function index()
     {
         $nomorSurat = null;
-        $suratWarehouse = SuratWarehouse::orderBy('created_at', 'desc')->get();
+        $suratWarehouses = SuratWarehouse::orderBy('created_at', 'desc')->get();
+        $years = SuratWarehouse::selectRaw('YEAR(created_at) as year')
+        ->distinct()
+        ->orderByDesc('year')
+        ->pluck('year');
+
         
-        return view('surat.warehouse.index', compact('nomorSurat', 'suratWarehouse'));
+        return view('surat.warehouse.index', compact('nomorSurat', 'suratWarehouses','years'));
     }
 
     public function generate(Request $request)
@@ -188,5 +193,45 @@ class SuratWarehouseController extends Controller
             'divisi_pembuat' => $divisi_pembuat // Pastikan variabel ini dikirimkan ke view
         ]);
     }
+
+    public function filterByYear(Request $request)
+    {
+        $year = $request->input('year');
+        
+        $suratWarehouses = SuratWarehouse::when($year, function ($query, $year) {
+            return $query->whereYear('created_at', $year);
+        })->get();
+
+        $years = SuratWarehouse::selectRaw('YEAR(created_at) as year')
+                                ->distinct()
+                                ->orderByDesc('year')
+                                ->pluck('year');
+
+        return view('surat.warehouse.index', compact('suratWarehouses', 'years'));
+    }
+
+
+    
+
+    public function deleteByYear(Request $request)
+    {
+        $year = $request->input('year');
+
+        if (!$year || !is_numeric($year)) {
+            return redirect()->back()->with('error', 'Tahun tidak valid!');
+        }
+
+        $count = SuratWarehouse::whereYear('created_at', $year)->count();
+
+        if ($count === 0) {
+            return redirect()->back()->with('error', 'Tidak ada data untuk tahun ' . $year);
+        }
+
+        SuratWarehouse::whereYear('created_at', $year)->delete();
+
+        return redirect()->route('surat.warehouse.index')->with('success', 'Data untuk tahun ' . $year . ' telah dihapus');
+    }
+
+
 
 }

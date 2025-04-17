@@ -171,4 +171,11 @@ class SuratInteriorConsultanController extends Controller
 
         return view('surat.interior_consultan.pdf', compact('suratKonsultasiInterior'));
     }
+
+    public function destroyAll()
+    {
+        SuratInteriorConsultan::truncate(); // atau ->delete() jika ingin soft delete
+        return redirect()->route('surat.interior_consultan.index')->with('status_message', 'Semua surat berhasil dihapus.');
+    }
+
 }

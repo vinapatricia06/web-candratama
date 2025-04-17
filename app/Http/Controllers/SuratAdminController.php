@@ -16,8 +16,13 @@ class SuratAdminController extends Controller
     {
         $nomorSurat = null;
         $suratAdmins = SuratAdmin::orderBy('created_at', 'desc')->get();
+        $years = SuratAdmin::selectRaw('YEAR(created_at) as year')
+                            ->distinct()
+                            ->orderByDesc('year')
+                            ->pluck('year');
         
-        return view('surat.admin.index', compact('nomorSurat', 'suratAdmins'));
+        
+        return view('surat.admin.index', compact('nomorSurat', 'suratAdmins', 'years'));
     }
 
     public function generate(Request $request)
@@ -222,6 +227,48 @@ class SuratAdminController extends Controller
             return redirect()->route('surat.admin.index')->with('error', 'Tidak ada surat yang dipilih.');
         }
     }
+
+    public function filterByYear(Request $request)
+    {
+        // Ambil tahun yang dipilih dari parameter query string (URL)
+        $year = $request->input('year');
+        
+        // Ambil data SuratMarketing berdasarkan tahun yang dipilih
+        $suratAdmins = SuratAdmin::when($year, function ($query, $year) {
+            return $query->whereYear('created_at', $year);
+        })->get();
+
+        // Ambil daftar tahun yang tersedia (distinct) dari data SuratMarketing
+        $years = SuratAdmin::selectRaw('YEAR(created_at) as year')
+                            ->distinct()
+                            ->orderByDesc('year')
+                            ->pluck('year');
+
+        // Kirim data surat dan daftar tahun ke view
+        return view('surat.admin.index', compact('suratAdmins', 'years'));
+    }
+
+    
+
+    public function deleteByYear(Request $request)
+    {
+        $year = $request->input('year');
+
+        if (!$year || !is_numeric($year)) {
+            return redirect()->back()->with('error', 'Tahun tidak valid!');
+        }
+
+        $count = SuratAdmin::whereYear('created_at', $year)->count();
+
+        if ($count === 0) {
+            return redirect()->back()->with('error', 'Tidak ada data untuk tahun ' . $year);
+        }
+
+        SuratAdmin::whereYear('created_at', $year)->delete();
+
+        return redirect()->route('surat.admin.index')->with('success', 'Data untuk tahun ' . $year . ' telah dihapus');
+    }
+
 
 
 

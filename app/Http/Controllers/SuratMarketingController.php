@@ -12,10 +12,19 @@ class SuratMarketingController extends Controller
 
     public function index()
     {
-        $nomorSurat = null; // Awalnya kosong
-        $suratMarketings = SuratMarketing::all(); // Ambil semua surat jika diperlukan
-        return view('surat.digital_marketing.index', compact('nomorSurat', 'suratMarketings'));
+        $nomorSurat = null;
+
+        $suratMarketings = SuratMarketing::all();
+
+        $years = SuratMarketing::selectRaw('YEAR(created_at) as year')
+                            ->distinct()
+                            ->orderByDesc('year')
+                            ->pluck('year');
+
+        return view('surat.digital_marketing.index', compact('nomorSurat', 'suratMarketings', 'years'));
     }
+
+
 
 
     public function generate(Request $request)
@@ -68,7 +77,14 @@ class SuratMarketingController extends Controller
     public function list()
     {
         $suratMarketings = SuratMarketing::orderBy('created_at', 'desc')->get();
-        return view('surat.digital_marketing.index', compact('suratMarketings'));
+
+        $years = SuratMarketing::selectRaw('YEAR(created_at) as year')
+                            ->distinct()
+                            ->orderByDesc('year')
+                            ->pluck('year');
+
+        return view('surat.digital_marketing.index', compact('suratMarketings', 'years'));
+        
     }
 
     
@@ -228,22 +244,48 @@ class SuratMarketingController extends Controller
     }
 
 
-    public function bulkDestroy(Request $request)
+    public function filterByYear(Request $request)
     {
-        dd($request->surat_ids);
-        // Validasi
-        $this->validate($request, [
-            'surat_ids' => 'required|array|min:1',  // Pastikan surat_ids adalah array dan minimal ada 1 ID
-            'surat_ids.*' => 'exists:surat_marketings,id', // Pastikan ID surat yang dipilih ada di database
-        ]);
+        // Ambil tahun yang dipilih dari parameter query string (URL)
+        $year = $request->input('year');
+        
+        // Ambil data SuratMarketing berdasarkan tahun yang dipilih
+        $suratMarketings = SuratMarketing::when($year, function ($query, $year) {
+            return $query->whereYear('created_at', $year);
+        })->get();
 
-        // Hapus surat yang dipilih
-        SuratMarketing::whereIn('id', $request->surat_ids)->delete();
+        // Ambil daftar tahun yang tersedia (distinct) dari data SuratMarketing
+        $years = SuratMarketing::selectRaw('YEAR(created_at) as year')
+                            ->distinct()
+                            ->orderByDesc('year')
+                            ->pluck('year');
 
-        // Redirect dengan pesan sukses
-        return redirect()->route('surat.marketing.index')->with('success', 'Surat-surat yang dipilih berhasil dihapus.');
+        // Kirim data surat dan daftar tahun ke view
+        return view('surat.digital_marketing.index', compact('suratMarketings', 'years'));
+    }
+
+    
+
+    public function deleteByYear(Request $request)
+    {
+        $year = $request->input('year');
+
+        if (!$year || !is_numeric($year)) {
+            return redirect()->back()->with('error', 'Tahun tidak valid!');
+        }
+
+        $count = SuratMarketing::whereYear('created_at', $year)->count();
+
+        if ($count === 0) {
+            return redirect()->back()->with('error', 'Tidak ada data untuk tahun ' . $year);
+        }
+
+        SuratMarketing::whereYear('created_at', $year)->delete();
+
+        return redirect()->route('surat.digital_marketing.list')->with('success', 'Data untuk tahun ' . $year . ' telah dihapus');
     }
 
 
+    
 
 }

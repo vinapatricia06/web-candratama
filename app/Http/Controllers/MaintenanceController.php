@@ -66,7 +66,6 @@ class MaintenanceController extends Controller
         // Validate input
         $request->validate([
             'nama_klien' => 'required|string|max:255',
-            'no_induk' => 'required|string|unique:maintenances,no_induk',
             'alamat' => 'required|string',
             'project' => 'required|string|max:255',
             'tanggal_setting' => 'required|date',

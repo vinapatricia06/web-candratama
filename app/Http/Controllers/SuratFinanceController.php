@@ -17,8 +17,13 @@ class SuratFinanceController extends Controller
     {
         $nomorSurat = null; // Awalnya kosong
         $suratFinances = SuratFinance::orderBy('created_at', 'desc')->get();
+        $years = SuratFinance::selectRaw('YEAR(created_at) as year')
+        ->distinct()
+        ->orderByDesc('year')
+        ->pluck('year');
+
         
-        return view('surat.finance.index', compact('nomorSurat', 'suratFinances'));
+        return view('surat.finance.index', compact('nomorSurat', 'suratFinances', 'years'));
     }
 
     public function pending()
@@ -260,5 +265,47 @@ class SuratFinanceController extends Controller
             'divisi_pembuat' => $divisi_pembuat
         ]);
     }
+
+    public function filterByYear(Request $request)
+    {
+        // Ambil tahun yang dipilih dari parameter query string (URL)
+        $year = $request->input('year');
+        
+        // Ambil data SuratMarketing berdasarkan tahun yang dipilih
+        $suratFinances = SuratFinance::when($year, function ($query, $year) {
+            return $query->whereYear('created_at', $year);
+        })->get();
+
+        // Ambil daftar tahun yang tersedia (distinct) dari data SuratMarketing
+        $years = SuratFinance::selectRaw('YEAR(created_at) as year')
+                            ->distinct()
+                            ->orderByDesc('year')
+                            ->pluck('year');
+
+        // Kirim data surat dan daftar tahun ke view
+        return view('surat.finance.index', compact('suratFinances', 'years'));
+    }
+
+    
+
+    public function deleteByYear(Request $request)
+    {
+        $year = $request->input('year');
+
+        if (!$year || !is_numeric($year)) {
+            return redirect()->back()->with('error', 'Tahun tidak valid!');
+        }
+
+        $count = SuratFinance::whereYear('created_at', $year)->count();
+
+        if ($count === 0) {
+            return redirect()->back()->with('error', 'Tidak ada data untuk tahun ' . $year);
+        }
+
+        SuratFinance::whereYear('created_at', $year)->delete();
+
+        return redirect()->route('surat.finance.index')->with('success', 'Data untuk tahun ' . $year . ' telah dihapus');
+    }
+
 
 }

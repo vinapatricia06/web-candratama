@@ -199,4 +199,10 @@ class SuratCleaningController extends Controller
         // Return the view for displaying the PDF
         return view('surat.cleaning.pdf', compact('suratCleaning'));
     }
+
+    public function destroyAll()
+    {
+        SuratCleaning::truncate(); // atau ->delete() jika ingin soft delete
+        return redirect()->route('surat.cleaning.index')->with('status_message', 'Semua surat berhasil dihapus.');
+    }
 }

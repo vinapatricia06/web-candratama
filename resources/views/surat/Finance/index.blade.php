@@ -19,6 +19,33 @@
         </div>
     @endif
 
+    <!-- Year Filter Form -->
+    <form action="{{ route('surat.finance.filterByYear') }}" method="GET">
+        @csrf
+        <div class="mb-3">
+            <label for="year" class="form-label">Pilih Tahun</label>
+            <select name="year" id="year" class="form-select">
+                <option value="">Semua Tahun</option>
+                @foreach ($years as $year)
+                    <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-primary mt-2">Filter</button>
+        </div>
+    </form>
+      
+
+    <!-- Button to delete all data for the selected year, only for superadmin -->
+    @if (Auth::user()->role == 'superadmin' && request('year'))
+    <form action="{{ route('surat.finance.deleteByYear') }}" method="POST" style="margin-bottom: 20px;" onsubmit="return confirm('Apakah Anda yakin ingin menghapus semua data untuk tahun {{ request('year') }}?');">
+        @csrf
+        <input type="hidden" name="year" value="{{ request('year') }}">
+        <button type="submit" class="btn btn-danger">
+            Hapus Semua Data Tahun {{ request('year') }}
+        </button>
+    </form>
+    @endif
+
     <div style="margin-bottom: 20px;">
         <a href="{{ route('surat.finance.create') }}" class="btn btn-primary">Tambah Surat</a>
     </div>

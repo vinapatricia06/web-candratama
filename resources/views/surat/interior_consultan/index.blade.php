@@ -32,7 +32,18 @@
 
 <div style="margin-bottom: 20px;">
     <a href="{{ route('surat.interior_consultan.create') }}" class="btn btn-primary">Tambah Surat</a>
+    <br>
+    <br>
+
+    @if (Auth::user()->role == 'superadmin')
+        <form action="{{ route('surat.interior_consultan.destroyAll') }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus semua surat?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Hapus Semua Surat</button>
+        </form>
+    @endif
 </div>
+
 
 <div class="table-responsive">
     <table border="1" cellpadding="10" class="table table-bordered" style="width: 100%; margin: 0 auto; border-collapse: collapse; text-align: center;">

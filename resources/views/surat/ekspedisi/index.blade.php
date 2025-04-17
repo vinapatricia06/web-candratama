@@ -38,6 +38,17 @@
 
 <div style="margin-bottom: 20px;">
     <a href="{{ route('surat.ekspedisi.create') }}" class="btn btn-primary">Tambah Surat</a>
+
+    <br>
+    <br>
+
+    @if (Auth::user()->role == 'superadmin')
+        <form action="{{ route('surat.ekspedisi.destroyAll') }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus semua surat?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Hapus Semua Surat</button>
+        </form>
+    @endif
 </div>
 
 <div class="table-responsive">
